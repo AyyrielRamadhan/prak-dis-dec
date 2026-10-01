@@ -10,7 +10,7 @@ NIM: 255410024
 
 Kelas: Informatika-1
 
-Mata Kuliah: Sistem Terdistribusi dan Terdesentralisasi
+Mata Kuliah: Praktikum Sistem Terdistribusi dan Terdesentralisasi
 
 📂 Struktur Direktori & Laporan Praktikum
 
