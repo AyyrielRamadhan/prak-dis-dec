@@ -16,21 +16,33 @@ Mata Kuliah: Sistem Terdistribusi dan Terdesentralisasi
 
 Sesuai dengan ketentuan praktikum, repository ini diorganisasikan ke dalam direktori mingguan dari 01 hingga 14. Setiap folder mingguan berisi file README.md sebagai laporan praktikum beserta file pendukung lainnya.
 
-prak-dis-dec/
-├── 01/                  # Laporan & Kode Praktikum Minggu ke-1
-├── 02/                  # Laporan & Kode Praktikum Minggu ke-2
-├── 03/                  # Laporan & Kode Praktikum Minggu ke-3
-├── 04/                  # Laporan & Kode Praktikum Minggu ke-4
-├── 05/                  # Laporan & Kode Praktikum Minggu ke-5
-├── 06/                  # Laporan & Kode Praktikum Minggu ke-6
-├── 07/                  # Laporan & Kode Praktikum Minggu ke-7
-├── 08/                  # Laporan & Kode Praktikum Minggu ke-8
-├── 09/                  # Laporan & Kode Praktikum Minggu ke-9
-├── 10/                  # Laporan & Kode Praktikum Minggu ke-10
-├── 11/                  # Laporan & Kode Praktikum Minggu ke-11
-├── 12/                  # Laporan & Kode Praktikum Minggu ke-12
-├── 13/                  # Laporan & Kode Praktikum Minggu ke-13
-└── 14/                  # Laporan & Kode Praktikum Minggu ke-14
+prak-dis-dec/├── 01/                  # Laporan & Kode Praktikum Minggu ke-1
+
+prak-dis-dec├── 02/                  # Laporan & Kode Praktikum Minggu ke-2
+
+prak-dis-dec├── 03/                  # Laporan & Kode Praktikum Minggu ke-3
+
+prak-dis-dec├── 04/                  # Laporan & Kode Praktikum Minggu ke-4
+
+prak-dis-dec├── 05/                  # Laporan & Kode Praktikum Minggu ke-5
+
+prak-dis-dec├── 06/                  # Laporan & Kode Praktikum Minggu ke-6
+
+prak-dis-dec├── 07/                  # Laporan & Kode Praktikum Minggu ke-7
+
+prak-dis-dec├── 08/                  # Laporan & Kode Praktikum Minggu ke-8
+
+prak-dis-dec├── 09/                  # Laporan & Kode Praktikum Minggu ke-9
+
+prak-dis-dec├── 10/                  # Laporan & Kode Praktikum Minggu ke-10
+
+prak-dis-dec├── 11/                  # Laporan & Kode Praktikum Minggu ke-11
+
+prak-dis-dec├── 12/                  # Laporan & Kode Praktikum Minggu ke-1
+
+prak-dis-dec├── 13/                  # Laporan & Kode Praktikum Minggu ke-13
+
+prak-dis-dec└── 14/                  # Laporan & Kode Praktikum Minggu ke-14
 
 
 🔗 Format Pengumpulan Tugas Mingguan
