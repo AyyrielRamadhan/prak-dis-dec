@@ -49,9 +49,7 @@ prak-dis-dec└── 14/                  # Laporan & Kode Praktikum Minggu ke-
 
 Penilaian dilakukan secara mingguan dengan batas waktu pengumpulan selama 1 minggu per modul. Format URL pengumpulan tugas disesuaikan dengan direktori mingguan masing-masing:
 
-Minggu ke-1: https://github.com/AyyrielRamadhan/prak-dis-dec/01
-
-Minggu ke-2: https://github.com/AyyrielRamadhan/prak-dis-dec/02
+Minggu ke-1: https://github.com/AyyrielRamadhan/prak-dis-dec/tree/main/01
 
 Dan seterusnya hingga Minggu ke-14.
 
