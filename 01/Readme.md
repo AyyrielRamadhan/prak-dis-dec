@@ -68,13 +68,21 @@ Kolaborasi ✅
 📢 Beberapa perintah dasar Git yang dipelajari dalam praktikum antara lain:
 
 git config
+
 git init
+
 git clone
+
 git status
+
 git add
+
 git commit
+
 git remote
+
 git push
+
 git pull
 
 Perintah tersebut digunakan untuk mengatur Git, membuat repository lokal, memeriksa perubahan, menyimpan perubahan melalui commit, serta melakukan sinkronisasi dengan repository GitHub.
