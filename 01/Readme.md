@@ -122,8 +122,9 @@ Materi yang dipelajari dalam praktikum meliputi:
 
     ```git --version
 
-    <img src="images/18_Version_Git.png" width="700">
     ```
+
+    <img src="images/18_Version_Git.png" width="700">
 
 Konfigurasi Git ✅
 
