@@ -185,7 +185,7 @@ git config --global user.email email@domain.tld
 cat ~/.gitconfig
 ```
 
-<img src="images/03_Konfigurasi_Git.png.png" width="700">
+<img src="images/03_Konfigurasi_Git.png" width="700">
 
 ---
 
