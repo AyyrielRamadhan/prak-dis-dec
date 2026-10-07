@@ -49,7 +49,7 @@ Materi yang dipelajari dalam praktikum meliputi:
 
 ### 1. Download Git dari web resmi
 
-   <img src="images/01_Install_git.png" width="700">
+   <img src="images/01_Install_Git.png" width="700">
 
 ---
 
