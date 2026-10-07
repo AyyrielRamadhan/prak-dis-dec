@@ -47,74 +47,77 @@ Materi yang dipelajari dalam praktikum meliputi:
 
 ## PRAKTIK 1 - INSTALASI GIT
 
-1. Download Git dari web resmi
+### 1. Download Git dari web resmi
 
-   <img src="images/01_download_git.png" width="700">
+   <img src="images/01_Install_git.png" width="700">
 
-2. Setelah download Git, double click pada file yang di-download. Akan dimunculkan lisensi. Klik install untuk lanjut.
+---
 
- <img src="images/02_download_git(1).png" width="700">
+### 2. Setelah download Git, double click pada file yang di-download. Akan dimunculkan lisensi. Klik install untuk lanjut.
+
+   <img src="images/02_Install_Git.png" width="700">
+
+---
 
 3. Setelah itu, pilih lokasi instalasi. Secara default akan terisi C:\Program Files\Git. Kemudian klik Next
 
- <img src="images/03_Lokasi_Penyimpanan_Git.png" width="700">
+   <img src="images/03_Install_Git.png" width="700">
 
 4. Pilih komponen. Tidak perlu diubah-ubah, sesuai dengan default saja. Klik pada Next
 
-   <img src="images/04_Pemilihan_Komponen.png" width="700">
+   <img src="images/04_Install_Git.png" width="700">
 
 5. Mengisi shortcut untuk menu Start. Gunakan default (Git)
 
-   <img src="images/05_Shortcut_Mode_Start.png" width="700">
+   <img src="images/05_Install_Git.png" width="700">
 
 6. Pilih editor yang akan digunakan bersama dengan Git
 
-   <img src="images/06_Pilih_Editor.png" width="700">
+   <img src="images/06_Install_Git.png" width="700">
 
 7. Setiap melakukan inisialisasi repo Git, suatu nama branch akan diberikan. Default nama adalah master tetapi umumnya sekarang diganti dengan main. Ubahlah konfigurasi tersebut:
 
-   <img src="images/07_Nama_Branch.png" width="700">
+   <img src="images/07_Install_Git.png" width="700">
 
 8. Pada saat instalasi, Git menyediakan akses git melalui Bash maupun command prompt. Pilih pilihan kedua supaya bisa menggunakan dari dua antarmuka tersebut. Bash adalah shell di Linux. Dengan menggunakan bash di Windows, pekerjaan di command line Windows bisa dilakukan menggunakan bash - termasuk ekskusi dari Git.
 
-   <img src="images/08_Path.png" width="700">
+   <img src="images/08_Install_Git.png" width="700">
 
 9. Pilih native Windows Secure Channel library HTTPS. Git menggunakan https untuk akes ke repo GitHub atau repo-repo lain (GitLab, Assembla).
 
-   <img src="images/09_Memilih_HTTPS.png" width="700">
-
+   <img src="images/09_Install_Git.png" width="700">
 
 10. Pilih pilihan pertama untuk konversi akhir baris (CR-LF).
 
-   <img src="images/10_Konversi_Akhir_Baris.png" width="700">
+   <img src="images/10_Install_Git.png" width="700">
 
 11. Pilih MinTTY untuk terminal yang digunakan untuk mengakses Git Bash.
 
-   <img src="images/11_Pemilihan_Terminal.png" width="700">
+   <img src="images/11_Install_Git.png" width="700">
 
 12. Tetapkan perilaku standar dari git pull. Pilih default saja yaitu Fast-forward or merge.
 
-   <img src="images/12_Pengaturan_Pull.png" width="700">
+   <img src="images/12_Install_Git.png" width="700">
 
 13. Memilih credential helper.
 
-   <img src="images/13_Pilih_Credential.png" width="700">
+   <img src="images/13_Install_Git.png" width="700">
 
 14. Untuk opsi ekstra, pilih serta aktifkan file system caching.
 
-   <img src="images/14_Extra_Options.png" width="700">
+   <img src="images/14_Install_Git.png" width="700">
 
 15. Setelah itu proses instalasi akan dilakukan.
 
-   <img src="images/15_Instalasi.png" width="700">
+   <img src="images/15_Install_Git.png" width="700">
 
 tunggu hingga proses intalasi selesai. Setelah proses selesai,klik: **Finish**
 
-   <img src="images/16_Finish_Instalasi.png" width="700">
+   <img src="images/16_Install_Git.png" width="700">
 
 16. Mengecek Instalasi Git
 
-   <img src="images/17_Cek_Instalasi.png" width="700">
+   <img src="images/17_Install_Git.png" width="700">
 
 17. Mengecek Versi git
 
@@ -122,11 +125,13 @@ tunggu hingga proses intalasi selesai. Setelah proses selesai,klik: **Finish**
 git --version
 ```
 
-   <img src="images/18_Version_Git.png" width="700">
+   <img src="images/18_Install_Git.png" width="700">
 
 ## PRAKTIK 2 - KONFIGURASI GIT
 
-📝 Kesimpulan
+1. Konfigurasi Username
+
+# 📝 Kesimpulan
 
 Praktikum Git dan GitHub memberikan pemahaman dasar mengenai pengelolaan project menggunakan version control. Git digunakan untuk mencatat dan mengelola perubahan pada project, sedangkan GitHub digunakan untuk menyimpan repository secara online dan mendukung proses kolaborasi.
 
