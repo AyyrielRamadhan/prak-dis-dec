@@ -40,9 +40,11 @@ Materi yang dipelajari dalam praktikum meliputi:
    Alur praktikum yang dilakukan adalah:
 
    a. Download Git dari web resmi
+
    <img src="images/01_download_git.png" width="700">
 
    b. Setelah download Git, double click pada file yang di-download. Akan dimunculkan lisensi. Klik install untuk lanjut.
+
    <img src="images/02_download_git(1).png" width="700">
 
 Konfigurasi Git ✅
