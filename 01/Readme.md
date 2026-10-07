@@ -120,9 +120,10 @@ Materi yang dipelajari dalam praktikum meliputi:
 
     Q. Mengecek Versi git
 
-    `git --version`
+    ```git --version
 
-      <img src="images/18_Version_Git.png" width="700">
+    <img src="images/18_Version_Git.png" width="700">
+    ```
 
 Konfigurasi Git ✅
 
@@ -164,12 +165,6 @@ git pull
 
 Perintah tersebut digunakan untuk mengatur Git, membuat repository lokal, memeriksa perubahan, menyimpan perubahan melalui commit, serta melakukan sinkronisasi dengan repository GitHub.
 
-🤜🏼 Hasil Praktikum
-
-Setelah melakukan praktikum, diperoleh pemahaman mengenai penggunaan Git dan GitHub untuk mengelola project. Repository lokal dapat dihubungkan dengan GitHub sehingga perubahan file dapat disimpan dan dikelola secara online.
-
-Praktikum juga memberikan pemahaman mengenai proses dasar version control, yaitu melakukan perubahan file, mencatat perubahan melalui commit, kemudian mengirimkan perubahan tersebut ke repository GitHub menggunakan perintah git push.
-
 📝 Kesimpulan
 
 Praktikum Git dan GitHub memberikan pemahaman dasar mengenai pengelolaan project menggunakan version control. Git digunakan untuk mencatat dan mengelola perubahan pada project, sedangkan GitHub digunakan untuk menyimpan repository secara online dan mendukung proses kolaborasi.
@@ -177,3 +172,7 @@ Praktikum Git dan GitHub memberikan pemahaman dasar mengenai pengelolaan project
 🗒️ Referensi
 
 Materi praktikum mengacu pada dokumentasi Git dan GitHub serta materi petunjuk penggunaan Git dan GitHub dari repository NEO-X-School (https://github.com/NEO-X-School/notes/tree/main/petunjuk-git-github).
+
+```
+
+```
