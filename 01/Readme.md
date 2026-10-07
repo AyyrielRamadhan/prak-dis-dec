@@ -120,7 +120,8 @@ Materi yang dipelajari dalam praktikum meliputi:
 
     Q. Mengecek Versi git
 
-    ```git --version
+    ```
+    git --version
 
     ```
 
