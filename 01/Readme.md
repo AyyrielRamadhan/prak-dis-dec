@@ -88,7 +88,29 @@ Materi yang dipelajari dalam praktikum meliputi:
        
     j. Pilih pilihan pertama untuk konversi akhir baris (CR-LF).
 
-      <img src="images/10_Konversi_Akhir_Baris.png" width="700">
+       <img src="images/10_Konversi_Akhir_Baris.png" width="700">
+
+    K. Pilih MinTTY untuk terminal yang digunakan untuk mengakses Git Bash.
+
+      <img src="images/11_Pemilihan_Terminal.png" width="700">
+
+    L. Tetapkan perilaku standar dari git pull. Pilih default saja yaitu Fast-forward or merge.
+
+      <img src="images/12_Pengaturan_Pull.png" width="700">
+
+    M. Memilih credential helper.
+
+     <img src="images/13_Pilih_Credential.png" width="700">
+
+    N. Untuk opsi ekstra, pilih serta aktifkan file system caching.
+
+     <img src="images/14_Extra_Options.png" width="700">
+
+    O. Setelah itu proses instalasi akan dilakukan.
+
+      <img src="images/15_Instalasi.png" width="700">
+
+    tunggu hingga proses intalasi selesai. Setelah proses selesai,klik: **Finish**
 
 Konfigurasi Git ✅
 
