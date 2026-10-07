@@ -65,6 +65,8 @@ Materi yang dipelajari dalam praktikum meliputi:
 
     <img src="images/07_Editor_Teks.png" width="700">
 
+    <img src="images/08_Editor_Teks_Lain.png" width="700">
+
 Konfigurasi Git ✅
 
           ↓
