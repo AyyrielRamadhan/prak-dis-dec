@@ -51,11 +51,15 @@ Materi yang dipelajari dalam praktikum meliputi:
 
    <img src="images/01_Install_Git.png" width="700">
 
+Pembahasan :
+
 ---
 
 ### 2. Setelah download Git, double click pada file yang di-download. Akan dimunculkan lisensi. Klik install untuk lanjut.
 
    <img src="images/02_Install_Git.png" width="700">
+
+Pembahasan :
 
 ---
 
@@ -63,11 +67,15 @@ Materi yang dipelajari dalam praktikum meliputi:
 
    <img src="images/03_Install_Git.png" width="700">
 
+Pembahasan :
+
 ---
 
 ### 4. Pilih komponen. Tidak perlu diubah-ubah, sesuai dengan default saja. Klik pada Next
 
    <img src="images/04_Install_Git.png" width="700">
+
+Pembahasan :
 
 ---
 
@@ -75,11 +83,15 @@ Materi yang dipelajari dalam praktikum meliputi:
 
    <img src="images/05_Install_Git.png" width="700">
 
+Pembahasan :
+
 ---
 
 ### 6. Pilih editor yang akan digunakan bersama dengan Git
 
    <img src="images/06_Install_Git.png" width="700">
+
+Pembahasan :
 
 ---
 
@@ -87,11 +99,15 @@ Materi yang dipelajari dalam praktikum meliputi:
 
    <img src="images/07_Install_Git.png" width="700">
 
+Pembahasan :
+
 ---
 
 ### 8. Pada saat instalasi, Git menyediakan akses git melalui Bash maupun command prompt. Pilih pilihan kedua supaya bisa menggunakan dari dua antarmuka tersebut. Bash adalah shell di Linux. Dengan menggunakan bash di Windows, pekerjaan di command line Windows bisa dilakukan menggunakan bash - termasuk ekskusi dari Git.
 
    <img src="images/08_Install_Git.png" width="700">
+
+Pembahasan :
 
 ---
 
@@ -99,11 +115,15 @@ Materi yang dipelajari dalam praktikum meliputi:
 
    <img src="images/09_Install_Git.png" width="700">
 
+Pembahasan :
+
 ---
 
 ### 10. Pilih pilihan pertama untuk konversi akhir baris (CR-LF).
 
    <img src="images/10_Install_Git.png" width="700">
+
+Pembahasan :
 
 ---
 
@@ -111,17 +131,23 @@ Materi yang dipelajari dalam praktikum meliputi:
 
    <img src="images/11_Install_Git.png" width="700">
 
+Pembahasan :
+
 ---
 
 ### 12. Tetapkan perilaku standar dari git pull. Pilih default saja yaitu Fast-forward or merge.
 
    <img src="images/12_Install_Git.png" width="700">
 
+Pembahasan :
+
 ---
 
 ### 13. Memilih credential helper.
 
    <img src="images/13_Install_Git.png" width="700">
+
+Pembahasan :
 
 ---
 
@@ -189,11 +215,31 @@ cat ~/.gitconfig
 
 ---
 
+```
+git config --list
+```
+
+<img src="images/03_Konfigurasi_Git.png" width="700">
+
 ## PRAKTIK 3 - MENGELOLA REPO SENDIRI
 
 ### 1. Klik tanda + pada bagian atas setelah login, pilih **_New repository_**
 
 <img src="images/01_Repo_Sendiri.png" width="700">
+
+---
+
+### 2. Isikan nama, keterangan, serta lisensi.
+
+<img src="images/02_Repo_Sendiri.png" width="700">
+
+Pembahasan :
+
+---
+
+<img src="images/03_Repo_Sendiri.png" width="700">
+
+Pembahasan :
 
 ---
 
