@@ -112,6 +112,19 @@ Materi yang dipelajari dalam praktikum meliputi:
 
     tunggu hingga proses intalasi selesai. Setelah proses selesai,klik: **Finish**
 
+     <img src="images/16_Finish_Instalasi.png" width="700">
+
+    P. Mengecek Instalasi Git
+
+      <img src="images/17_Cek_Instalasi.png" width="700">
+
+    Q. Mengecek Versi git
+
+    `git --version`
+
+      <img src="images/18_Version_Git.png" width="700">
+
+
 Konfigurasi Git ✅
 
           ↓
