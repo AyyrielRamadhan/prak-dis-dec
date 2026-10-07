@@ -167,6 +167,30 @@ git config --global user.name "Nama Anda di GitHub"
 
 <img src="images/01_Konfigurasi_Git.png" width="700">
 
+---
+
+### 2. Membuat Konfigurasi Email
+
+```
+git config --global user.email email@domain.tld
+```
+
+<img src="images/02_Konfigurasi_Git.png" width="700">
+
+---
+
+### 3. Melihat Konfigurasi
+
+```
+cat ~/.gitconfig
+```
+
+<img src="images/03_Konfigurasi_Git.png.png" width="700">
+
+---
+
+## PRAKTIK 3 - MENGELOLLA REPO SENDIRI
+
 # 📝 Kesimpulan
 
 Praktikum Git dan GitHub memberikan pemahaman dasar mengenai pengelolaan project menggunakan version control. Git digunakan untuk mencatat dan mengelola perubahan pada project, sedangkan GitHub digunakan untuk menyimpan repository secara online dan mendukung proses kolaborasi.
