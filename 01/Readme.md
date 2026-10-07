@@ -61,8 +61,9 @@ Materi yang dipelajari dalam praktikum meliputi:
 
     f. Pilih editor yang akan digunakan bersama dengan Git
 
-    <img src="images/06_Pilih_Editor.png" width="700">  
+    <img src="images/06_Pilih_Editor.png" width="700">
 
+    <img src="images/07_Editor_Teks.png.png" width="700">
 
 Konfigurasi Git ✅
 
