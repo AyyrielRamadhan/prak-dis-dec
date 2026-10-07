@@ -1,7 +1,10 @@
 # Praktikum Minggu 01-Pengenalan Sistem Terdistribusi dan Terdesentralisasi - Git dan GitHub
 
 **Mata Kuliah:** Praktikum Sistem Terdistribusi dan Terdesentralisasi
+
 **Topik:** Git dan Github
+
+---
 
 # 📚 Tujuan Praktikum
 
