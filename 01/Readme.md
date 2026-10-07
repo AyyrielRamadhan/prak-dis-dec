@@ -189,7 +189,13 @@ cat ~/.gitconfig
 
 ---
 
-## PRAKTIK 3 - MENGELOLLA REPO SENDIRI
+## PRAKTIK 3 - MENGELOLA REPO SENDIRI
+
+### 1. Klik tanda + pada bagian atas setelah login, pilih **_New repository_**
+
+<img src="images/01_Repo_Sendiri.png" width="700">
+
+---
 
 # 📝 Kesimpulan
 
