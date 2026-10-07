@@ -39,33 +39,34 @@ Materi yang dipelajari dalam praktikum meliputi:
 1.  Instalasi Git (Windows)
     Alur praktikum yang dilakukan adalah:
 
-        a. Download Git dari web resmi
+    a. Download Git dari web resmi
 
-           <img src="images/01_download_git.png" width="700">
+       <img src="images/01_download_git.png" width="700">
 
-        b. Setelah download Git, double click pada file yang di-download. Akan dimunculkan lisensi. Klik install untuk lanjut.
+    b. Setelah download Git, double click pada file yang di-download. Akan dimunculkan lisensi. Klik install untuk lanjut.
 
-           <img src="images/02_download_git(1).png" width="700">
+       <img src="images/02_download_git(1).png" width="700">
 
-        c. Setelah itu, pilih lokasi instalasi. Secara default akan terisi C:\Program Files\Git. Kemudian klik Next
+    c. Setelah itu, pilih lokasi instalasi. Secara default akan terisi C:\Program Files\Git. Kemudian klik Next
 
-        <img src="images/03_Lokasi_Penyimpanan_Git.png" width="700">
+    <img src="images/03_Lokasi_Penyimpanan_Git.png" width="700">
 
-        d. Pilih komponen. Tidak perlu diubah-ubah, sesuai dengan default saja. Klik pada Next
+    d. Pilih komponen. Tidak perlu diubah-ubah, sesuai dengan default saja. Klik pada Next
 
-        <img src="images/04_Pemilihan_Komponen.png" width="700">
+    <img src="images/04_Pemilihan_Komponen.png" width="700">
 
-        e. Mengisi shortcut untuk menu Start. Gunakan default (Git)
+    e. Mengisi shortcut untuk menu Start. Gunakan default (Git)
 
-        <img src="images/05_Shortcut_Mode_Start.png" width="700">
+    <img src="images/05_Shortcut_Mode_Start.png" width="700">
 
-        f. Pilih editor yang akan digunakan bersama dengan Git
+    f. Pilih editor yang akan digunakan bersama dengan Git
 
-        <img src="images/06_Pilih_Editor.png" width="700">
+    <img src="images/06_Pilih_Editor.png" width="700">  
 
-    Konfigurasi Git ✅
 
-              ↓
+Konfigurasi Git ✅
+
+          ↓
 
 Mengelola Repository Sendiri Account ✅
 
