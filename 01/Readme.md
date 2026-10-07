@@ -42,9 +42,7 @@ Materi yang dipelajari dalam praktikum meliputi:
 
 # ⏩ PEMBAHASAN PRAKTIKUM
 
----
-
-# PRAKTIK 1 - INSTALASI GIT
+## PRAKTIK 1 - INSTALASI GIT
 
 1.  Instalasi Git (Windows)
     Alur praktikum yang dilakukan adalah:
