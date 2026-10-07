@@ -1,6 +1,5 @@
 # Pengenalan Sistem Terdistribusi dan Terdesentralisasi - Git dan GitHub
 
-
 📚 Tujuan Praktikum
 
 Praktikum ini bertujuan untuk:
@@ -13,7 +12,6 @@ Praktikum ini bertujuan untuk:
 6. Melakukan commit dan mengunggah perubahan ke repository.
 7. Memahami dasar kolaborasi menggunakan Git dan GitHub.
 
-   
 📚Materi Praktikum
 
 Materi yang dipelajari dalam praktikum meliputi:
@@ -36,34 +34,33 @@ Materi yang dipelajari dalam praktikum meliputi:
 6. Kolaborasi
    Tahap terakhir membahas penggunaan Git dan GitHub untuk bekerja secara bersama-sama dalam sebuah project. Setiap anggota dapat melakukan perubahan pada project dan mengelola perubahan tersebut menggunakan Git.
 
+⏩ Pembahasan Praktikum
 
-⏩ Alur Praktikum
+1. Instalasi Git (Windows)
+   Alur praktikum yang dilakukan adalah:
 
-Alur praktikum yang dilakukan adalah:
+   a. Download Git dari web resmi
+   <img src="images/01_download_git.png" width="700">
 
-Instalasi Git ✅
+   b.
 
-      ↓
-      
 Konfigurasi Git ✅
-      
+
       ↓
-      
+
 Mengelola Repository Sendiri Account ✅
-      
+
       ↓
-      
+
 Mengelola Repository Sendiri Organinsasi ✅
-      
+
       ↓
-      
+
 Mengelola Repository Sendiri ✅
-      
+
       ↓
-      
+
 Kolaborasi ✅
-
-
 
 📢 Beberapa perintah dasar Git yang dipelajari dalam praktikum antara lain:
 
@@ -87,23 +84,15 @@ git pull
 
 Perintah tersebut digunakan untuk mengatur Git, membuat repository lokal, memeriksa perubahan, menyimpan perubahan melalui commit, serta melakukan sinkronisasi dengan repository GitHub.
 
-
-
 🤜🏼 Hasil Praktikum
 
 Setelah melakukan praktikum, diperoleh pemahaman mengenai penggunaan Git dan GitHub untuk mengelola project. Repository lokal dapat dihubungkan dengan GitHub sehingga perubahan file dapat disimpan dan dikelola secara online.
 
 Praktikum juga memberikan pemahaman mengenai proses dasar version control, yaitu melakukan perubahan file, mencatat perubahan melalui commit, kemudian mengirimkan perubahan tersebut ke repository GitHub menggunakan perintah git push.
 
-
-
-
 📝 Kesimpulan
 
 Praktikum Git dan GitHub memberikan pemahaman dasar mengenai pengelolaan project menggunakan version control. Git digunakan untuk mencatat dan mengelola perubahan pada project, sedangkan GitHub digunakan untuk menyimpan repository secara online dan mendukung proses kolaborasi.
-
-
-
 
 🗒️ Referensi
 
