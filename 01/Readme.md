@@ -124,7 +124,6 @@ Materi yang dipelajari dalam praktikum meliputi:
 
       <img src="images/18_Version_Git.png" width="700">
 
-
 Konfigurasi Git ✅
 
           ↓
