@@ -1,6 +1,8 @@
-# Pengenalan Sistem Terdistribusi dan Terdesentralisasi - Git dan GitHub
+# Praktikum Minggu 01-Pengenalan Sistem Terdistribusi dan Terdesentralisasi - Git dan GitHub
 
-📚 Tujuan Praktikum
+---
+
+# 📚 Tujuan Praktikum
 
 Praktikum ini bertujuan untuk:
 
@@ -12,7 +14,9 @@ Praktikum ini bertujuan untuk:
 6. Melakukan commit dan mengunggah perubahan ke repository.
 7. Memahami dasar kolaborasi menggunakan Git dan GitHub.
 
-📚Dasar Teori
+---
+
+# 📚Dasar Teori
 
 Materi yang dipelajari dalam praktikum meliputi:
 
@@ -34,7 +38,13 @@ Materi yang dipelajari dalam praktikum meliputi:
 6. Kolaborasi
    Tahap terakhir membahas penggunaan Git dan GitHub untuk bekerja secara bersama-sama dalam sebuah project. Setiap anggota dapat melakukan perubahan pada project dan mengelola perubahan tersebut menggunakan Git.
 
-⏩ Pembahasan Praktikum
+---
+
+# ⏩ PEMBAHASAN PRAKTIKUM
+
+---
+
+# PRAKTIK 1 - INSTALASI GIT
 
 1.  Instalasi Git (Windows)
     Alur praktikum yang dilakukan adalah:
@@ -63,9 +73,21 @@ Materi yang dipelajari dalam praktikum meliputi:
 
     <img src="images/06_Pilih_Editor.png" width="700">
 
-    <img src="images/07_Editor_Teks.png" width="700">
+    g. Setiap melakukan inisialisasi repo Git, suatu nama branch akan diberikan. Default nama adalah master tetapi umumnya sekarang diganti dengan main. Ubahlah konfigurasi tersebut:
 
-    <img src="images/08_Editor_Teks_Lain.png" width="700">
+    <img src="images/07_Nama_Branch.png" width="700">
+
+    h. Pada saat instalasi, Git menyediakan akses git melalui Bash maupun command prompt. Pilih pilihan kedua supaya bisa menggunakan dari dua antarmuka tersebut. Bash adalah shell di Linux. Dengan menggunakan bash di Windows, pekerjaan di command line Windows bisa dilakukan menggunakan bash - termasuk ekskusi dari Git.
+
+    <img src="images/08_Path.png" width="700">
+
+    i. Pilih native Windows Secure Channel library HTTPS. Git menggunakan https untuk akes ke repo GitHub atau repo-repo lain (GitLab, Assembla).
+
+       <img src="images/09_Memilih_HTTPS.png" width="700">
+       
+    j. Pilih pilihan pertama untuk konversi akhir baris (CR-LF).
+
+      <img src="images/10_Konversi_Akhir_Baris.png" width="700">
 
 Konfigurasi Git ✅
 
