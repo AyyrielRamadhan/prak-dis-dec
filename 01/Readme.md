@@ -89,7 +89,7 @@ Materi yang dipelajari dalam praktikum meliputi:
 
 ---
 
-8. Pada saat instalasi, Git menyediakan akses git melalui Bash maupun command prompt. Pilih pilihan kedua supaya bisa menggunakan dari dua antarmuka tersebut. Bash adalah shell di Linux. Dengan menggunakan bash di Windows, pekerjaan di command line Windows bisa dilakukan menggunakan bash - termasuk ekskusi dari Git.
+### 8. Pada saat instalasi, Git menyediakan akses git melalui Bash maupun command prompt. Pilih pilihan kedua supaya bisa menggunakan dari dua antarmuka tersebut. Bash adalah shell di Linux. Dengan menggunakan bash di Windows, pekerjaan di command line Windows bisa dilakukan menggunakan bash - termasuk ekskusi dari Git.
 
    <img src="images/08_Install_Git.png" width="700">
 
@@ -135,7 +135,7 @@ Materi yang dipelajari dalam praktikum meliputi:
 
    <img src="images/15_Install_Git.png" width="700">
 
-tunggu hingga proses intalasi selesai. Setelah proses selesai,klik: **Finish**
+tunggu hingga proses intalasi selesai. Setelah proses selesai, lalu klik: **Finish**
 
    <img src="images/16_Install_Git.png" width="700">
 
@@ -159,7 +159,13 @@ git --version
 
 ## PRAKTIK 2 - KONFIGURASI GIT
 
-1. Konfigurasi Username
+### 1. Konfigurasi Username
+
+```
+git config --global user.name "Nama Anda di GitHub"
+```
+
+<img src="images/01_Konfigurasi_Git.png" width="700">
 
 # 📝 Kesimpulan
 
