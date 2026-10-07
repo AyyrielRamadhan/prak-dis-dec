@@ -12,7 +12,7 @@ Praktikum ini bertujuan untuk:
 6. Melakukan commit dan mengunggah perubahan ke repository.
 7. Memahami dasar kolaborasi menggunakan Git dan GitHub.
 
-📚Materi Praktikum
+📚Dasar Teori
 
 Materi yang dipelajari dalam praktikum meliputi:
 
@@ -36,20 +36,23 @@ Materi yang dipelajari dalam praktikum meliputi:
 
 ⏩ Pembahasan Praktikum
 
-1. Instalasi Git (Windows)
-   Alur praktikum yang dilakukan adalah:
+1.  Instalasi Git (Windows)
+    Alur praktikum yang dilakukan adalah:
 
-   a. Download Git dari web resmi
+    a. Download Git dari web resmi
 
-   <img src="images/01_download_git.png" width="700">
+       <img src="images/01_download_git.png" width="700">
 
-   b. Setelah download Git, double click pada file yang di-download. Akan dimunculkan lisensi. Klik install untuk lanjut.
+    b. Setelah download Git, double click pada file yang di-download. Akan dimunculkan lisensi. Klik install untuk lanjut.
 
-   <img src="images/02_download_git(1).png" width="700">
+       <img src="images/02_download_git(1).png" width="700">
 
-Konfigurasi Git ✅
+    c. Setelah itu, pilih lokasi instalasi. Secara default akan terisi C:\Program Files\Git. Kemudian klik Next
 
-      ↓
+       <img src="images/03_Lokasi_Penyimpanan_Git.png" width="700">
+    Konfigurasi Git ✅
+
+          ↓
 
 Mengelola Repository Sendiri Account ✅
 
