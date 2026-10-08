@@ -279,6 +279,8 @@ cd .\prac-dis-dec-Membuat-Repository\
 
 <img src="images/06_Repo_Sendiri.png" width="700">
 
+Pembahasan :
+
 ---
 
 # 📝 Kesimpulan
