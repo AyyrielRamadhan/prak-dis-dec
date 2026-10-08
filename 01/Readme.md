@@ -279,6 +279,16 @@ cd .\prac-dis-dec-Membuat-Repository\
 
 <img src="images/06_Repo_Sendiri.png" width="700">
 
+Pembahasan :
+
+---
+
+### 6. Mengubah Isi dengan Branching and Merging
+
+<img src="images/07_Repo_Sendiri.png" width="700">
+
+<img src="images/08_Repo_Sendiri.png" width="700">
+
 ---
 
 # 📝 Kesimpulan
