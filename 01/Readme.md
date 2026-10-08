@@ -9,9 +9,13 @@
 
 <p align="justify">
 1. Memahami cara menginstall git.
+
 2. Memahami cara menggunakan github seperti membuat repository baru.
+
 3. Memahami cara mengkonfigurasi git.
+
 4. Mengetahui cara mengelola repo, baik repo sendiri atau organisasi.
+
 5. Mengetahui perintah git.
 </p>
 
