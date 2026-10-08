@@ -1,65 +1,85 @@
-🌐 Praktikum Sistem Terdistribusi dan Terdesentralisasi
+# 🌐 Praktikum Sistem Terdistribusi dan Terdesentralisasi
 
-Selamat datang di repository praktikum mata kuliah Sistem Terdistribusi dan Terdesentralisasi. Repository ini berisi kumpulan laporan, tugas, eksperimen, serta proyek implementasi dari minggu pertama hingga minggu terakhir praktikum.
+Selamat datang di repository praktikum mata kuliah Sistem Terdistribusi dan Terdesentralisasi. Repository ini berisi kumpulan laporan, tugas, eksperimen, serta proyek implementasi dari minggu pertama hingga minggu ke-14 praktikum.
 
-👨‍💻 Identitas Mahasiswa
+---
 
-Nama: Muhammad Rezky Ayyriel Ramadhan
+## 👨‍💻 Identitas Mahasiswa
 
-NIM: 255410024
+|                 |                                                      |
+| --------------- | ---------------------------------------------------- |
+| **Nama**        | Muhammad Rezky Ayyriel Ramadhan                      |
+| **NIM**         | 255410024                                            |
+| **Kelas**       | Informatika-1                                        |
+| **Mata Kuliah** | Praktikum Sistem Terdistribusi dan Terdesentralisasi |
 
-Kelas: Informatika-1
+---
 
-Mata Kuliah: Praktikum Sistem Terdistribusi dan Terdesentralisasi
+## 📋 Ketentuan Praktikum
 
-📂 Struktur Direktori & Laporan Praktikum
+1. Semua laporan praktikum berada di repository ini dengan URL utama: `https://github.com/AyyrielRamadhan/prak-dis-dec`
+2. Repository diorganisasikan ke dalam direktori mingguan dari `01` hingga `14`
+3. Setiap direktori berisi file `README.md` sebagai laporan praktikum beserta file pendukung lainnya
+4. Pengumpulan tugas dilakukan setiap minggu dengan batas waktu 1 minggu per modul
+5. Format pengumpulan URL disesuaikan dengan direktori mingguan masing-masing
+6. Penilaian dilakukan secara mingguan oleh dosen
 
-Sesuai dengan ketentuan praktikum, repository ini diorganisasikan ke dalam direktori mingguan dari 01 hingga 14. Setiap folder mingguan berisi file README.md sebagai laporan praktikum beserta file pendukung lainnya.
+---
 
-prak-dis-dec/├── 01/                  # Laporan & Kode Praktikum Minggu ke-1
+## 📊 Progress Tracker
 
-prak-dis-dec├── 02/                  # Laporan & Kode Praktikum Minggu ke-2
+| Minggu | Topik          |   Status   | URL Pengumpulan                                                      |
+| :----: | -------------- | :--------: | -------------------------------------------------------------------- |
+|   01   | Git dan GitHub | ✅ Selesai | [Link](https://github.com/AyyrielRamadhan/prak-dis-dec/tree/main/01) |
+|   02   | -              |  ⬜ Belum  | -                                                                    |
+|   03   | -              |  ⬜ Belum  | -                                                                    |
+|   04   | -              |  ⬜ Belum  | -                                                                    |
+|   05   | -              |  ⬜ Belum  | -                                                                    |
+|   06   | -              |  ⬜ Belum  | -                                                                    |
+|   07   | -              |  ⬜ Belum  | -                                                                    |
+|   08   | -              |  ⬜ Belum  | -                                                                    |
+|   09   | -              |  ⬜ Belum  | -                                                                    |
+|   10   | -              |  ⬜ Belum  | -                                                                    |
+|   11   | -              |  ⬜ Belum  | -                                                                    |
+|   12   | -              |  ⬜ Belum  | -                                                                    |
+|   13   | -              |  ⬜ Belum  | -                                                                    |
+|   14   | -              |  ⬜ Belum  | -                                                                    |
 
-prak-dis-dec├── 03/                  # Laporan & Kode Praktikum Minggu ke-3
+---
 
-prak-dis-dec├── 04/                  # Laporan & Kode Praktikum Minggu ke-4
+## 📂 Struktur Direktori
 
-prak-dis-dec├── 05/                  # Laporan & Kode Praktikum Minggu ke-5
+```
+prak-dis-dec/
+├── 01/                  # ✅ Laporan & Kode Praktikum Minggu ke-1 (Git dan GitHub)
+├── 02/                  # ⬜ Laporan & Kode Praktikum Minggu ke-2
+├── 03/                  # ⬜ Laporan & Kode Praktikum Minggu ke-3
+├── 04/                  # ⬜ Laporan & Kode Praktikum Minggu ke-4
+├── 05/                  # ⬜ Laporan & Kode Praktikum Minggu ke-5
+├── 06/                  # ⬜ Laporan & Kode Praktikum Minggu ke-6
+├── 07/                  # ⬜ Laporan & Kode Praktikum Minggu ke-7
+├── 08/                  # ⬜ Laporan & Kode Praktikum Minggu ke-8
+├── 09/                  # ⬜ Laporan & Kode Praktikum Minggu ke-9
+├── 10/                  # ⬜ Laporan & Kode Praktikum Minggu ke-10
+├── 11/                  # ⬜ Laporan & Kode Praktikum Minggu ke-11
+├── 12/                  # ⬜ Laporan & Kode Praktikum Minggu ke-12
+├── 13/                  # ⬜ Laporan & Kode Praktikum Minggu ke-13
+└── 14/                  # ⬜ Laporan & Kode Praktikum Minggu ke-14
+```
 
-prak-dis-dec├── 06/                  # Laporan & Kode Praktikum Minggu ke-6
+---
 
-prak-dis-dec├── 07/                  # Laporan & Kode Praktikum Minggu ke-7
-
-prak-dis-dec├── 08/                  # Laporan & Kode Praktikum Minggu ke-8
-
-prak-dis-dec├── 09/                  # Laporan & Kode Praktikum Minggu ke-9
-
-prak-dis-dec├── 10/                  # Laporan & Kode Praktikum Minggu ke-10
-
-prak-dis-dec├── 11/                  # Laporan & Kode Praktikum Minggu ke-11
-
-prak-dis-dec├── 12/                  # Laporan & Kode Praktikum Minggu ke-1
-
-prak-dis-dec├── 13/                  # Laporan & Kode Praktikum Minggu ke-13
-
-prak-dis-dec└── 14/                  # Laporan & Kode Praktikum Minggu ke-14
-
-
-🔗 Format Pengumpulan Tugas Mingguan
-
-Penilaian dilakukan secara mingguan dengan batas waktu pengumpulan selama 1 minggu per modul. Format URL pengumpulan tugas disesuaikan dengan direktori mingguan masing-masing:
-
-Minggu ke-1: https://github.com/AyyrielRamadhan/prak-dis-dec/tree/main/01
-
-Dan seterusnya hingga Minggu ke-14.
-
-📞 Kontak
+## 📞 Kontak
 
 Jika ada pertanyaan atau saran terkait isi repository ini, silakan hubungi melalui:
 
-GitHub: @AyyrielRamadhan
-Instagram : ayyriel_r
-Linkedin : www.linkedin.com/in/muhammadrezkyayyrielramadhan
-Email : muhammad.rezky25@students.utdi.ac.id
+| Platform      | Kontak                                                                                      |
+| ------------- | ------------------------------------------------------------------------------------------- |
+| **GitHub**    | [@AyyrielRamadhan](https://github.com/AyyrielRamadhan)                                      |
+| **Instagram** | [@ayyriel_r](https://instagram.com/ayyriel_r)                                               |
+| **LinkedIn**  | [Muhammad Rezky Ayyriel Ramadhan](https://www.linkedin.com/in/muhammadrezkyayyrielramadhan) |
+| **Email**     | muhammad.rezky25@students.utdi.ac.id                                                        |
 
-Dibuat dengan semangat untuk mendalami dunia komputasi terdistribusi dan terdesentralisasi!
+---
+
+<p align="center"><em>Dibuat dengan semangat untuk mendalami dunia komputasi terdistribusi dan terdesentralisasi!</em></p>
