@@ -293,6 +293,8 @@ Pembahasan :
 
 ---
 
+---
+
 # 📝 Kesimpulan
 
 Praktikum Git dan GitHub memberikan pemahaman dasar mengenai pengelolaan project menggunakan version control. Git digunakan untuk mencatat dan mengelola perubahan pada project, sedangkan GitHub digunakan untuk menyimpan repository secara online dan mendukung proses kolaborasi.
