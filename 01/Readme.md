@@ -7,11 +7,13 @@
 
 # 📚 Tujuan Praktikum
 
-<p align="justify">Praktikum ini dirancang agar kita benar-benar paham cara kerja Git dan GitHub, bukan sekadar hafal perintah. Kita mulai dari hal paling dasar: mengenal fungsi Git sebagai version control system dan GitHub sebagai platform penyimpanan repository di cloud. Dari situ, kita lanjut ke instalasi Git di komputer masing-masing — karena tanpa ini, tidak ada yang bisa dilakukan.</p>
-
-<p align="justify">Setelah Git terinstall, kita perlu mengkonfigurasi identitas (nama dan email) agar setiap perubahan yang kita buat bisa dilacak siapa yang membuatnya. Ini penting terutama saat nanti bekerja dalam tim. Selanjutnya kita belajar membuat dan mengelola repository, baik yang ada di komputer lokal maupun yang ada di GitHub. Kita juga belajar menghubungkan keduanya sehingga perubahan di komputer lokal bisa diunggah ke GitHub.</p>
-
-<p align="justify">Yang tidak kalah pentingnya adalah memahami mekanisme commit seperti bagaimana Git menyimpan setiap perubahan secara terstruktur dan bagaimana cara mengunggah perubahan tersebut ke repository remote.</p>
+<p align="justify">
+1. Memahami cara menginstall git.
+2. Memahami cara menggunakan github seperti membuat repository baru.
+3. Memahami cara mengkonfigurasi git.
+4. Mengetahui cara mengelola repo, baik repo sendiri atau organisasi.
+5. Mengetahui perintah git.
+</p>
 
 ---
 
