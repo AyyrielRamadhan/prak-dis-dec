@@ -155,6 +155,8 @@ Pembahasan :
 
    <img src="images/14_Install_Git.png" width="700">
 
+Pembahasan :
+
 ---
 
 ### 15. Setelah itu proses instalasi akan dilakukan.
@@ -237,9 +239,45 @@ Pembahasan :
 
 ---
 
-<img src="images/03_Repo_Sendiri.png" width="700">
+### 3. Hasil Pembuatan Repository
+
+<img src="images/04_Repo_Sendiri.png" width="700">
 
 Pembahasan :
+
+---
+
+### 4. Clone Repo
+
+Gunakan perintah
+
+```
+git clone <URL Link Repo>
+```
+
+Contoh :
+
+<img src="images/05_Repo_Sendiri.png" width="700">
+
+Pembahasan :
+
+---
+
+### 5. Masuk ke Folder Repository
+
+Setelah meng-clone repository tadi, masuk ke folder repoitory menggunakan perintah:
+
+```
+cd nama-repository
+```
+
+Contoh :
+
+```
+cd .\prac-dis-dec-Membuat-Repository\
+```
+
+<img src="images/06_Repo_Sendiri.png" width="700">
 
 ---
 
