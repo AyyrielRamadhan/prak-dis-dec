@@ -23,11 +23,11 @@
 
 **Instalasi Git**
 
-<p align="justify">Git adalah version control system — alat yang mencatat setiap perubahan yang kita buat pada file atau proyek. Tanpa Git, kita akan kesulitan melacak apa yang sudah diubah, siapa yang mengubahnya, dan kapan perubahan itu terjadi. Di tahap ini kita menginstall Git di komputer agar bisa mulai menggunakan semua fiturnya. Proses instalasinya tidak rumit, tetapi ada beberapa pilihan konfigurasi yang perlu dipahami supaya tidak salah langkah.</p>
+<p align="justify">Git adalah version control system, yaitu alat yang mencatat setiap perubahan yang kita buat pada file atau proyek. Tanpa Git, kita akan kesulitan melacak apa yang sudah diubah, siapa yang mengubahnya, dan kapan perubahan itu terjadi. Di tahap ini kita menginstall Git di komputer agar bisa mulai menggunakan semua fiturnya. Proses instalasinya tidak rumit, tetapi ada beberapa pilihan konfigurasi yang perlu dipahami supaya tidak salah langkah.</p>
 
 **Konfigurasi Git**
 
-<p align="justify">Setelah Git terinstall, hal pertama yang wajib dilakukan adalah mengatur identitas: nama dan email. Kenapa? Karena setiap kali kita melakukan commit (menyimpan perubahan ke Git), Git akan menyimpan informasi siapa yang membuat perubahan itu. Tanpa konfigurasi ini, commit tidak akan tercatat dengan benar. Konfigurasi ini cukup dilakukan sekali dan akan tersimpan di file <code>.gitconfig</code>.</p>
+<p align="justify">Setelah Git terinstall, hal pertama yang wajib dilakukan adalah mengatur identitas: nama dan email, hal ini dikarenakan setiap kali kita melakukan commit (menyimpan perubahan ke Git), Git akan menyimpan informasi siapa yang membuat perubahan itu. Tanpa konfigurasi ini, commit tidak akan tercatat dengan benar. Konfigurasi ini cukup dilakukan sekali dan akan tersimpan di file <code>.gitconfig</code>.</p>
 
 **Pengelolaan Repository**
 
@@ -39,11 +39,11 @@
 
 **Repository pada Organisasi**
 
-<p align="justify">Selain di akun pribadi, repo juga bisa dibuat di dalam organisasi di GitHub. Organisasi berguna ketika sebuah proyek dikerjakan oleh beberapa orang dalam satu tim. Semua anggota organisasi bisa mengakses repo yang ada di dalamnya. Cara mengelola repo organisasi sebenarnya sama dengan repo pribadi — bedanya hanya pada siapa yang memiliki akses dan siapa yang bertanggung jawab atas repo tersebut.</p>
+<p align="justify">Selain di akun pribadi, repo juga bisa dibuat di dalam organisasi di GitHub. Organisasi berguna ketika sebuah proyek dikerjakan oleh beberapa orang dalam satu tim. Semua anggota organisasi bisa mengakses repo yang ada di dalamnya. Cara mengelola repo organisasi sebenarnya sama dengan repo pribadi bedanya hanya pada siapa yang memiliki akses dan siapa yang bertanggung jawab atas repo tersebut.</p>
 
 **Kolaborasi**
 
-<p align="justify">Ini bagian bagaimana beberapa orang bisa bekerja dalam satu proyek tanpa saling mengganggu. Git punya mekanisme branching — setiap orang bisa membuat cabang sendiri untuk bekerja, lalu menggabungkannya kembali ke cabang utama setelah selesai. GitHub menambahkan fitur pull request, yaitu mekanisme untuk meminta pemilik repo meninjau dan menyetujui perubahan sebelum digabungkan. Dengan cara ini, kualitas kode tetap terjaga meski banyak orang berkontribusi.</p>
+<p align="justify">Ini bagian bagaimana beberapa orang bisa bekerja dalam satu proyek tanpa saling mengganggu. Git punya mekanisme branching. Setiap orang bisa membuat cabang sendiri untuk bekerja, lalu menggabungkannya kembali ke cabang utama setelah selesai. GitHub menambahkan fitur pull request, yaitu mekanisme untuk meminta pemilik repo meninjau dan menyetujui perubahan sebelum digabungkan.</p>
 
 ---
 
@@ -225,7 +225,7 @@ git --version
 
 #### Pembahasan
 
-<p align="justify">Perintah <code>git --version</code> digunakan untuk memeriksa versi Git yang terinstall. Jika muncul output seperti <code>git version 2.xx.x</code>, berarti instalasi berhasil. Versi yang muncul bisa berbeda-beda tergantung kapan Git diunduh — yang penting adalah perintah ini merespons tanpa error. Jika muncul pesan "command not found", berarti Git belum terinstall dengan benar atau PATH belum dikonfigurasi.</p>
+<p align="justify">Perintah <code>git --version</code> digunakan untuk memeriksa versi Git yang terinstall. Jika muncul output seperti <code>git version 2.56.0</code>, berarti instalasi berhasil. Versi yang muncul bisa berbeda-beda tergantung kapan Git diunduh. Jika muncul pesan "command not found", berarti Git belum terinstall dengan benar atau PATH belum dikonfigurasi.</p>
 
 ---
 
@@ -241,7 +241,7 @@ git config --global user.name "Nama Anda di GitHub"
 
 #### Pembahasan
 
-<p align="justify">Perintah ini mengatur nama yang akan tercantum di setiap commit yang kita buat. Gunakan nama yang sama dengan nama di akun GitHub agar mudah dikenali. Opsi <code>--global</code> berarti konfigurasi ini berlaku untuk semua repo di komputer ini — tidak perlu diatur ulang untuk setiap proyek baru.</p>
+<p align="justify">Perintah ini mengatur nama yang akan tercantum di setiap commit yang kita buat. Gunakan nama yang sama dengan nama di akun GitHub agar mudah dikenali. Opsi <code>--global</code> berarti konfigurasi ini berlaku untuk semua repo di komputer ini.</p>
 
 ---
 
@@ -255,7 +255,7 @@ git config --global user.email email@domain.tld
 
 #### Pembahasan
 
-<p align="justify">Sama seperti username, email juga akan tercantum di setiap commit. Gunakan email yang sama dengan email yang didaftarkan ke akun GitHub. Ini penting karena GitHub menggunakan email untuk mencocokkan commit dengan akun kita — jika email tidak cocok, commit tidak akan terhubung ke profil GitHub kita.</p>
+<p align="justify">Sama seperti username, email juga akan tercantum di setiap commit. Gunakan email yang sama dengan email yang didaftarkan ke akun GitHub. Ini penting karena GitHub menggunakan email untuk mencocokkan commit dengan akun kita. Jika email tidak cocok, commit tidak akan terhubung ke profil GitHub kita.</p>
 
 ---
 
@@ -303,7 +303,7 @@ git config --list
 
 #### Pembahasan
 
-<p align="justify">Di halaman ini kita mengisi detail repository: nama repo, deskripsi singkat, dan lisensi. Nama repo sebaiknya deskriptif dan mudah diingat. Lisensi menentukan bagaimana orang lain boleh menggunakan kode kita — untuk pembelajaran, bisa memilih MIT License atau tidak memilih lisensi sama sekali. Juga ada opsi untuk membuat repo private (hanya bisa diakses oleh kita) atau public (semua orang bisa melihat).</p>
+<p align="justify">Di halaman ini kita mengisi detail repository: nama repo, deskripsi singkat, dan lisensi. Nama repo sebaiknya deskriptif dan mudah diingat. Lisensi. Opsi untuk membuat repo private (hanya bisa diakses oleh kita) atau public (semua orang bisa melihat). Setelah semua isian lengkap, klik <strong>Create repository</strong></p>
 
 ---
 
@@ -313,7 +313,7 @@ git config --list
 
 #### Pembahasan
 
-<p align="justify">Setelah semua isian lengkap, klik <strong>Create repository</strong>. GitHub akan langsung membuat repo dan menampilkan halaman repo tersebut. Jika kita memilih opsi default (tanpa README, .gitignore, atau LICENSE), repo akan kosong dan GitHub akan menampilkan petunjuk untuk mulai mengisi repo dari command line.</p>
+<p align="justify">GitHub akan langsung membuat repo dan menampilkan halaman repo tersebut. Jika kita memilih opsi default (tanpa README, .gitignore, atau LICENSE), repo akan kosong dan GitHub akan menampilkan petunjuk untuk mulai mengisi repo dari command line. Tapi karena di langkah sebelumnya sudah ditambah README.md jadi isinya tidak kosong.</p>
 
 ---
 
@@ -331,7 +331,7 @@ git clone <URL Link Repo>
 
 #### Pembahasan
 
-<p align="justify"><code>git clone</code> adalah perintah untuk menduplikasi repo dari GitHub ke komputer lokal. URL repo bisa ditemukan di halaman repo GitHub — klik tombol <strong>Code</strong> lalu salin URL HTTPS. Setelah perintah ini dijalankan, akan muncul folder baru di komputer yang berisi salinan repo tersebut. Di dalam folder itu ada folder tersembunyi <code>.git</code> yang menyimpan semua riwayat perubahan.</p>
+<p align="justify"><code>Perintah git clone</code> adalah perintah untuk menduplikasi repo dari GitHub ke komputer lokal. URL repo bisa ditemukan di halaman repo GitHub. Caranya klik tombol <strong>Code</strong> lalu salin URL HTTPS. Setelah perintah ini dijalankan, akan muncul folder baru di komputer yang berisi salinan repo tersebut. Di dalam folder itu ada folder tersembunyi <code>.git</code> yang menyimpan semua riwayat perubahan.</p>
 
 ---
 
@@ -365,7 +365,7 @@ cd .\prac-dis-dec-Membuat-Repository\
 
 #### Pembahasan
 
-<p align="justify">Branching and merging adalah cara aman melakukan perubahan. Alih-alih langsung mengedit file di branch utama (main), kita membuat branch baru — semacam "cabang" terpisah — untuk menampung perubahan. Setelah perubahan selesai dan diuji, branch tersebut digabungkan kembali ke main melalui pull request. Cara ini lebih terstruktur dan memungkinkan orang lain meninjau perubahan sebelum akhirnya masuk ke branch utama. Di GitHub, proses ini dilakukan dengan membuat branch, push ke repo, lalu membuat pull request untuk menggabungkannya.</p>
+<p align="justify">Branching and merging adalah cara aman melakukan perubahan. Alih-alih langsung mengedit file di branch utama (main), kita membuat branch baru semacam "cabang" terpisah untuk menampung perubahan. Setelah perubahan selesai dan diuji, branch tersebut digabungkan kembali ke main melalui pull request. Cara ini lebih terstruktur dan memungkinkan orang lain meninjau perubahan sebelum akhirnya masuk ke branch utama. Di GitHub, proses ini dilakukan dengan membuat branch, push ke repo, lalu membuat pull request untuk menggabungkannya.</p>
 
 ---
 
@@ -458,7 +458,7 @@ git push origin main
 
 # 📝 Kesimpulan
 
-<p align="justify">Setelah mengikuti seluruh rangkaian praktikum ini, saya jadi paham bahwa Git dan GitHub bukan sekadar tools untuk menyimpan file — mereka adalah fondasi cara kerja pengembangan software modern. Git mencatat setiap perubahan secara terstruktur sehingga kita bisa melacak riwayat proyek, kembali ke versi sebelumnya jika ada kesalahan, dan bekerja tanpa takut merusak file yang sudah ada. GitHub menambahkan dimensi kolaborasi: repo bisa diakses dari mana saja, perubahan bisa ditinjau sebelum digabungkan, dan beberapa orang bisa bekerja dalam satu proyek tanpa saling menimpa.</p>
+<p align="justify">Setelah mengikuti seluruh rangkaian praktikum ini, saya jadi paham bahwa Git dan GitHub bukan sekadar tools untuk menyimpan file. Git mencatat setiap perubahan secara terstruktur sehingga kita bisa melacak riwayat proyek, kembali ke versi sebelumnya jika ada kesalahan, dan bekerja tanpa takut merusak file yang sudah ada. GitHub menambahkan dimensi kolaborasi: repo bisa diakses dari mana saja, perubahan bisa ditinjau sebelum digabungkan, dan beberapa orang bisa bekerja dalam satu proyek tanpa saling menimpa.</p>
 
 <p align="justify">Kesimpulannya, Git dan GitHub adalah keterampilan dasar yang wajib dimiliki siapa pun yang terjun ke pengembangan software. Praktikum ini memberikan fondasi yang kuat untuk memahami version control dan kolaborasi tim.</p>
 
