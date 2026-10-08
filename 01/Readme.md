@@ -277,11 +277,11 @@ cat ~/.gitconfig
 git config --list
 ```
 
-<img src="images/03_Konfigurasi_Git.png" width="700">
+<img src="images/04_Konfigurasi_Git.png" width="700">
 
 #### Pembahasan
 
-<p align="justify">Perintah <code>git config --list</code> menampilkan semua konfigurasi Git yang aktif, termasuk yang bawaan dari sistem. Outputnya lebih lengkap daripada <code>cat ~/.gitconfig</code> karena mencakup konfigurasi dari berbagai sumber. Jika kita berada di dalam folder repo Git, outputnya akan menampilkan konfigurasi khusus repo tersebut juga.</p>
+<p align="justify">Perintah <code>git config --list</code> menampilkan semua konfigurasi Git yang aktif, termasuk yang bawaan dari sistem. Outputnya lebih lengkap daripada <code>cat ~/.gitconfig</code> karena mencakup konfigurasi dari berbagai sumber.</p>
 
 ---
 
