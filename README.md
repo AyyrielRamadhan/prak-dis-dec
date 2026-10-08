@@ -28,22 +28,22 @@ Selamat datang di repository praktikum mata kuliah Sistem Terdistribusi dan Terd
 
 ## 📊 Progress Tracker
 
-| Minggu | Topik          |   Status   | URL Pengumpulan                                                      |
-| :----: | -------------- | :--------: | -------------------------------------------------------------------- |
-|   01   | Git dan GitHub | ✅ Selesai | [Link](https://github.com/AyyrielRamadhan/prak-dis-dec/tree/main/01) |
-|   02   | -              |  ⬜ Belum  | -                                                                    |
-|   03   | -              |  ⬜ Belum  | -                                                                    |
-|   04   | -              |  ⬜ Belum  | -                                                                    |
-|   05   | -              |  ⬜ Belum  | -                                                                    |
-|   06   | -              |  ⬜ Belum  | -                                                                    |
-|   07   | -              |  ⬜ Belum  | -                                                                    |
-|   08   | -              |  ⬜ Belum  | -                                                                    |
-|   09   | -              |  ⬜ Belum  | -                                                                    |
-|   10   | -              |  ⬜ Belum  | -                                                                    |
-|   11   | -              |  ⬜ Belum  | -                                                                    |
-|   12   | -              |  ⬜ Belum  | -                                                                    |
-|   13   | -              |  ⬜ Belum  | -                                                                    |
-|   14   | -              |  ⬜ Belum  | -                                                                    |
+| Minggu | Topik          |   Status   | URL Pengumpulan                                                                 |
+| :----: | -------------- | :--------: | ------------------------------------------------------------------------------- |
+|   01   | Git dan GitHub | ✅ Selesai | [Link Repository](https://github.com/AyyrielRamadhan/prak-dis-dec/tree/main/01) |
+|   02   | -              |  ⬜ Belum  | -                                                                               |
+|   03   | -              |  ⬜ Belum  | -                                                                               |
+|   04   | -              |  ⬜ Belum  | -                                                                               |
+|   05   | -              |  ⬜ Belum  | -                                                                               |
+|   06   | -              |  ⬜ Belum  | -                                                                               |
+|   07   | -              |  ⬜ Belum  | -                                                                               |
+|   08   | -              |  ⬜ Belum  | -                                                                               |
+|   09   | -              |  ⬜ Belum  | -                                                                               |
+|   10   | -              |  ⬜ Belum  | -                                                                               |
+|   11   | -              |  ⬜ Belum  | -                                                                               |
+|   12   | -              |  ⬜ Belum  | -                                                                               |
+|   13   | -              |  ⬜ Belum  | -                                                                               |
+|   14   | -              |  ⬜ Belum  | -                                                                               |
 
 ---
 
