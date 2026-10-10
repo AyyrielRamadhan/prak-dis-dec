@@ -73,7 +73,9 @@ Kemudian untuk melihat proses yang dimunculkan aplikasi tersebut dapat dilihat p
 
 ### 3. Merestart dan Mematikan proses yang dimunculkan oleh aplikasi
 
-1. Untuk mematikan proses dapat dilakukan melalui Task Manager:
+#### Mematikan Proses
+
+Untuk mematikan proses dapat dilakukan melalui Task Manager:
 
 <img src="images/05_Mematikan_Proses_Via_TaskManager.png" width="700">
 
@@ -153,7 +155,7 @@ Contoh :
 
 ---
 
-2. Merestart Proses
+#### Merestart Proses
 
 Untuk merestart proses dapat dilakukan dengan perintah
 
