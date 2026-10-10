@@ -28,22 +28,22 @@ Selamat datang di repository praktikum mata kuliah Sistem Terdistribusi dan Terd
 
 ## 📊 Progress Tracker
 
-| Minggu | Topik          |   Status   | URL Pengumpulan                                                                 |
-| :----: | -------------- | :--------: | ------------------------------------------------------------------------------- |
-|   01   | Git dan GitHub | ✅ Selesai | [Link Repository](https://github.com/AyyrielRamadhan/prak-dis-dec/tree/main/01) |
-|   02   | -              |  ⬜ Belum  | -                                                                               |
-|   03   | -              |  ⬜ Belum  | -                                                                               |
-|   04   | -              |  ⬜ Belum  | -                                                                               |
-|   05   | -              |  ⬜ Belum  | -                                                                               |
-|   06   | -              |  ⬜ Belum  | -                                                                               |
-|   07   | -              |  ⬜ Belum  | -                                                                               |
-|   08   | -              |  ⬜ Belum  | -                                                                               |
-|   09   | -              |  ⬜ Belum  | -                                                                               |
-|   10   | -              |  ⬜ Belum  | -                                                                               |
-|   11   | -              |  ⬜ Belum  | -                                                                               |
-|   12   | -              |  ⬜ Belum  | -                                                                               |
-|   13   | -              |  ⬜ Belum  | -                                                                               |
-|   14   | -              |  ⬜ Belum  | -                                                                               |
+| Minggu | Topik                                             |   Status   | URL Pengumpulan                                                                 |
+| :----: | ------------------------------------------------- | :--------: | ------------------------------------------------------------------------------- |
+|   01   | Git dan GitHub                                    | ✅ Selesai | [Link Repository](https://github.com/AyyrielRamadhan/prak-dis-dec/tree/main/01) |
+|   02   | Komunikasi Antar Proses pada Sistem Terdistribusi | ✅ Selesai | [Link Repository](https://github.com/AyyrielRamadhan/prak-dis-dec/tree/main/02) |
+|   03   | -                                                 |  ⬜ Belum  | -                                                                               |
+|   04   | -                                                 |  ⬜ Belum  | -                                                                               |
+|   05   | -                                                 |  ⬜ Belum  | -                                                                               |
+|   06   | -                                                 |  ⬜ Belum  | -                                                                               |
+|   07   | -                                                 |  ⬜ Belum  | -                                                                               |
+|   08   | -                                                 |  ⬜ Belum  | -                                                                               |
+|   09   | -                                                 |  ⬜ Belum  | -                                                                               |
+|   10   | -                                                 |  ⬜ Belum  | -                                                                               |
+|   11   | -                                                 |  ⬜ Belum  | -                                                                               |
+|   12   | -                                                 |  ⬜ Belum  | -                                                                               |
+|   13   | -                                                 |  ⬜ Belum  | -                                                                               |
+|   14   | -                                                 |  ⬜ Belum  | -                                                                               |
 
 ---
 
@@ -52,7 +52,7 @@ Selamat datang di repository praktikum mata kuliah Sistem Terdistribusi dan Terd
 ```
 prak-dis-dec/
 ├── 01/                  # ✅ Laporan & Kode Praktikum Minggu ke-1 (Git dan GitHub)
-├── 02/                  # ⬜ Laporan & Kode Praktikum Minggu ke-2
+├── 02/                  # ✅ Laporan & Kode Praktikum Minggu ke-2 (Komunikasi Antar Proses)
 ├── 03/                  # ⬜ Laporan & Kode Praktikum Minggu ke-3
 ├── 04/                  # ⬜ Laporan & Kode Praktikum Minggu ke-4
 ├── 05/                  # ⬜ Laporan & Kode Praktikum Minggu ke-5
