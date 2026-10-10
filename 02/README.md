@@ -539,8 +539,7 @@ Untuk mematikan server dapat dilakukan dengan cara menekan <CTRL+C> pada shell u
 2. Isi file dengan kode berikut
 
 ```
-import json
-import urllib.request
+import requests
 
 url = "http://localhost:8000/graphql"
 
@@ -553,20 +552,23 @@ query = """
 }
 """
 
-payload = json.dumps({"query": query}).encode("utf-8")
-
-req = urllib.request.Request(
-    url, data=payload, headers={"Content-Type": "application/json"}
-)
-
 try:
+  response = requests.post(url, json={"query": query})
 
-  with urllib.request.urlopen(req) as response:
-    result = json.loads(response.read().decode("utf-8"))
-    print("Hasil dari GraphQL Server:")
-    print(json.dumps(result, indent=2))
+  if response.status_code == 200:
+    data = response.json()
+    books = data.get("data", {}).get("books", [])
+
+    print("=== DATA DARI GRAPHQL SERVER ===")
+    for book in books:
+      print(f"- Judul : {book.get('title')}")
+      print(f"- Penulis: {book.get('author')}")
+    print("--------------------------------")
+  else:
+    print(f"Gagal terhubung. Status code: {response.status_code}")
+
 except Exception as e:
-  print(f"Gagal terhubung: {e}")
+  print(f"Terjadi kesalahan: {e}")
 ```
 
 <img src="images/32_Tugas_Isi_Kode_client.py.png" width="700">
