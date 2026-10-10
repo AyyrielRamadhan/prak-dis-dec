@@ -53,13 +53,11 @@ Kemudian untuk melihat proses yang dimunculkan aplikasi tersebut dapat dilihat p
 
 Kemudian dapat dilakukan juga melalu CMD:
 
-Gunakan perintah
+Untuk melihat daftar proses yang sedang berjalan di Windows gunakan perintah:
 
 ```
 tasklist
 ```
-
-Untuk melihat daftar proses yang sedang berjalan di Windows
 
 Kemudian untuk mencari proses dari suatu aplikasi gunakan perintah:
 
@@ -67,7 +65,7 @@ Kemudian untuk mencari proses dari suatu aplikasi gunakan perintah:
 tasklist | findstr /i "Nama_Aplikasi"
 ```
 
-Karena disini kita mengambil contoh percobaan pada Notepad maka menjadi
+Contoh :
 
 ```
 tasklist | findstr /i notepad
@@ -75,7 +73,7 @@ tasklist | findstr /i notepad
 
 <img src="images/06_Mematikan_Proses_Via_CMD.png" width="700">
 
-Untuk mematikan proses dapat menggunakan perintah
+Kemudian untuk mematikan proses dapat menggunakan perintah
 
 ```
 taskkill /IM nama_proses.exe /F
@@ -118,14 +116,18 @@ start "" notepad
 
 ---
 
+## PRAKTIK 2 - KOMUNIKASI ANTAR PROSES pada SISTEM TERDISTRIBUSI
+
+### 1. Buat Workspace-01
+
+<img src="images/11_Buat_Workspace.png" width="700">
+
+#### Pembahasan
+
+---
+
 # 📝 Kesimpulan
-
-<p align="justify">Setelah mengikuti seluruh rangkaian praktikum ini, saya jadi paham bahwa Git dan GitHub bukan sekadar tools untuk menyimpan file. Git mencatat setiap perubahan secara terstruktur sehingga kita bisa melacak riwayat proyek, kembali ke versi sebelumnya jika ada kesalahan, dan bekerja tanpa takut merusak file yang sudah ada. GitHub menambahkan dimensi kolaborasi: repo bisa diakses dari mana saja, perubahan bisa ditinjau sebelum digabungkan, dan beberapa orang bisa bekerja dalam satu proyek tanpa saling menimpa.</p>
-
-<p align="justify">Kesimpulannya, Git dan GitHub adalah keterampilan dasar yang wajib dimiliki siapa pun yang terjun ke pengembangan software. Praktikum ini memberikan fondasi yang kuat untuk memahami version control dan kolaborasi tim.</p>
 
 ---
 
 ## 🗒️ Referensi
-
-<p align="justify">Materi praktikum mengacu pada dokumentasi Git dan GitHub serta materi petunjuk penggunaan Git dan GitHub dari repository NEO-X-School (https://github.com/NEO-X-School/notes/tree/main/petunjuk-git-github).</p>
