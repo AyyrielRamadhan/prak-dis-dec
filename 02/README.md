@@ -51,7 +51,7 @@ Kemudian untuk melihat proses yang dimunculkan aplikasi tersebut dapat dilihat p
 
 <img src="images/05_Mematikan_Proses_Via_TaskManager.png" width="700">
 
-Kemudian dapat dilakukan juga melalu CMD:
+2. Kemudian dapat dilakukan juga melalu CMD:
 
 Untuk melihat daftar proses yang sedang berjalan di Windows gunakan perintah:
 
@@ -59,7 +59,7 @@ Untuk melihat daftar proses yang sedang berjalan di Windows gunakan perintah:
 tasklist
 ```
 
-Kemudian untuk mencari proses dari suatu aplikasi gunakan perintah:
+Untuk mencari proses dari aplikasi gunakan perintah:
 
 ```
 tasklist | findstr /i "Nama_Aplikasi"
@@ -73,7 +73,7 @@ tasklist | findstr /i notepad
 
 <img src="images/06_Mematikan_Proses_Via_CMD.png" width="700">
 
-Kemudian untuk mematikan proses dapat menggunakan perintah
+Untuk mematikan proses dapat menggunakan perintah
 
 ```
 taskkill /IM nama_proses.exe /F
@@ -102,7 +102,8 @@ Contoh :
 ---
 
 2. Merestart Proses
-   Untuk merestart proses dapat dilakukan dengan perintah
+
+Untuk merestart proses dapat dilakukan dengan perintah
 
 ```
 start "" notepad
