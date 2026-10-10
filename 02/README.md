@@ -5,19 +5,6 @@
 
 ---
 
-## 📑 Daftar Isi
-
-- [Tujuan Praktikum](#tujuan-praktikum)
-- [Dasar Teori](#dasar-teori)
-- [Pembahasan Praktikum](#pembahasan-praktikum)
-  - [Praktik 1 - Proses pada Satu Node](#praktik-1---proses-pada-satu-node)
-  - [Praktik 2 - Komunikasi Antar Proses pada Sistem Terdistribusi](#praktik-2---komunikasi-antar-proses-pada-sistem-terdistribusi)
-- [Pembahasan Tugas](#pembahasan-tugas)
-- [Kesimpulan](#kesimpulan)
-- [Referensi](#referensi)
-
----
-
 # 📚 Tujuan Praktikum
 
 1. Memahami konsep proses pada sistem operasi dan cara sistem operasi mengelola proses pada satu node.
