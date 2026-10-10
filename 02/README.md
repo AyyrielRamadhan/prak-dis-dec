@@ -23,7 +23,7 @@
 
 ### 1. Tampilkan berbagai proses yang ada pada Laptop-Windows
 
-<img src="images/01_Install_Git.png" width="700">
+<img src="images/01_Tampilan_Proses.png" width="700">
 
 #### Pembahasan
 
