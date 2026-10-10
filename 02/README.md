@@ -103,7 +103,20 @@ Contoh :
 
 ---
 
-2. Untuk Merestart proses dapat dilakukan
+2. Merestart Proses
+   Untuk merestart proses dapat dilakukan dengan perintah
+
+```
+start "" notepad
+```
+
+<img src="images/09_Merestart_Proses.png" width="700">
+
+<img src="images/10_Merestart_Proses.png" width="700">
+
+#### Pembahasan
+
+---
 
 # 📝 Kesimpulan
 
