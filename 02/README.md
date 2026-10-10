@@ -27,9 +27,83 @@
 
 #### Pembahasan
 
-<p align="justify">Langkah pertama adalah mengunduh installer Git dari situs resminya di <strong>git-scm.com</strong>. Penting untuk mengambil installer dari sumber resmi agar mendapatkan versi yang terbaru dan aman. Di halaman download, pilih installer sesuai sistem operasi yang digunakan, dalam hal ini dilakukan pada Windows. File yang diunduh biasanya berformat .exe.</p>
+---
+
+### 2. Jalankan salah satu aplikasi kemudian perlihatkan proses yang dimunculkan oleh aplikasi
+
+Sebagai contoh menjalankan Notepad untuk percobaan:
+
+<img src="images/02_Jalankan_Notepad.png" width="700">
+
+Kemudian untuk melihat proses yang dimunculkan aplikasi tersebut dapat dilihat pada task manager, yaitu sebagai berikut :
+
+<img src="images/04_Proses_Notepad.png" width="700">
+
+<img src="images/03_Detail_Proses.png" width="700">
+
+#### Pembahasan
 
 ---
+
+### 3. Merestart dan Mematikan proses yang dimunculkan oleh aplikasi
+
+1. Untuk mematikan proses dapat dilakukan melalui Task Manager:
+
+<img src="images/05_Mematikan_Proses_Via_TaskManager.png" width="700">
+
+Kemudian dapat dilakukan juga melalu CMD:
+
+Gunakan perintah
+
+```
+tasklist
+```
+
+Untuk melihat daftar proses yang sedang berjalan di Windows
+
+Kemudian untuk mencari proses dari suatu aplikasi gunakan perintah:
+
+```
+tasklist | findstr /i "Nama_Aplikasi"
+```
+
+Karena disini kita mengambil contoh percobaan pada Notepad maka menjadi
+
+```
+tasklist | findstr /i notepad
+```
+
+<img src="images/06_Mematikan_Proses_Via_CMD.png" width="700">
+
+Untuk mematikan proses dapat menggunakan perintah
+
+```
+taskkill /IM nama_proses.exe /F
+```
+
+Contoh :
+
+```
+taskkill /IM notepad.exe /F
+```
+
+<img src="images/07_Mematikan_Proses_Via_CMD.png" width="700">
+
+Untuk memastikan proses berhenti. Gunakan Perintah:
+
+```
+tasklist | findstr /i "Nama_Aplikasi"
+```
+
+Contoh :
+
+<img src="images/08_Memastikan_Proses_Berhenti.png" width="700">
+
+#### Pembahasan
+
+---
+
+2. Untuk Merestart proses dapat dilakukan
 
 # 📝 Kesimpulan
 
