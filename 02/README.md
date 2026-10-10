@@ -193,8 +193,6 @@ To add C:\Users\LENOVO\.local\bin to your PATH, either restart your shell or run
     set Path=C:\Users\LENOVO\.local\bin;%Path%   (cmd)
     $env:Path = "C:\Users\LENOVO\.local\bin;$env:Path"   (powershell)
 PS C:\WINDOWS\system32> $env:Path = "C:\Users\LENOVO\.local\bin;$env:Path"
-PS C:\WINDOWS\system32> uv
-An extremely fast Python package manager.
 ```
 
 #### Pembahasan
