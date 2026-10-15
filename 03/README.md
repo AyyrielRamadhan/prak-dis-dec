@@ -19,7 +19,9 @@
 
 ### 1. Install NetTime (Windows)
 
-<img src="images/01_Install_NetTime.png" width="700">
+- ...
+
+  <img src="images/01_Install_NetTime.png" width="700">
 
 #### Pembahasan
 
