@@ -113,7 +113,7 @@ Class: vector_clock.py
 
 ---
 
-Class: vector_clock.py
+Class:main.py dan Output
 
 <img src="images/13_main_Vector_Clock.png" width="700">
 
@@ -122,6 +122,34 @@ Class: vector_clock.py
 #### Pembahasan
 
 ---
+
+## PRAKTIK 3 - Problem Tanpa Sinkronisasi
+
+Class: multithreads-example.py
+
+<img src="images/15_multithreads-example_py.png" width="700">
+
+#### Pembahasan
+
+---
+
+Jalankan program
+
+<img src="images/16_Jalankan_multithreads.png" width="700">
+
+#### Pembahasan
+
+---
+
+- Data Race / Race Conditions
+
+<img src="images/17_race-conditions-01.png" width="700">
+
+#### Pembahasan
+
+---
+
+- Jalankan Program
 
 # ⏩ PEMBAHASAN TUGAS
 
