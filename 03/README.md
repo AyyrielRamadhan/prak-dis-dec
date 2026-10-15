@@ -141,7 +141,9 @@ Jalankan program
 
 ---
 
-- Data Race / Race Conditions
+- **Data Race / Race Conditions**
+
+Class: race-conditions-01.py
 
 <img src="images/17_race-conditions-01.png" width="700">
 
@@ -150,6 +152,93 @@ Jalankan program
 ---
 
 - Jalankan Program
+
+<img src="images/18_output_race-conditions-01.png" width="700">
+
+#### Pembahasan
+
+---
+
+- Visualisasi gambar dengan pensil/ballpoint, dan mengapa terjadi data race / race conditions
+
+.......
+
+#### Pembahasan
+
+---
+
+- **Supaya tidak terjadi race conditions**
+
+Class: race-conditions-02.py
+
+<img src="images/19_race-conditions.png" width="700">
+
+#### Pembahasan
+
+---
+
+- Jalankan Program
+
+<img src="images/20_Output_race-conditions-02.png" width="700">
+
+#### Pembahasan
+
+---
+
+- **Deadlock**
+
+Class: deadlock-01.py
+
+<img src="images/21_deadlock-01.png" width="700">
+
+#### Pembahasan
+
+---
+
+- Jalankan program
+
+<img src="images/22_output_deadlock-01.png" width="700">
+
+#### Pembahasan
+
+---
+
+- Visualisasi gambar dengan pensil/ballpoint, dan mengapa terjadi deadlock
+
+.......
+
+#### Pembahasan
+
+---
+
+- **Supaya deadlock tersebut tidak terjadi**
+
+Class: deadlock-02.py
+
+<img src="images/23_Deadlock_02.png" width="700">
+
+#### Pembahasan
+
+---
+
+- Jalankan program
+
+<img src="images/24_output_Deadlock.png" width="700">
+
+#### Pembahasan
+
+---
+
+## PRAKTIK 4 - Algoritma Raft
+
+Class: raft.py
+
+<img src="images/25.raft_py.png" width="700">
+<img src="images/26_raft_py_Lanjutan.png" width="700">
+
+#### Pembahasan
+
+---
 
 # ⏩ PEMBAHASAN TUGAS
 
