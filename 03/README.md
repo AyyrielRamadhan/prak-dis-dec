@@ -110,6 +110,18 @@
 
 #### Pembahasan
 
+---
+
+- - Class: main.py dan Output
+
+<img src="images/13_main_Vector_Clock.png" width="700">
+
+<img src="images/14_Output_Vector_Clock.png" width="700">
+
+#### Pembahasan
+
+---
+
 # ⏩ PEMBAHASAN TUGAS
 
 ---
