@@ -87,6 +87,29 @@
 
 ## PRAKTIK 2 - Vector Clock
 
+- File vclocks.py
+
+<img src="images/10_vclocks_py.png" width="700">
+
+#### Pembahasan
+
+---
+
+- Jalankan Program
+
+<img src="images/11_Output_vclocks.png" width="700">
+
+#### Pembahasan
+
+---
+
+- Buat modul Python untuk class VectorClock
+  - Class: vector_clock.py
+
+<img src="images/12_VectorClock_py.png" width="700">
+
+#### Pembahasan
+
 # ⏩ PEMBAHASAN TUGAS
 
 ---
