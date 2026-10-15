@@ -104,7 +104,8 @@
 ---
 
 - Buat modul Python untuk class VectorClock
-  - Class: vector_clock.py
+
+Class: vector_clock.py
 
 <img src="images/12_VectorClock_py.png" width="700">
 
@@ -112,7 +113,7 @@
 
 ---
 
-- Class: main.py dan Output
+Class: vector_clock.py
 
 <img src="images/13_main_Vector_Clock.png" width="700">
 
