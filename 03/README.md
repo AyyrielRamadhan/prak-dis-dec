@@ -112,7 +112,7 @@
 
 ---
 
-- - Class: main.py dan Output
+- Class: main.py dan Output
 
 <img src="images/13_main_Vector_Clock.png" width="700">
 
