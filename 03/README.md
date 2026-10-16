@@ -161,7 +161,7 @@ Class: race-conditions-01.py
 
 - Visualisasi gambar dengan pensil/ballpoint, dan mengapa terjadi data race / race conditions
 
-.......
+<img src="images/32_Visualisasi.jpeg" width="700">
 
 #### Pembahasan
 
@@ -205,7 +205,7 @@ Class: deadlock-01.py
 
 - Visualisasi gambar dengan pensil/ballpoint, dan mengapa terjadi deadlock
 
-.......
+<img src="images/33_Visualisasi.jpeg" width="700">
 
 #### Pembahasan
 
@@ -235,6 +235,44 @@ Class: raft.py
 
 <img src="images/25.raft_py.png" width="700">
 <img src="images/26_raft_py_Lanjutan.png" width="700">
+
+#### Pembahasan
+
+---
+
+- Jalankan program
+
+<img src="images/27_Output_raft_py.png" width="700">
+<img src="images/28_Output_raft_py.png" width="700">
+
+#### Pembahasan
+
+---
+
+- Visualisasi sederhana Algoritma Raft
+
+<img src="images/34_Visualisasi.jpeg" width="700">
+
+#### Pembahasan
+
+---
+
+- Membuat program tersebut menjadi modul Python dan simulasinya menggunakan modul Python tersebut
+
+dari praktik sebelumnya, ditambahkan file : main.py pada folder Algoritma Raft
+
+File : main.py
+
+<img src="images/29_contoh_simulai_raft_py.png" width="700">
+
+#### Pembahasan
+
+---
+
+- Jalankan program
+
+<img src="images/30_Output_Simulasi.png" width="700">
+<img src="images/31_Output_Simulasi.png" width="700">
 
 #### Pembahasan
 
