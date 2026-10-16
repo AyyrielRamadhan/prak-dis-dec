@@ -278,10 +278,6 @@ File : main.py
 
 ---
 
-# ⏩ PEMBAHASAN TUGAS
-
----
-
 # 📝 Kesimpulan
 
 ---
