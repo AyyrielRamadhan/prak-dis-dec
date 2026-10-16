@@ -7,7 +7,7 @@
 
 # 📚 Tujuan Praktikum
 
-<p style="text-align: justify;">1. Memahami cara kerja sinkronisasi waktu menggunakan protkol NTP melalui tools NetTime di Windows.</p>
+<p align="justify"></p>1. Memahami cara kerja sinkronisasi waktu menggunakan protkol NTP melalui tools NetTime di Windows.</p>
 
 <p style="text-align: justify;">2. Memahami konsep Vector Clock untuk pengurutan event dalam sistem terdistribusi.</p>
 
