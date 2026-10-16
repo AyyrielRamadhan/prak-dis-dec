@@ -9,17 +9,17 @@
 
 <p align="justify"></p>1. Memahami cara kerja sinkronisasi waktu menggunakan protkol NTP melalui tools NetTime di Windows.</p>
 
-<p style="text-align: justify;">2. Memahami konsep Vector Clock untuk pengurutan event dalam sistem terdistribusi.</p>
+<p align="justify">2. Memahami konsep Vector Clock untuk pengurutan event dalam sistem terdistribusi.</p>
 
-<p style="text-align: justify;">3. Memahami masalah yang muncul tanpa sinkronisasi: data race dan deadlock, serta cara mencegah dan menyelesaikannya.</p>
+<p align="justify">3. Memahami masalah yang muncul tanpa sinkronisasi: data race dan deadlock, serta cara mencegah dan menyelesaikannya.</p>
 
-<p style="text-align: justify;">4. Memahami algoritma Raft untuk mencapai konsensus dalam pemilihan leader pada sistem terdistribusi.</p>
+<p align="justify">4. Memahami algoritma Raft untuk mencapai konsensus dalam pemilihan leader pada sistem terdistribusi.</p>
 
 ---
 
 # 📚 Dasar Teori
 
-<p style="text-align: justify;">Sinkronisasi adalah fondasi penting dalam sistem terdistribusi. Tanpa sinkronisasi, berbagai masalah bisa muncul mulai dari ketidakakuratan waktu hingga kehilangan data.</p>
+<p align="justify">Sinkronisasi adalah fondasi penting dalam sistem terdistribusi. Tanpa sinkronisasi, berbagai masalah bisa muncul mulai dari ketidakakuratan waktu hingga kehilangan data.</p>
 
 <p style="text-align: justify;">*Sinkronisasi Waktu* Dalam sistem terdistribusi, setiap node memiliki clock fisik yang berbeda dan tidak selalu akurat. Protokol NTP (Network Time Protocol) digunakan untuk menyinkronkan jam komputer dengan server waktu pusat. Algoritma Marzullo digunakan di dalam NTP untuk memilih sumber waktu yang paling akurat. Offset dan lag adalah dua metrik utama untuk mengukur perbedaan jam lokal dengan server.</p>
 
