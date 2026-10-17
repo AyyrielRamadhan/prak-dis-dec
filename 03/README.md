@@ -161,7 +161,7 @@ Class: vector_clock.py
 
 #### Pembahasan
 
-<p align="justify">Untuk membuktikan modulnya bekerja, saya membuat main.py yang meng-import VectorClock dan menjalankan simulasi yang sama seperti vclocks.py, lengkap dengan label tiap tahap supaya alurnya lebih jelas. Hasil keluarannya identik dengan program asli: dari [0,0,0] semua proses berkembang hingga [2,2,2], dan pemeriksaan kausalitas juga sama — VC0 happens before VC1: True, VC1 happens before VC0: False, VC0 concurrent with VC2: False. Ini menunjukkan modul yang dibuat berfungsi benar.</p>
+<p align="justify">Untuk membuktikan modulnya bekerja, saya membuat main.py yang meng-import VectorClock dan menjalankan simulasi yang sama seperti vclocks.py, lengkap dengan label tiap tahap supaya alurnya lebih jelas. Hasil keluarannya identik dengan program asli: dari [0,0,0] semua proses berkembang hingga [2,2,2], dan pemeriksaan kausalitas juga sama yaitu VC0 happens before VC1: True, VC1 happens before VC0: False, VC0 concurrent with VC2: False. Ini menunjukkan modul yang dibuat berfungsi benar.</p>
 
 ---
 
@@ -183,7 +183,7 @@ Class: vector_clock.py
 
 #### Pembahasan
 
-<p align="justify">Keluarannya menarik: kelima 'Task starting' muncul dulu berurutan A-E, tapi urutan 'finished' acak (C, E, A, D, B) — bukan berurutan seperti task yang dimulai. Ini membuktikan thread benar-benar berjalan bersamaan dan waktu penyelesaiannya ditentukan oleh scheduler OS, sehingga bisa berbeda setiap kali dijalankan. Total waktu sekitar 5 detik, bukan 25 detik, yang menandakan paralelisme bekerja.</p>
+<p align="justify">Keluarannya menarik, kelima 'Task starting' muncul dulu berurutan A-E, tapi urutan 'finished' acak (C, E, A, D, B), bukan berurutan seperti task yang dimulai. Keluaran program dapat berbeda karena thread berjalan secara konkuren dan urutan eksekusinya diatur oleh sistem operasi. Fungsi time.sleep(5) memberi jeda 5 detik pada setiap thread, sedangkan join() memastikan semua thread selesai sebelum program menampilkan pesan akhir.</p>
 
 ---
 
@@ -195,7 +195,7 @@ Class: vector_clock.py
 
 #### Pembahasan
 
-<p align="justify">race-conditions-01.py mendemonstrasikan masalah data race. Ada saldo awal 100, lalu dua thread sama-sama mencoba menarik 80. Fungsi withdraw mengecek 'if balance >= amount', lalu ada jeda sleep(0,01) sebelum benar-benar mengurangi saldo. Jeda inilah yang menjadi titik rawan — selama thread pertama tidur, thread kedua bisa ikut masuk dan membaca saldo yang sama.</p>
+<p align="justify">race-conditions-01.py mendemonstrasikan masalah data race. Ada saldo awal 100, lalu dua thread sama-sama mencoba menarik 80. Fungsi withdraw mengecek 'if balance >= amount', lalu ada jeda sleep(0,01) sebelum benar-benar mengurangi saldo. Jeda ini yang menjadi titik rawan. Selama thread pertama tidur, thread kedua bisa ikut masuk dan membaca saldo yang sama.</p>
 
 ---
 
@@ -205,7 +205,7 @@ Class: vector_clock.py
 
 #### Pembahasan
 
-<p align="justify">Keluarannya membuktikan masalah race condition: saldo berakhir di -60, padahal seharusnya tidak mungkin negatif karena penarikan harus ditolak jika saldo tidak cukup. Yang terjadi adalah kedua thread sama-sama membaca saldo 100 sebelum ada yang mengurangi, sehingga keduanya lolos pengecekan dan sama-sama mengurangi 80. Hasilnya 100 - 80 - 80 = -60. Ini bukan bug biasa, melainkan data race: dua thread menulis data bersamaan tanpa koordinasi.</p>
+<p align="justify">Keluarannya membuktikan masalah race condition, saldo berakhir di -60, padahal seharusnya tidak mungkin negatif karena penarikan harus ditolak jika saldo tidak cukup. Yang terjadi adalah kedua thread sama-sama membaca saldo 100 sebelum ada yang mengurangi, sehingga keduanya lolos pengecekan dan sama-sama mengurangi 80. Hasilnya 100 - 80 - 80 = -60. Ini merupakan data race dimana dua thread menulis data bersamaan tanpa koordinasi.</p>
 
 ---
 
@@ -215,7 +215,7 @@ Class: vector_clock.py
 
 #### Pembahasan
 
-<p align="justify">Visualisasi ini menguraikan penyebab race condition secara per timeline. Pada Thread 1, saldo dicek (100 >= 80, TRUE) lalu masuk sleep 0,01 detik. Saat Thread 1 masih tidur, Thread 2 juga membaca saldo yang masih 100 dan bernilai TRUE, karena Thread 1 belum sempat mengurangi. Setelah kedua thread bangun, keduanya mengurangi saldo: yang pertama 100 - 80 = 20, yang kedua 20 - 80 = -60. Akar masalahnya adalah pengecekan dan aksi pengurangan tidak dilakukan sebagai satu kesatuan yang terkunci, sehingga ada celah waktu yang dimanfaatkan thread lain.</p>
+<p align="justify">Visualisasi ini menguraikan penyebab race condition secara per timeline. Pada Thread 1, saldo dicek (100 >= 80, TRUE) lalu masuk sleep 0,01 detik. Saat Thread 1 masih tidur, Thread 2 juga membaca saldo yang masih 100 dan bernilai TRUE, karena Thread 1 belum sempat mengurangi. Setelah kedua thread bangun, keduanya mengurangi saldo, yang pertama 100 - 80 = 20, yang kedua 20 - 80 = -60. Hal ini terjadi karena pengecekan dan aksi pengurangan tidak dilakukan sebagai satu kesatuan yang terkunci (lock), sehingga dua thread mengakses dan memodifikasi variabel yang sama secara bersamaan tanpa sinkronisasi, sehingga hasilnya tidak sesuai dengan yang diharapkan.</p>
 
 ---
 
@@ -237,7 +237,7 @@ Class: vector_clock.py
 
 #### Pembahasan
 
-<p align="justify">Hasilnya race condition hilang. Hanya satu thread yang berhasil menarik 80 dengan sisa saldo 20, sedangkan thread kedua ditolak karena saat gilirannya saldo tinggal 20 (kurang dari 80). Tidak ada lagi saldo negatif. Ini membuktikan bahwa dengan mengunci akses ke data bersama (mutual exclusion), kita bisa mencegah data race.</p>
+<p align="justify">Hasilnya race condition hilang. Hanya satu thread yang berhasil menarik 80 dengan sisa saldo 20, sedangkan thread kedua ditolak karena saat gilirannya saldo tinggal 20 (kurang dari 80). Race condition tidak terjadi karena program menggunakan threading.Lock() untuk mengunci akses ke variabel balance. Dengan with counter_lock, hanya satu thread yang dapat menjalankan proses pengecekan saldo dan pengurangan saldo pada satu waktu. Thread lainnya harus menunggu sampai kunci dilepaskan. Dengan demikian, kedua thread tidak mengubah saldo secara bersamaan dan saldo tetap konsisten.</p>
 
 ---
 
@@ -269,7 +269,7 @@ Class: vector_clock.py
 
 #### Pembahasan
 
-<p align="justify">Visualisasi ini memperlihatkan deadlock sebagai siklus menunggu. Awalnya kedua lock bebas. Thread 1 mengunci A, lalu saat menunggu B, Thread 2 mengunci B. Karena masing-masing sudah memegang lock yang dibutuhkan lawannya, terbentuk siklus: Thread 1 menunggu B yang dipegang Thread 2, sementara Thread 2 menunggu A yang dipegang Thread 1. Kondisi inilah yang disebut circular wait — salah satu syarat deadlock. Tidak ada yang mau melepas dulu, akhirnya keduanya mandek selamanya.</p>
+<p align="justify">Visualisasi ini memperlihatkan deadlock sebagai siklus menunggu. Awalnya kedua lock bebas. Thread 1 mengunci A, lalu saat menunggu B, Thread 2 mengunci B. Karena masing-masing sudah memegang lock yang dibutuhkan lawannya, terbentuk siklus Thread 1 menunggu B yang dipegang Thread 2, sementara Thread 2 menunggu A yang dipegang Thread 1, keduanya saling menunggu lock yang sedang dipegang thread lain. Kondisi ini disebut circular wait salah satu syarat deadlock. Tidak ada yang mau melepas dulu, akhirnya keduanya mandek atau berhenti menunggu selamanya.</p>
 
 ---
 
@@ -291,7 +291,7 @@ Class: vector_clock.py
 
 #### Pembahasan
 
-<p align="justify">Hasilnya program selesai secara normal dan mencetak 'Execution Finished'. Thread 1 mengunci A lalu melepasnya, Thread 2 mengunci B lalu melepasnya, baru masing-masing lanjut ke lock berikutnya. Dengan tidak ada lock yang dipegang saat menunggu lock lain, circular wait tidak terjadi, dan deadlock berhasil dihindari.</p>
+<p align="justify">Hasilnya program selesai secara normal dan mencetak 'Execution Finished'. Thread 1 mengunci A lalu melepasnya, Thread 2 mengunci B lalu melepasnya, baru masing-masing lanjut ke lock berikutnya. Dengan tidak ada lock yang dipegang saat menunggu lock lain, circular wait tidak terjadi, dan deadlock tidak terjadi.</p>
 
 ---
 
@@ -304,7 +304,7 @@ Class: vector_clock.py
 
 #### Pembahasan
 
-<p align="justify">raft.py mengimplementasikan simulasi algoritma Raft untuk mencapai konsensus dalam sistem terdistribusi. Setiap node punya tiga kemungkinan state: FOLLOWER, CANDIDATE, dan LEADER. Jika follower tidak mendapat heartbeat dalam batas waktu acak (election_timeout 1-2 detik), ia menaikkan term, menjadi candidate, lalu meminta suara. Jika mendapat suara mayoritas, ia menjadi leader. Leader kemudian mengirim heartbeat berkala untuk menjaga stabilitas dan mencatat log perintah. Simulasi menggunakan 3 node dengan 20 langkah.</p>
+<p align="justify">raft.py mengimplementasikan simulasi algoritma Raft untuk mencapai konsensus dalam sistem terdistribusi. Setiap node punya tiga kemungkinan state, yaitu FOLLOWER, CANDIDATE, dan LEADER. Jika follower tidak mendapat heartbeat dalam batas waktu acak (election_timeout 1-2 detik), ia menaikkan term, menjadi candidate, lalu meminta suara. Jika mendapat suara mayoritas, ia menjadi leader. Leader kemudian mengirim heartbeat berkala untuk menjaga stabilitas dan mencatat log perintah. Simulasi menggunakan 3 node dengan 20 langkah.</p>
 
 ---
 
@@ -315,7 +315,7 @@ Class: vector_clock.py
 
 #### Pembahasan
 
-<p align="justify">Di awal simulasi (step 1-2), semua node masih FOLLOWER dengan term 0 karena belum ada timeout. Di step 3 terjadi pemilihan — menarik bahwa Node 1 dan Node 2 sama-sama terpilih leader di term yang sama (split-vote). Namun sistem langsung memperbaiki diri di step 4: saat Node 1 menerima heartbeat dari Node 2, ia mundur menjadi follower. Sejak itu Node 2 menetap sebagai leader tunggal, mengirim heartbeat, dan mencatat log perintah sampai simulasi selesai. Ini menunjukkan bagaimana Raft tetap mencapai konsensus meski sempat terjadi benturan.</p>
+<p align="justify">Di awal simulasi (step 1-2), semua node masih FOLLOWER dengan term 0 karena belum ada timeout. Di step 3 terjadi pemilihan, dimana menarik bahwa Node 1 dan Node 2 sama-sama terpilih leader di term yang sama (split-vote). Namun sistem langsung memperbaiki diri di step 4, saat Node 1 menerima heartbeat dari Node 2, ia mundur menjadi follower. Sejak itu Node 2 menetap sebagai leader tunggal, mengirim heartbeat, dan mencatat log perintah sampai simulasi selesai. Ini menunjukkan bagaimana Raft tetap mencapai konsensus meski sempat terjadi benturan.</p>
 
 ---
 
@@ -325,7 +325,7 @@ Class: vector_clock.py
 
 #### Pembahasan
 
-<p align="justify">Visualisasi membagi simulasi Raft menjadi empat fase. Pertama, kondisi awal di mana semua node berstatus follower dengan term 0 dan masing-masing menghitung timer acak. Kedua, benturan atau split-vote di step 3 di mana Node 1 dan Node 2 sama-sama menjadi leader di term 1. Ketiga, pemulihan menuju leader tunggal — Node 1 kembali jadi follower dan Node 2 sah menjadi koordinator. Keempat, fase operasi dan stabilitas di mana Node 2 aktif mengirim heartbeat dan mencatat log perintah hingga akhir simulasi.</p>
+<p align="justify">Visualisasi membagi simulasi Raft menjadi empat fase. Pertama, kondisi awal di mana semua node berstatus follower dengan term 0 dan masing-masing menghitung timer acak. Kedua, benturan atau split-vote di step 3 di mana Node 1 dan Node 2 sama-sama menjadi leader di term 1. Ketiga, pemulihan menuju leader tunggal, yaitu Node 1 kembali jadi follower dan Node 2 sah menjadi koordinator. Keempat, fase operasi dan stabilitas di mana Node 2 aktif mengirim heartbeat dan mencatat log perintah hingga akhir simulasi.</p>
 
 ---
 
@@ -350,7 +350,7 @@ Class: vector_clock.py
 
 #### Pembahasan
 
-<p align="justify">Keluaran menunjukkan hasil yang serupa dengan simulasi asli, dengan sedikit perbedaan karena pemilihan leader menggunakan timeout acak. Kali ini Node 1 yang menjadi leader (berbeda dengan run sebelumnya yang menghasilkan Node 2). Perbedaan ini justru membuktikan bahwa algoritma berjalan sebagaimana mestinya — setiap run bisa menghasilkan leader berbeda tergantung siapa timeout-nya lebih dulu. Leader kemudian mengirim heartbeat dan mencatat log perintah (command-5, command-10, command-15) hingga step 20. Modul bekerja dengan benar.</p>
+<p align="justify">Keluaran menunjukkan hasil yang serupa dengan simulasi asli, dengan sedikit perbedaan karena pemilihan leader menggunakan timeout acak. Kali ini Node 1 yang menjadi leader (berbeda dengan run sebelumnya yang menghasilkan Node 2). Perbedaan ini justru membuktikan bahwa algoritma berjalan sebagaimana mestinya, setiap run bisa menghasilkan leader berbeda tergantung siapa timeout-nya lebih dulu. Leader kemudian mengirim heartbeat dan mencatat log perintah (command-5, command-10, command-15) hingga step 20. Modul bekerja dengan benar.</p>
 
 ---
 
