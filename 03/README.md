@@ -23,19 +23,19 @@
 
 <p align="justify"><strong>Sinkronisasi Waktu</strong>
 
-Dalam sistem terdistribusi, setiap node memiliki clock fisik yang berbeda dan tidak selalu akurat. Protokol NTP (Network Time Protocol) digunakan untuk menyinkronkan jam komputer dengan server waktu pusat. Algoritma Marzullo digunakan di dalam NTP untuk memilih sumber waktu yang paling akurat. Offset dan lag adalah dua metrik utama untuk mengukur perbedaan jam lokal dengan server.</p>
+<p align="justify">Dalam sistem terdistribusi, setiap node memiliki clock fisik yang berbeda dan tidak selalu akurat. Protokol NTP (Network Time Protocol) digunakan untuk menyinkronkan jam komputer dengan server waktu pusat. Algoritma Marzullo digunakan di dalam NTP untuk memilih sumber waktu yang paling akurat. Offset dan lag adalah dua metrik utama untuk mengukur perbedaan jam lokal dengan server.</p>
 
 <p align="justify"><strong>Vector Clock.</strong>
 
-Vector Clock diperkenalkan oleh Leslie Lamport untuk menangkap hubungan sebab-akibat antar event dalam sistem terdistribusi tanpa bergantung pada clock fisik. Setiap proses menyimpan vektor berisi counter untuk setiap proses dalam sistem. Aturan: event lokal menambah counter sendiri, pengiriman pesan menambah counter lalu mengirim salinan, dan penerimaan pesan mengambil nilai maksimal tiap elemen sebelum menambah counter sendiri.</p>
+<p align="justify">Vector Clock diperkenalkan oleh Leslie Lamport untuk menangkap hubungan sebab-akibat antar event dalam sistem terdistribusi tanpa bergantung pada clock fisik. Setiap proses menyimpan vektor berisi counter untuk setiap proses dalam sistem. Aturan: event lokal menambah counter sendiri, pengiriman pesan menambah counter lalu mengirim salinan, dan penerimaan pesan mengambil nilai maksimal tiap elemen sebelum menambah counter sendiri.</p>
 
 <p align="justify"><strong>Data Race &amp; Deadlock.</strong>
 
-Data race terjadi ketika dua atau lebih thread mengakses data bersamaan, minimal satu menulis, tanpa mekanisme sinkronasi. Deadlock terjadi ketika dua atau lebih thread saling menunggu lock yang dipegang thread lain (circular wait). Kondisi yang harus dipenuhi untuk deadlock: mutual exclusion, hold and wait, no preemption, dan circular wait.</p>
+<p align="justify">Data race terjadi ketika dua atau lebih thread mengakses data bersamaan, minimal satu menulis, tanpa mekanisme sinkronasi. Deadlock terjadi ketika dua atau lebih thread saling menunggu lock yang dipegang thread lain (circular wait). Kondisi yang harus dipenuhi untuk deadlock: mutual exclusion, hold and wait, no preemption, dan circular wait.</p>
 
 <p align="justify"><strong>Algoritma Raft.</strong>
 
-Raft adalah algoritma konsensus yang memastikan semua node dalam sistem terdistribusi sepakat tentang satu nilai atau leader. Raft membagi waktu menjadi term, dengan satu leader per term. Jika leader gagal, node lain memulai pemilihan dengan election timeout acak untuk menghindari split-vote. Mayoritas suara (> 50%) diperlukan untuk memilih leader baru.</p>
+<p align="justify">Raft adalah algoritma konsensus yang memastikan semua node dalam sistem terdistribusi sepakat tentang satu nilai atau leader. Raft membagi waktu menjadi term, dengan satu leader per term. Jika leader gagal, node lain memulai pemilihan dengan election timeout acak untuk menghindari split-vote. Mayoritas suara (> 50%) diperlukan untuk memilih leader baru.</p>
 
 ---
 
