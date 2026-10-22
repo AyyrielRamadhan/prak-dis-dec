@@ -53,7 +53,7 @@
 
 2. Cek versi Docker & Compose
 
-_Versi Docker_
+**_Versi Docker_**
 
 <img src="images/04_Cek_Versi_Docker.png" width="700">
 
@@ -61,7 +61,7 @@ _Versi Docker_
 
 ---
 
-_Versi Compose_
+**_Versi Compose_**
 
 <img src="images/05_Cek_Versi_Docker_Compose.png" width="700">
 
@@ -69,7 +69,7 @@ _Versi Compose_
 
 ---
 
-_Cek info Docker_
+**_Cek info Docker_**
 
 Gunakan perintah
 
