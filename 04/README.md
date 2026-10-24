@@ -71,13 +71,13 @@
 
 **_Cek info Docker_**
 
-Gunakan perintah
+Gunakan perintah:
 
 ```
 docker info
 ```
 
-Contoh penggunaan
+Contoh penggunaan:
 
 ```
 Ayyrieldev@cuyunivers>docker info
@@ -238,7 +238,7 @@ _File: env.sh_
 
 1. Masuk ke direktori streaming-replication terlebih dahulu karena pada saat ini folder masih berada pada folder 04
 
-Gunakan perintah
+Gunakan perintah:
 
 ```
 cd 04\streaming-replication
@@ -254,7 +254,7 @@ Kemudian Periksa direktori di streaming-replication
 
 Lalu muat alias di file env.sh terlebih dahulu
 
-Gunakan Perintah
+Gunakan Perintah:
 
 ```
 source env.sh
@@ -262,9 +262,13 @@ source env.sh
 
 <img src="images/12_Muat_env_sh.png" width="700">
 
+#### Pembahasan
+
+---
+
 Lalu jalankan docker compose
 
-Gunakan perintah
+Gunakan perintah:
 
 ```
 docker compose up -d
@@ -286,7 +290,7 @@ dcu
 
 Selanjutnya periksa apakah kedua image untuk PostgreSQL 18 di Alpine Linux tersebut telah berhasil diaktifkan:
 
-Gunakan Perintah
+Gunakan Perintah:
 
 ```
 dps
@@ -294,9 +298,9 @@ dps
 
 <img src="images/13_Cek_Status.png" width="700">
 
-Jika status Healthy tidak muncul, bisa di treace menggunakan log dari Docker
+Jika status Healthy tidak muncul, bisa di trace menggunakan log dari Docker
 
-Gunakan perintah
+Gunakan perintah:
 
 ```
 dlr
@@ -310,7 +314,7 @@ Atau bisa juga menggunakan
 docker logs streaming-replication-postgres_replica-1
 ```
 
-Contohnya:
+Contoh penggunaan:
 
 ```
 $ docker logs streaming-replication-postgres_replica-1
@@ -359,7 +363,7 @@ Backup done, starting replica...
 
 melihat dari berbagai informasi di tabel diagnostik PostgreSQL 18.3 maupun dengan melakukan percobaan manipulasi data tabel
 
-Gunakan perintah
+Gunakan perintah:
 
 ```
 dep
@@ -374,7 +378,7 @@ dep
 
 Untuk melihat status pada server replica
 
-Gunakan perintah
+Gunakan perintah:
 
 ```
 der
@@ -383,6 +387,46 @@ der
 <img src="images/18_der.png" width="700">
 
 #### Pembahasan
+
+---
+
+Untuk melihat efek dari replikasi ini pada kedua server, dibuat tabel dan kemudian mengisi data tabel tersebut di server utama (primary). Setelah itu melihat kondisi di server replica.
+
+**-Sebelum Pembuatan Tabel**
+
+_Primary_
+
+<img src="images/19_Primary_Sebelum_Pembuatan_Tabel.png" width="700">
+
+#### Pembahasan
+
+---
+
+_Replica_
+
+<img src="images/20_Primary_Sebelum_Pembuatan_Tabel.png" width="700">
+
+#### Pembahasan
+
+---
+
+**-Memanipulasi Data Pada _Primary_**
+
+<img src="images/21_Manipulasi_Data_Primary.png" width="700">
+
+#### Pembahasan
+
+---
+
+Secara otomatis, manipulasi data tersebut akan direplikasi ke server replica:
+
+<img src="images/22_Manipulasi_Data_Primary.png" width="700">
+
+#### Pembahasan
+
+---
+
+**High-Availability**
 
 ---
 
