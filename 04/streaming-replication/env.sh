@@ -1,0 +1,7 @@
+alias dcu="docker compose up -d"
+alias dcd="docker compose down"
+alias dps="docker ps"
+alias der="docker exec -it streaming-replication-postgres_replica-1 bash"
+alias dep="docker exec -it streaming-replication-postgres_primary-1 bash"
+alias dlr="docker logs streaming-replication-postgres_replica-1"
+alias dlp="docker logs streaming-replication-postgres_primary-1"

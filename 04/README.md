@@ -192,6 +192,200 @@ Server:
 
 ---
 
+**Struktur Direktori pada File**
+
+File yang diperlukan adalah sebagai berikut:
+
+```
+streaming-replication/
+├── 00_init.sql
+├── docker-compose.yaml
+└── env.sh
+1 directory, 3 files
+```
+
+<img src="images/06_File_Direktori.png" width="700">
+
+#### Pembahasan
+
+---
+
+_File: 00_init.sql_
+
+<img src="images/07_File_00_init_sql.png" width="700">
+
+#### Pembahasan
+
+---
+
+_File: docker-compose.yaml_
+
+<img src="images/08_FIle_Docker-Compose_yaml.png" width="700">
+
+#### Pembahasan
+
+---
+
+_File: env.sh_
+
+<img src="images/09_File_env_sh.png" width="700">
+
+#### Pembahasan
+
+---
+
+**Menjalankan docker-compose**
+
+1. Masuk ke direktori streaming-replication terlebih dahulu karena pada saat ini folder masih berada pada folder 04
+
+Gunakan perintah
+
+```
+cd 04\streaming-replication
+```
+
+Kemudian Periksa direktori di streaming-replication
+
+<img src="images/10_Cek_Direktori.png" width="700">
+
+#### Pembahasan
+
+---
+
+Lalu muat alias di file env.sh terlebih dahulu
+
+Gunakan Perintah
+
+```
+source env.sh
+```
+
+<img src="images/12_Muat_env_sh.png" width="700">
+
+Lalu jalankan docker compose
+
+Gunakan perintah
+
+```
+docker compose up -d
+```
+
+<img src="images/11_Menjalankan_Docker.png" width="700">
+
+atau
+
+```
+dcu
+```
+
+<img src="images/14_dcu.png" width="700">
+
+#### Pembahasan
+
+---
+
+Selanjutnya periksa apakah kedua image untuk PostgreSQL 18 di Alpine Linux tersebut telah berhasil diaktifkan:
+
+Gunakan Perintah
+
+```
+dps
+```
+
+<img src="images/13_Cek_Status.png" width="700">
+
+Jika status Healthy tidak muncul, bisa di treace menggunakan log dari Docker
+
+Gunakan perintah
+
+```
+dlr
+```
+
+<img src="images/15_dlr.png" width="700">
+
+Atau bisa juga menggunakan
+
+```
+docker logs streaming-replication-postgres_replica-1
+```
+
+Contohnya:
+
+```
+$ docker logs streaming-replication-postgres_replica-1
+pg_basebackup: error: connection to server at "postgres_primary" (172.18.0.2), port 5432 failed: Connection refused
+        Is the server running on that host and accepting TCP/IP connections?
+pg_basebackup failed. Retrying in 5 seconds ...
+Backup done, starting replica...
+2026-10-24 02:40:41.600 UTC [1] LOG:  starting PostgreSQL 18.3 on x86_64-pc-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit
+2026-10-24 02:40:41.601 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+2026-10-24 02:40:41.601 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+2026-10-24 02:40:41.611 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2026-10-24 02:40:41.624 UTC [17] LOG:  database system was interrupted; last known up at 2026-10-24 02:40:40 UTC
+2026-10-24 02:40:42.570 UTC [17] LOG:  starting backup recovery with redo LSN 0/2000028, checkpoint LSN 0/2000080, on timeline ID 1
+2026-10-24 02:40:42.570 UTC [17] LOG:  entering standby mode
+2026-10-24 02:40:42.581 UTC [17] LOG:  redo starts at 0/2000028
+2026-10-24 02:40:42.585 UTC [17] LOG:  completed backup recovery with redo LSN 0/2000028 and end LSN 0/2000120
+2026-10-24 02:40:42.586 UTC [17] LOG:  consistent recovery state reached at 0/2000120
+2026-10-24 02:40:42.586 UTC [1] LOG:  database system is ready to accept read-only connections
+2026-10-24 02:40:42.619 UTC [18] LOG:  started streaming WAL from primary at 0/3000000 on timeline 1
+2026-10-24 02:45:56.725 UTC [15] LOG:  restartpoint starting: time
+2026-10-24 02:46:01.014 UTC [15] LOG:  restartpoint complete: wrote 42 buffers (0.3%), wrote 2 SLRU buffers; 0 WAL file(s) added, 0 removed, 1 recycled; write=4.243 s, sync=0.022 s, total=4.290 s; sync files=10, longest=0.010 s, average=0.003 s; distance=16701 kB, estimate=16701 kB; lsn=0/304F5C0, redo lsn=0/304F530
+2026-10-24 02:46:01.014 UTC [15] LOG:  recovery restart point at 0/304F530
+2026-10-24 02:46:01.014 UTC [15] DETAIL:  Last completed transaction was at log time 2026-10-24 02:41:37.715678+00.
+2026-10-24 03:11:48.981 UTC [18] LOG:  replication terminated by primary server
+2026-10-24 03:11:48.981 UTC [18] DETAIL:  End of WAL reached on timeline 1 at 0/304F6E8.
+2026-10-24 03:11:48.981 UTC [18] FATAL:  could not send end-of-streaming message to primary: server closed the connection unexpectedly
+                This probably means the server terminated abnormally
+                before or while processing the request.
+        invalid socket
+        no COPY in progress
+2026-10-24 03:11:48.982 UTC [17] LOG:  invalid record length at 0/304F6E8: expected at least 24, got 0
+2026-10-24 03:11:48.995 UTC [1321] FATAL:  streaming replication receiver "walreceiver" could not connect to the primary server: connection to server at "postgres_primary" (172.18.0.2), port 5432 failed: FATAL:  the database system is shutting down
+2026-10-24 03:11:48.995 UTC [17] LOG:  waiting for WAL to become available at 0/304F700
+2026-10-24 03:11:54.010 UTC [1322] LOG:  started streaming WAL from primary at 0/3000000 on timeline 1
+2026-10-24 03:11:57.252 UTC [15] LOG:  restartpoint starting: time
+2026-10-24 03:11:57.283 UTC [15] LOG:  restartpoint complete: wrote 0 buffers (0.0%), wrote 0 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.003 s, sync=0.001 s, total=0.031 s; sync files=0, longest=0.000 s, average=0.000 s; distance=0 kB, estimate=15031 kB; lsn=0/304F670, redo lsn=0/304F670
+2026-10-24 03:11:57.283 UTC [15] LOG:  recovery restart point at 0/304F670
+2026-10-24 03:11:57.283 UTC [15] DETAIL:  Last completed transaction was at log time 2026-10-24 02:41:37.715678+00.
+```
+
+#### Pembahasan
+
+---
+
+## **Pengujian**
+
+melihat dari berbagai informasi di tabel diagnostik PostgreSQL 18.3 maupun dengan melakukan percobaan manipulasi data tabel
+
+Gunakan perintah
+
+```
+dep
+```
+
+<img src="images/16_dep.png" width="700">
+<img src="images/17_dep.png" width="700">
+
+#### Pembahasan
+
+---
+
+Untuk melihat status pada server replica
+
+Gunakan perintah
+
+```
+der
+```
+
+<img src="images/18_der.png" width="700">
+
+#### Pembahasan
+
+---
+
 # 📝 Kesimpulan
 
 ---
