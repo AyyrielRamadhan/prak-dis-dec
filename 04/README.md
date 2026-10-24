@@ -244,7 +244,7 @@ Gunakan perintah:
 cd 04\streaming-replication
 ```
 
-Kemudian Periksa direktori di streaming-replication
+Kemudian periksa direktori di streaming-replication
 
 <img src="images/10_Cek_Direktori.png" width="700">
 
@@ -359,7 +359,7 @@ Backup done, starting replica...
 
 ---
 
-## **Pengujian**
+**Pengujian**
 
 melihat dari berbagai informasi di tabel diagnostik PostgreSQL 18.3 maupun dengan melakukan percobaan manipulasi data tabel
 
@@ -427,6 +427,248 @@ Secara otomatis, manipulasi data tersebut akan direplikasi ke server replica:
 ---
 
 **High-Availability**
+
+_Primary server mati_
+
+<img src="images/23_Primary_Server_Mati.png" width="700">
+
+#### Pembahasan
+
+---
+
+Setelah kita mengetahui bahwa primary server dalam kondisi down, maka kita bisa mempromosikan salah satu replica server untuk menjadi primary - dari kondisi hanya bisa menyediakan akses read menjadi primary server yang bisa menyediakan akses read-write. Berikut adalah perintah pg_promote() untuk mempromosikan replica menjadi primary:
+
+<img src="images/24_Mempromosikan_replica_menjadi_primary.png" width="700">
+
+#### Pembahasan
+
+---
+
+**Untuk mematikan semua primary dan replika**
+
+<img src="images/25_Mematikan_Primary_dan_Replika.png" width="700">
+
+#### Pembahasan
+
+---
+
+## PRAKTIK 2 - Replikasi Master-Master Menggunakan Apache Ignite
+
+**Struktur direktori dan file**
+
+```
+src--ApacheIgnite/
+├── sql/
+│   ├── current_catalog.sql
+│   ├── ee_and_cust.sql
+│   ├── invoices.sql
+│   ├── media_and_genre.sql
+│   ├── schema.sql
+│   └── tracks.sql
+├── docker-compose.yaml
+└── env.sh
+```
+
+<img src="images/26_Struktur_Direktori_ApacheIgnite.png" width="700">
+
+untuk file docker-compose.yaml
+serta sekumpulan file perintah-perintah SQL yang bisa diperoleh dari:
+https://ignite.apache.org/docs/ignite3/latest/quick-start/explore-sql.
+
+#### Pembahasan
+
+---
+
+Kemudian buat file bernama env.sh untuk keperluan shortcut dan isi dengan perintah:
+
+<img src="images/27_File_env_sh_Apache.png" width="700">
+
+#### Pembahasan
+
+---
+
+**Menjalankan docker-compose**
+
+<img src="images/28_Menjalankan_docker_compose_apache.png" width="700">
+
+#### Pembahasan
+
+---
+
+Setelah proses pull selesai dan docker-compose telah up, maka akan muncul sebagai berikut:
+
+<img src="images/29_Cek_status_Docker_Apache.png" width="700">
+
+#### Pembahasan
+
+---
+
+Setiap container yang berjalan di dalam network Docker memiliki IP internal. Untuk mengecek IP dari masing-masing node, gunakan perintah
+
+```
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' <CONTAINER_ID_ATAU_NAMA>
+```
+
+Contoh
+
+```
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ignite3-node1-1
+```
+
+<img src="images/30_Cek_Alamat_IP.png" width="700">
+
+#### Pembahasan
+
+---
+
+**Inisialisasi Cluster**
+
+Jalankan Apache Ignite cli (atau menggunakan env var dcli) dengan perintah:
+
+```
+docker run --rm -it --network=host -e LANG=C.UTF-8 -e LC_ALL=C.UTF-8 apacheignite/ignite:3.1.0 cli
+```
+
+<img src="images/31_Masuk_ApacheIgnite.png" width="700">
+
+#### Pembahasan
+
+---
+
+Lalu menginisialisasi Cluster dengan perintah:
+
+```
+cluster init --name=ignite3 --metastorage-group=node1,node2,node3
+```
+
+<img src="images/32_Menginisialisasi_Cluster.png" width="700">
+
+#### Pembahasan
+
+---
+
+Kemudian cek status cluster dengan perintah
+
+```
+cluster status
+```
+
+<img src="images/33_Verifikasi_Status_Cluster.png" width="700">
+
+#### Pembahasan
+
+---
+
+Kemudian jika ingin masuk lagi ke cli dengan perintah yang sama, maka tidak memerlukan inisialisasi lagi.
+
+<img src="images/34_Menjalankan_ApacheIgnite.png" width="700">
+
+#### Pembahasan
+
+---
+
+**Eksekusi perintah-perintah SQL**
+
+_Memuat dan Mengeksekusi File Skema SQL_
+
+Gunakan perintah
+
+```
+sql --file=/opt/ignite/sql/schema.sql
+```
+
+<img src="images/35_Perintah_SQL.png" width="700">
+
+#### Pembahasan
+
+---
+
+Masuk ke mode SQL dengan perintah:
+
+```
+sql
+```
+
+kemudian gunakan perintah:
+
+```
+SELECT * FROM system.tables WHERE schema = 'PUBLIC';
+```
+
+<img src="images/36_Perintah_SQL_Table.png" width="700">
+<img src="images/37_Perintah_Menjalankan_SQL.png" width="700">
+
+#### Pembahasan
+
+---
+
+Untuk memeriksa apakah perubahan pada http://localhost:10300 tersebut telah dipropagasi
+ke node-node lainnya, kita bisa memeriksa dengan melakukan koneksi ke node-node
+lainnya. Berikut adalah node di http://localhost:10301:
+
+Gunakan perintah:
+
+```
+connect http://localhost:10301
+```
+
+<img src="images/38_Pindah_Koneksi.png" width="700">
+
+#### Pembahasan
+
+---
+
+Kemudian cek propagasi tabel
+
+<img src="images/39_Cek_Propagasi_Table.png" width="700">
+
+#### Pembahasan
+
+---
+
+Contoh query untuk analytics:
+
+```
+SELECT
+    CAST(EXTRACT(YEAR FROM i.InvoiceDate) AS VARCHAR) || '-' ||
+    CASE
+        WHEN EXTRACT(MONTH FROM i.InvoiceDate) < 10
+        THEN '0' || CAST(EXTRACT(MONTH FROM i.InvoiceDate) AS VARCHAR)
+        ELSE CAST(EXTRACT(MONTH FROM i.InvoiceDate) AS VARCHAR)
+    END AS YearMonth,
+    COUNT(DISTINCT i.InvoiceId) AS InvoiceCount,
+    COUNT(DISTINCT i.CustomerId) AS CustomerCount,
+    SUM(i.Total) AS MonthlyRevenue,
+    AVG(i.Total) AS AverageOrderValue
+FROM
+    Invoice i
+GROUP BY
+    EXTRACT(YEAR FROM i.InvoiceDate), EXTRACT(MONTH FROM i.InvoiceDate)
+ORDER BY
+    YearMonth DESC;
+```
+
+<img src="images/40__Analitik_Table.png" width="700">
+<img src="images/41__Analitik_Table.png.png" width="700">
+
+#### Pembahasan
+
+---
+
+Mari memeriksa http://localhost:10302:
+
+<img src="images/42_Memeriksa_analitik.png" width="700">
+<img src="images/43_Memeriksa_analitik.png" width="700">
+
+#### Pembahasan
+
+---
+
+Matikan semua node
+
+<img src="images/44_Mematikan_Semua_Node.png" width="700">
+
+#### Pembahasan
 
 ---
 
