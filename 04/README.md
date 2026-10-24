@@ -666,6 +666,12 @@ Mari memeriksa http://localhost:10302:
 
 Matikan semua node
 
+Gunakan perintah:
+
+```
+dcd
+```
+
 <img src="images/44_Mematikan_Semua_Node.png" width="700">
 
 #### Pembahasan
