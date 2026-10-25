@@ -82,7 +82,7 @@ Docker Compose menambahkan kemampuan mendefinisikan beberapa container sekaligus
 
 ---
 
-## 🧪 Pembahasan Praktikum
+# ⏩ PEMBAHASAN PRAKTIKUM
 
 ### 4.1 Streaming Replication Menggunakan PostgreSQL 18
 
@@ -100,6 +100,8 @@ Docker Compose menambahkan kemampuan mendefinisikan beberapa container sekaligus
 Tahap pertama praktikum ini adalah menyiapkan Docker Desktop di Windows. Di layar konfigurasi ada dua pilihan instalasi, dan yang dipilih adalah <i>Per-user installation</i> karena tidak menuntut hak administrator serta otomatis memakai backend WSL 2. Pilihan ini penting: container PostgreSQL yang nanti dijalankan adalah container Linux, jadi tanpa WSL 2 sebagai lapisan virtualisasinya container tidak akan bisa hidup. Opsi <i>Add shortcut to desktop</i> dibiarkan tercentang supaya aplikasinya mudah dibuka lagi, lalu instalasi dijalankan dengan menekan OK.
 </p>
 
+---
+
 <p align="center"><img src="images/02_Install_Docker.png" alt="Proses ekstraksi berkas Docker Desktop" width="700"></p>
 
 <p align="center"><i>Gambar 4.2 — Proses ekstraksi berkas saat instalasi Docker Desktop.</i></p>
@@ -110,6 +112,8 @@ Tahap pertama praktikum ini adalah menyiapkan Docker Desktop di Windows. Di laya
 Setelah konfigurasi disetujui, installer mulai mengekstrak berkas-berkas Docker Desktop. Proses ini terlihat sederhana, hanya tulisan <i>Unpacking files...</i> dengan progress bar di bawah, tetapi justru di sini sebagian besar waktu instalasi dihabiskan karena yang disalin bukan hanya aplikasi GUI-nya, melainkan juga CLI, engine, dan komponen integrasi WSL. Karena itu jendela installer sebaiknya tidak ditutup sebelum progress bar penuh; kalau terhenti di tengah jalan, komponen yang belum selesai bisa tertinggal dan Docker sering gagal start.
 </p>
 
+---
+
 <p align="center"><img src="images/03_Install_Docker.png" alt="Pesan Installation succeeded pada Docker Desktop" width="700"></p>
 
 <p align="center"><i>Gambar 4.3 — Instalasi Docker Desktop dinyatakan berhasil.</i></p>
@@ -119,6 +123,8 @@ Setelah konfigurasi disetujui, installer mulai mengekstrak berkas-berkas Docker 
 <p align="justify">
 Instalasi berakhir dengan pesan <i>Installation succeeded</i> dan tombol Close. Di titik ini penting untuk tidak langsung menyimpulkan bahwa Docker sudah siap dipakai, karena yang selesai baru proses pemasangan berkas. Engine Docker baru benar-benar berjalan setelah aplikasi Docker Desktop dibuka dan statusnya menunjukkan <i>Engine running</i>. Pengalaman yang cukup umum adalah terminal mengembalikan pesan error koneksi ke pipe Docker ketika perintah <code>docker</code> dijalankan terlalu cepat, dan solusinya memang hanya menunggu engine selesai boot, bukan menginstal ulang.
 </p>
+
+---
 
 #### Pemeriksaan Versi dan Lingkungan
 
@@ -136,6 +142,8 @@ Instalasi berakhir dengan pesan <i>Installation succeeded</i> dan tombol Close. 
 Pemeriksaan pertama dilakukan dengan <code>docker --version</code>, dan hasilnya Docker version 29.9.2 build a82e528. Angka ini menunjukkan versi CLI yang terpasang, sekaligus memastikan perintah <code>docker</code> sudah dikenali oleh shell. Perlu dicatat bahwa versi CLI dan versi engine bisa berbeda, jadi angka ini belum cukup untuk membuktikan daemon benar-benar hidup; itu sebabnya masih perlu pemeriksaan berikutnya.
 </p>
 
+---
+
 **_Versi Compose_**
 
 <p align="center"><img src="images/05_Cek_Versi_Docker_Compose.png" alt="Hasil perintah docker compose version" width="700"></p>
@@ -147,6 +155,8 @@ Pemeriksaan pertama dilakukan dengan <code>docker --version</code>, dan hasilnya
 <p align="justify">
 Selanjutnya <code>docker compose version</code> menghasilkan Docker Compose version v5.6.1. Ini memastikan Compose tersedia sebagai plugin yang menempel pada CLI Docker, sehingga perintahnya ditulis <code>docker compose</code> dengan spasi, bukan <code>docker-compose</code> dengan tanda hubung seperti pada versi lama. Perbedaan ini bukan sekadar gaya penulisan: file <code>env.sh</code> yang disiapkan nanti memakai bentuk <code>docker compose</code>, jadi kalau yang terpasang hanya Compose versi lama, alias di dalamnya tidak akan jalan.
 </p>
+
+---
 
 **_Cek info Docker_**
 
@@ -273,6 +283,8 @@ Server:
 Perintah <code>docker info</code> dipakai untuk melihat kondisi engine secara menyeluruh, bukan hanya versinya. Output-nya terbagi dua: bagian Client yang menjelaskan CLI dan plugin yang terpasang, lalu bagian Server yang menjelaskan engine yang benar-benar berjalan. Dari bagian Server terlihat 0 container, storage driver overlayfs, cgroup v2, kernel WSL2 6.18.33.2, 12 CPU, dan memori sekitar 7,6 GiB. Angka-angka ini berguna sebagai batas realistis: dua container PostgreSQL dengan alokasi kecil masih nyaman, tetapi kalau nanti menjalankan tiga node Ignite yang masing-masing meminta 4 GB, memori sebesar itu justru menjadi kendala. Kalau bagian Server kosong atau error, berarti engine belum hidup dan seluruh langkah berikutnya pasti gagal.
 </p>
 
+---
+
 #### Struktur Direktori dan File
 
 File yang diperlukan adalah sebagai berikut:
@@ -295,6 +307,8 @@ streaming-replication/
 Ada tiga berkas yang harus disiapkan di dalam folder <code>streaming-replication</code>. <code>00_init.sql</code> berisi perintah yang dijalankan sekali saat primary pertama kali dibuat, <code>docker-compose.yaml</code> mendefinisikan dua service PostgreSQL beserta konfigurasinya, dan <code>env.sh</code> menyimpan alias agar perintah panjang tidak perlu diketik ulang. Ketiganya dipisah karena perannya berbeda dan siklus hidupnya juga berbeda: SQL hanya dieksekusi saat inisialisasi, YAML dibaca setiap kali compose dijalankan, sedangkan <code>env.sh</code> hanya berlaku di sesi shell yang memuatnya. Nama folder juga bukan hal sepele, karena Compose memakai nama folder sebagai nama project, sehingga container yang muncul nanti bernama <code>streaming-replication-postgres_primary-1</code> dan <code>streaming-replication-postgres_replica-1</code>.
 </p>
 
+---
+
 _File: 00_init.sql_
 
 <p align="center"><img src="images/07_File_00_init_sql.png" alt="Isi berkas 00_init.sql" width="700"></p>
@@ -306,6 +320,8 @@ _File: 00_init.sql_
 <p align="justify">
 File <code>00_init.sql</code> isinya cuma dua baris, tapi perannya justru yang bikin replikasi ini bisa jalan. Baris pertama membuat user <code>replicator</code> dengan hak <code>REPLICATION</code>, jadi user ini memang disiapkan khusus untuk mengambil stream WAL dari primary, bukan untuk dipakai aplikasi sehari-hari. Baris kedua membuat physical replication slot bernama <code>replication_slot</code>, semacam "titipan posisi" WAL di sisi primary; dengan slot ini primary tidak akan membuang WAL yang belum sempat dibaca replica, sehingga kalau replica sempat mati ia bisa menyusul lagi tanpa <code>pg_basebackup</code> dari nol. Karena file ini diletakkan di <code>/docker-entrypoint-initdb.d</code>, PostgreSQL menjalankannya otomatis sekali saat volume data pertama kali dibuat — jadi kalau isinya diubah belakangan, perubahannya tidak akan berefek kecuali data lama dihapus dulu.
 </p>
+
+---
 
 _File: docker-compose.yaml_
 
@@ -319,6 +335,8 @@ _File: docker-compose.yaml_
 File <code>docker-compose.yaml</code> adalah inti dari praktikum ini, dan penyusunannya sengaja memakai anchor <code>x-postgres-common</code> agar konfigurasi yang sama tidak ditulis dua kali. Bagian yang dipakai bersama adalah image <code>postgres:18.3-alpine3.23</code>, user <code>postgres</code>, <code>restart: always</code>, dan healthcheck <code>pg_isready</code>; healthcheck inilah yang nanti membuat status container tertulis <i>healthy</i>, bukan sekadar <i>Up</i>. Service primary memakai port 5432, mendefinisikan user <code>zuser</code>, database <code>zdb</code>, dan mengizinkan koneksi replikasi dari user <code>replicator</code> lewat <code>POSTGRES_HOST_AUTH_METHOD</code>. Parameter yang diberikan lewat <code>command</code> semuanya punya alasan: <code>wal_level=replica</code> wajib agar WAL memuat informasi yang dibutuhkan standby, <code>hot_standby=on</code> membuat replica bisa di-query, <code>max_wal_senders</code> dan <code>max_replication_slots</code> menyediakan cukup koneksi dan slot, sedangkan <code>hot_standby_feedback=on</code> mencegah query panjang di replica membuat baris yang dibutuhkannya terhapus di primary. Service replica memakai image yang sama tetapi peran yang berbeda: ia tidak menjalankan initdb, melainkan menunggu sampai <code>pg_basebackup</code> berhasil menyalin seluruh data primary dengan flag <code>-R</code> dan <code>-X stream</code>, baru kemudian menjalankan <code>postgres</code>. Flag <code>-R</code> itu yang menuliskan <code>standby.signal</code> dan <code>primary_conninfo</code> secara otomatis, sehingga replica tidak perlu dikonfigurasi manual. <code>depends_on</code> hanya menjamin urutan start, bukan kesiapan primary, dan itulah sebabnya perintah backup dibungkus loop <code>until</code>.
 </p>
 
+---
+
 _File: env.sh_
 
 <p align="center"><img src="images/09_File_env_sh.png" alt="Isi berkas env.sh" width="700"></p>
@@ -330,6 +348,8 @@ _File: env.sh_
 <p align="justify">
 File <code>env.sh</code> berisi tujuh alias yang tugasnya mempersingkat perintah. <code>dcu</code> dan <code>dcd</code> mewakili <code>docker compose up -d</code> dan <code>down</code>, <code>dps</code> mewakili <code>docker ps</code>, sementara <code>der</code>, <code>dep</code>, <code>dlr</code>, dan <code>dlp</code> membungkus <code>docker exec</code> serta <code>docker logs</code> untuk container replica dan primary. Nama container ditulis lengkap dan mengikuti nama folder, jadi kalau foldernya diganti nama, isi alias ini juga harus disesuaikan; kalau tidak, perintah akan gagal karena container yang dituju tidak ditemukan. Berbeda dengan contoh di modul yang memakai <code>sudo</code>, versi yang dipakai di sini tidak memerlukannya karena Docker Desktop di Windows sudah berjalan dengan hak akses yang memadai.
 </p>
+
+---
 
 #### Menjalankan Docker Compose
 
@@ -351,6 +371,8 @@ Kemudian periksa direktori di streaming-replication:
 Perintah <code>ls -la</code> dipakai untuk memeriksa isi direktori. Ketiga berkas terlihat lengkap: <code>00_init.sql</code> berukuran 146 byte, <code>docker-compose.yaml</code> 1424 byte, dan <code>env.sh</code> 328 byte. Pemeriksaan kecil ini sebenarnya penting karena banyak kegagalan compose berasal dari hal sepele seperti berkas yang tersimpan dengan ekstensi berbeda, berada di folder yang salah, atau <code>00_init.sql</code> yang kosong sehingga user replikasi tidak pernah dibuat. Melihat ukuran yang wajar sudah cukup untuk memastikan berkasnya benar-benar berisi, bukan file kosong.
 </p>
 
+---
+
 2. Muat alias di file env.sh terlebih dahulu.
 
 ```bash
@@ -366,6 +388,8 @@ source env.sh
 <p align="justify">
 Perintah <code>source env.sh</code> dijalankan agar alias di dalam file itu dimuat ke shell yang sedang aktif. Kalau file dijalankan dengan <code>./env.sh</code>, alias akan hilang begitu proses selesai karena pengaruhnya hanya berlaku di subshell; dengan <code>source</code>, isi file dibaca seolah-olah diketik langsung di terminal saat itu. Konsekuensinya, alias hanya hidup selama sesi terminal tersebut terbuka, sehingga kalau jendela ditutup atau terminal baru dibuka, <code>source env.sh</code> harus diulang dari dalam folder yang benar. Ini juga menjelaskan kenapa posisi direktori penting: <code>source</code> mencari file relatif terhadap folder tempat perintah dijalankan.
 </p>
+
+---
 
 3. Jalankan Docker Compose.
 
@@ -392,6 +416,8 @@ dcu
 <p align="justify">
 Opsi <code>-d</code> membuat container berjalan di latar belakang sehingga terminal tidak terkunci oleh log. Output-nya memperlihatkan urutan kerja Compose: image <code>postgres:18.3-alpine3.23</code> diambil dari Docker Hub selama sekitar 33 detik, network <code>streaming-replication_default</code> dibuat, lalu kedua container dijalankan. Menariknya, percobaan berikutnya dengan alias <code>dcu</code> hanya menampilkan <i>Running</i> untuk kedua container, bukan <i>Created</i> lagi. Ini menunjukkan sifat idempoten Compose: kalau konfigurasi tidak berubah, container yang sudah ada tidak dibuat ulang, sehingga aman menjalankan perintah yang sama berkali-kali.
 </p>
+
+---
 
 4. Periksa apakah kedua image PostgreSQL 18 di Alpine Linux tersebut telah berhasil diaktifkan.
 
@@ -466,6 +492,8 @@ Backup done, starting replica...
 Status yang ditampilkan adalah <code>Up 17 minutes (healthy)</code> untuk kedua container, port 5432 dan 5433 sudah dipublikasikan ke host, dan nama container sesuai nama folder. Status <i>healthy</i> itu berasal dari healthcheck <code>pg_isready</code>, jadi artinya PostgreSQL benar-benar menerima koneksi, bukan hanya proses container-nya hidup. Ketika status itu belum muncul, log replica dibaca dengan <code>dlr</code>, dan di sanalah proses sebenarnya terlihat. Baris pertama justru sebuah error: <code>pg_basebackup: error: connection to server at "postgres_primary" (172.18.0.2), port 5432 failed: Connection refused</code>. Ini bukan kegagalan permanen, melainkan akibat replica dijalankan lebih dulu daripada primary siap menerima koneksi; <code>depends_on</code> hanya menunggu container primary dibuat, bukan menunggu PostgreSQL selesai inisialisasi. Karena perintah backup dibungkus <code>until</code>, replica mencetak <code>pg_basebackup failed. Retrying in 5 seconds ...</code> lalu mencoba lagi sampai berhasil, dan itu terbukti dari baris <code>Backup done, starting replica...</code>. Setelah itu log memperlihatkan PostgreSQL 18.3 di replica menyala, masuk <code>entering standby mode</code>, mencapai <code>consistent recovery state</code>, dan membuka <code>read-only connections</code>; baris <code>started streaming WAL from primary at 0/3000000 on timeline 1</code> adalah tanda paling jelas bahwa replikasi sudah berjalan. Di bagian akhir log muncul <code>replication terminated by primary server</code> yang diikuti pesan <code>the database system is shutting down</code>, dan itu wajar karena primary memang dimatikan pada tahap High-Availability; replica lalu menulis <code>waiting for WAL to become available</code> dan mencoba menyambung kembali. Jadi satu log ini sebenarnya menceritakan seluruh siklus: gagal karena belum siap, menyusul, streaming normal, lalu terputus saat primary dimatikan.
 </p>
 
+---
+
 #### Pengujian Replikasi
 
 Untuk melihat apakah replikasi ini telah berfungsi, kita bisa melihatnya dari tabel diagnostik PostgreSQL 18.3 maupun dengan melakukan percobaan manipulasi data tabel.
@@ -488,6 +516,8 @@ dep
 Perintah <code>dep</code> membuka shell container primary, lalu psql dijalankan dengan <code>psql -U zuser -d zdb</code>, dan <code>\x</code> diaktifkan agar hasil query panjang tampil vertikal. <code>SELECT * FROM pg_stat_replication</code> memperlihatkan satu baris dengan <code>state = streaming</code>, <code>application_name = walreceiver</code>, dan alamat <code>172.18.0.3</code> yang tidak lain adalah replica. Kolom <code>sent_lsn</code>, <code>write_lsn</code>, <code>flush_lsn</code>, dan <code>replay_lsn</code> semuanya bernilai sama, yaitu <code>0/304F638</code>, dan itu berarti tidak ada data yang tertinggal: primary sudah mengirim, replica sudah menulis, sudah men-flush, dan sudah memutar ulang semuanya. Kolom <code>sync_state = async</code> menegaskan bahwa replikasi ini asinkron, sehingga primary tidak menunggu konfirmasi replica sebelum menyatakan commit berhasil. <code>pg_replication_slots</code> kemudian menunjukkan slot <code>replication_slot</code> bertipe <code>physical</code> dengan <code>active = t</code>, <code>confirmed_flush_lsn = 0/304F638</code>, dan <code>wal_status = reserved</code>. Status <i>reserved</i> itu maksudnya WAL masih ditahan dan belum akan dihapus, persis seperti yang diharapkan dari sebuah slot.
 </p>
 
+---
+
 Untuk melihat status pada server replica:
 
 ```bash
@@ -503,6 +533,8 @@ der
 <p align="justify">
 Psql di replica dibuka dengan cara yang sama seperti di primary. Query <code>SELECT pg_is_in_recovery()</code> mengembalikan <code>t</code>, dan satu huruf itu sudah cukup untuk memastikan node ini berperan sebagai standby yang sedang memutar ulang WAL. Konsekuensinya jelas: node ini bisa dibaca, tetapi menolak operasi tulis dengan pesan bahwa server berada dalam mode recovery. Sebelum ada tabel apa pun, pemeriksaan <code>\dt</code> belum banyak memberi informasi, tetapi justru di sinilah baseline-nya diambil supaya perubahan setelah manipulasi data di primary nanti bisa dibandingkan secara adil.
 </p>
+
+---
 
 Untuk melihat efek replikasi, dibuat tabel dan diisi data di primary, lalu kondisinya dibandingkan dengan replica.
 
@@ -520,6 +552,8 @@ _Primary_
 Di primary, <code>dep</code> lalu <code>psql -U zuser -d zdb</code> dan <code>\dt</code> menghasilkan <code>Did not find any tables.</code> Kondisi kosong ini sengaja didokumentasikan sebagai titik awal. Tanpa baseline seperti ini, kemunculan tabel di replica nanti bisa saja dikira berasal dari proses lain, padahal satu-satunya sumber perubahan adalah perintah yang dijalankan di primary. Jadi pemeriksaan sekecil ini sebenarnya berfungsi sebagai kontrol di dalam percobaan.
 </p>
 
+---
+
 _Replica_
 
 <p align="center"><img src="images/20_Primary_Sebelum_Pembuatan_Tabel.png" alt="Daftar tabel di replica sebelum pembuatan tabel" width="700"></p>
@@ -531,6 +565,8 @@ _Replica_
 <p align="justify">
 Pemeriksaan yang sama di replica juga menghasilkan <code>Did not find any tables.</code> Hasil yang identik ini bukan kebetulan, melainkan bukti pertama bahwa kedua node memang berbagi keadaan yang sama sejak awal: replica dibangun dari <code>pg_basebackup</code> atas primary, sehingga katalog, user, dan database-nya persis sama. Kalau di tahap ini hasilnya berbeda, berarti ada masalah pada proses backup atau replica sebenarnya membaca data direktori lain, dan percobaan replikasi tidak perlu dilanjutkan sebelum itu dibereskan.
 </p>
+
+---
 
 **Memanipulasi Data Pada _Primary_**
 
@@ -544,6 +580,8 @@ Pemeriksaan yang sama di replica juga menghasilkan <code>Did not find any tables
 Manipulasi data dilakukan di primary: <code>CREATE TABLE testrep (first INT, second VARCHAR(15));</code> lalu <code>SELECT * FROM testrep;</code> yang masih kosong, dilanjutkan dua kali <code>INSERT</code> untuk baris <code>(21, 'Test pertama')</code> dan <code>(23, 'Test ke dua')</code>, dan diakhiri <code>SELECT</code> yang menampilkan dua baris tersebut. Perhatikan bahwa tidak ada <code>BEGIN</code> dan <code>COMMIT</code> yang ditulis, sehingga setiap perintah berjalan dalam transaksi implisit dan langsung di-commit. Ini penting untuk replikasi: WAL hanya memuat perubahan dari transaksi yang sudah commit, jadi kalau data dibiarkan dalam transaksi yang belum di-commit, replica tidak akan pernah menerimanya. Di primary sendiri hasilnya langsung terlihat karena pembacaan terjadi pada node yang sama yang menulis.
 </p>
 
+---
+
 Secara otomatis, manipulasi data tersebut akan direplikasi ke server replica:
 
 <p align="center"><img src="images/22_Manipulasi_Data_Primary.png" alt="Data hasil replikasi terlihat di replica" width="700"></p>
@@ -555,6 +593,8 @@ Secara otomatis, manipulasi data tersebut akan direplikasi ke server replica:
 <p align="justify">
 Ketika dicek di replica, <code>\dt</code> yang pertama masih menjawab <code>Did not find any tables.</code>, tetapi <code>\dt</code> yang dijalankan beberapa saat kemudian sudah menampilkan tabel <code>testrep</code>, dan <code>SELECT * FROM testrep;</code> mengembalikan dua baris yang sama persis dengan primary. Perbedaan dua hasil <code>\dt</code> itu bukan kesalahan, melainkan demonstrasi paling jujur dari replikasi asinkron: primary sudah commit, tetapi replica butuh waktu sepersekian detik untuk menerima dan memutar ulang WAL-nya. Inilah yang dimaksud konsistensi eventual dalam praktik, dan justru karena jedanya terlihat, kita jadi paham bahwa "sudah sama" bukan berarti "sama pada milidetik yang sama". Yang perlu dicatat, tidak ada satu pun perintah tulis yang dijalankan di replica; semua data di sana berasal dari replay WAL.
 </p>
+
+---
 
 #### High-Availability
 
@@ -570,6 +610,8 @@ Ketika dicek di replica, <code>\dt</code> yang pertama masih menjawab <code>Did 
 Untuk menguji skenario kegagalan, primary dimatikan dengan <code>docker-compose stop postgres_primary</code> dan Compose melaporkan container <code>streaming-replication-postgres_primary-1</code> berhenti. Replica tidak ikut mati karena ia container terpisah, tetapi perannya sebagai standby langsung terasa: koneksi streaming terputus, dan dari log sebelumnya terlihat replica menulis <code>replication terminated by primary server</code> lalu <code>waiting for WAL to become available</code>. Dalam kondisi ini replica masih bisa melayani pembacaan data yang sudah ia miliki, tetapi tidak ada lagi node yang menerima tulisan, sehingga aplikasi yang butuh read-write praktis berhenti. Di sinilah terlihat bahwa replikasi saja belum cukup; tanpa mekanisme promosi, ketersediaan sistem belum benar-benar terjaga.
 </p>
 
+---
+
 Setelah kita mengetahui bahwa primary server dalam kondisi down, kita bisa mempromosikan replica menjadi primary dengan perintah <code>pg_promote()</code>:
 
 <p align="center"><img src="images/24_Mempromosikan_replica_menjadi_primary.png" alt="Promosi replica menjadi primary dengan pg_promote" width="700"></p>
@@ -581,6 +623,8 @@ Setelah kita mengetahui bahwa primary server dalam kondisi down, kita bisa mempr
 <p align="justify">
 Karena tidak ada failover otomatis, promosi dilakukan manual dari dalam replica. Query <code>SELECT pg_is_in_recovery();</code> masih <code>t</code>, lalu <code>SELECT pg_promote();</code> dijalankan dan mengembalikan <code>t</code> sebagai tanda perintah diterima, dan pemeriksaan berikutnya menunjukkan <code>pg_is_in_recovery()</code> sudah berubah menjadi <code>f</code>. Perubahan satu karakter itu bermakna besar: PostgreSQL berhenti memutar ulang WAL, menghapus penanda standby, dan membuka akses read-write, sehingga node yang tadinya hanya bisa dibaca sekarang bisa menerima tulisan. Namun promosi ini punya konsekuensi yang harus disadari. Karena replikasinya asinkron, ada kemungkinan transaksi terakhir di primary belum sampai ke replica, dan transaksi itu hilang. Selain itu, kalau primary lama nanti dihidupkan lagi dalam keadaan masih menganggap dirinya primary, akan ada dua primary yang sama-sama menerima tulisan dan data bisa bercabang; kondisi ini disebut split-brain dan penanganannya memerlukan <code>pg_rewind</code> atau pembangunan ulang replica, bukan sekadar menyalakan container.
 </p>
+
+---
 
 **Untuk mematikan semua primary dan replika**
 
@@ -597,6 +641,8 @@ dcd
 <p align="justify">
 Alias <code>dcd</code> menjalankan <code>docker compose down</code>, dan output-nya menunjukkan tiga resource dihapus: container replica, container primary, dan network <code>streaming-replication_default</code>. <code>dps</code> yang dijalankan setelahnya memang kosong, jadi tidak ada container yang tertinggal. Perbedaan <code>down</code> dan <code>stop</code> perlu dipahami: <code>stop</code> hanya menghentikan container sehingga masih bisa di-<code>start</code> lagi, sedangkan <code>down</code> menghapus container dan network-nya. Karena praktikum ini tidak mendefinisikan named volume, data PostgreSQL ikut hilang saat container dihapus, sehingga <code>docker compose up</code> berikutnya akan menjalankan initdb dan <code>pg_basebackup</code> dari awal. Untuk percobaan yang ingin datanya bertahan, volume harus ditambahkan secara eksplisit.
 </p>
+
+---
 
 ### 4.2 Replikasi Master-Master Menggunakan Apache Ignite 3
 
@@ -627,6 +673,8 @@ Folder <code>src--ApacheIgnite</code> berisi <code>docker-compose.yaml</code>, <
 
 Untuk file <code>docker-compose.yaml</code> serta sekumpulan perintah SQL, semuanya diperoleh dari dokumentasi resmi Apache Ignite 3 pada <https://ignite.apache.org/docs/ignite3/latest/quick-start/explore-sql>.
 
+---
+
 Kemudian dibuat file bernama <code>env.sh</code> untuk keperluan shortcut dan diisi dengan perintah:
 
 <p align="center"><img src="images/27_File_env_sh_Apache.png" alt="Isi berkas env.sh untuk Apache Ignite" width="700"></p>
@@ -638,6 +686,8 @@ Kemudian dibuat file bernama <code>env.sh</code> untuk keperluan shortcut dan di
 <p align="justify">
 Isinya mirip <code>env.sh</code> pada praktik pertama, tetapi ada dua alias tambahan yang khusus untuk Ignite. <code>dclm</code> menjalankan CLI dengan folder <code>sql</code> di-mount ke <code>/opt/ignite/sql</code>, sedangkan <code>dcli</code> menjalankan CLI tanpa mount. Keduanya memakai <code>--network=host</code> supaya proses CLI yang hidup di dalam container bisa menjangkau <code>http://localhost:10300</code> di host. Pada <code>dclm</code> terdapat tambahan <code>MSYS_NO_PATHCONV=1</code> yang khas Git Bash di Windows: tanpa variabel itu, path <code>./sql:/opt/ignite/sql</code> bisa diterjemahkan ulang menjadi path Windows dan mount-nya gagal. Perbedaan kecil semacam ini biasanya baru ketahuan saat perintah error, jadi menuliskannya langsung di alias jauh lebih aman daripada mengandalkan ingatan.
 </p>
+
+---
 
 #### Menjalankan Docker Compose
 
@@ -651,6 +701,8 @@ Isinya mirip <code>env.sh</code> pada praktik pertama, tetapi ada dua alias tamb
 Setelah <code>source env.sh</code>, <code>dcu</code> dijalankan dan Compose mengunduh image <code>apacheignite/ignite:3.1.0</code> selama sekitar 56 detik, membuat network <code>ignite3_default</code>, lalu menyalakan tiga container: <code>ignite3-node1-1</code>, <code>ignite3-node2-1</code>, dan <code>ignite3-node3-1</code>. Nama <i>ignite3</i> itu bukan berasal dari nama folder, melainkan dari baris <code>name: ignite3</code> di dalam file compose. Ketiga node memakai definisi yang sama lewat anchor <code>x-ignite-def</code>, dan yang membedakan hanya argumen <code>--node-name</code> serta port yang dipublikasikan. Konfigurasi tambahan diberikan sebagai <code>configs</code> yang menulis <code>/opt/ignite/etc/ignite-config.conf</code>, dan di dalamnya <code>nodeFinder.netClusterNodes</code> menyebut ketiga nama node pada port 3344 agar mereka bisa saling menemukan.
 </p>
 
+---
+
 Setelah proses pull selesai dan docker-compose telah up, maka status container akan tampil sebagai berikut:
 
 <p align="center"><img src="images/29_Cek_status_Docker_Apache.png" alt="Status tiga container Apache Ignite" width="700"></p>
@@ -662,6 +714,8 @@ Setelah proses pull selesai dan docker-compose telah up, maka status container a
 <p align="justify">
 <code>dps</code> menampilkan tiga container dengan image yang sama dan status <code>Up</code>, tanpa keterangan <i>healthy</i>. Ini bukan masalah, karena pada compose Ignite tidak didefinisikan healthcheck seperti pada PostgreSQL; Compose hanya tahu prosesnya masih hidup, bukan apakah node sudah siap menerima koneksi. Dari kolom PORTS terlihat pola yang akan dipakai terus: node1 membuka 10300 dan 10800, node2 membuka 10301 dan 10801, node3 membuka 10302 dan 10802. Port 10300-an adalah REST API untuk operasi administratif sekaligus target koneksi CLI, sedangkan 10800-an adalah port yang nanti dipakai aplikasi untuk terhubung. Pemetaan ini yang membuat tiga node di dalam satu network bisa diakses dari host lewat localhost dengan nomor berbeda.
 </p>
+
+---
 
 Setiap container yang berjalan di dalam network Docker memiliki IP internal. Untuk mengecek IP dari masing-masing node:
 
@@ -685,6 +739,8 @@ docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ign
 Hasilnya node1 <code>172.18.0.3</code>, node2 <code>172.18.0.2</code>, dan node3 <code>172.18.0.4</code>, semuanya berada di network <code>ignite3_default</code>. Informasi ini berguna untuk memastikan ketiga node benar-benar satu network dan bisa saling berkomunikasi, tetapi untuk pemakaian sehari-hari nama service seperti <code>node1</code> atau <code>node2</code> lebih praktis karena Docker menyediakan DNS internal yang menerjemahkan nama itu ke IP yang sesuai. Perlu diingat IP container bisa berubah setiap kali network dibuat ulang, jadi alamat ini jangan di-hardcode di aplikasi.
 </p>
 
+---
+
 #### Inisialisasi Cluster
 
 Jalankan Apache Ignite CLI (atau gunakan alias <code>dcli</code>):
@@ -703,6 +759,8 @@ docker run --rm -it --network=host -e LANG=C.UTF-8 -e LC_ALL=C.UTF-8 apacheignit
 Karena memakai <code>--network=host</code>, proses CLI berbagi network dengan host sehingga <code>localhost:10300</code> bisa dijangkau. Saat pertama dibuka, CLI menampilkan banner Apache Ignite 3 versi 3.1.0 lalu bertanya apakah ingin terhubung ke node default <code>http://localhost:10300</code>. Jawaban <code>Y</code> membuat prompt berubah menjadi <code>[node1]</code>, yang menandakan CLI sudah terhubung ke node1 dan siap menerima perintah administratif. Sebelum cluster diinisialisasi, CLI bahkan memberi tahu bahwa cluster belum diinisialisasi, dan petunjuk itu yang menjadi langkah berikutnya.
 </p>
 
+---
+
 Lalu inisialisasi cluster dengan perintah:
 
 ```bash
@@ -718,6 +776,8 @@ cluster init --name=ignite3 --metastorage-group=node1,node2,node3
 <p align="justify">
 Perintah ini membentuk cluster dengan nama <code>ignite3</code> dan menentukan node mana yang menyimpan metadata cluster. Ketiga node sengaja dipilih semua karena metadata itu dikelola dengan mekanisme consensus; dengan jumlah ganjil, pemilihan pemimpin tetap bisa dilakukan meskipun satu node bermasalah. Perintah ini hanya boleh dijalankan sekali, dan hasilnya <code>Cluster was initialized successfully</code>. Kalau perintah yang sama diulang, sistem akan menolak karena cluster sudah terbentuk.
 </p>
+
+---
 
 Kemudian cek status cluster dengan perintah:
 
@@ -735,6 +795,8 @@ cluster status
 Output-nya cukup padat: <code>[name: ignite3, nodes: 3, status: active, cmgNodes: [node1, node2, node3], msNodes: [node1, node2, node3]]</code>. Status <i>active</i> berarti cluster sudah siap melayani, <code>nodes: 3</code> memastikan tidak ada node yang gagal bergabung, dan <code>cmgNodes</code> menunjukkan ketiga node tergabung dalam cluster management group. Informasi ini yang membedakan cluster sehat dari kumpulan container yang kebetulan hidup: tiga container bisa saja berjalan tanpa saling mengenali, dan <code>cluster status</code> adalah cara cepat untuk memastikan mereka benar-benar satu cluster.
 </p>
 
+---
+
 Kemudian, jika ingin masuk lagi ke CLI dengan perintah yang sama, maka tidak memerlukan inisialisasi lagi.
 
 <p align="center"><img src="images/34_Menjalankan_ApacheIgnite.png" alt="Masuk kembali ke CLI tanpa inisialisasi ulang" width="700"></p>
@@ -746,6 +808,8 @@ Kemudian, jika ingin masuk lagi ke CLI dengan perintah yang sama, maka tidak mem
 <p align="justify">
 CLI tetap menanyakan koneksi ke node default, dan setelah dijawab <code>Y</code> prompt <code>[node1]</code> langsung muncul tanpa pesan bahwa cluster belum diinisialisasi. Artinya informasi cluster tersimpan di metastorage dan dibaca ulang oleh CLI, bukan disimpan di memori sesi CLI. Namun ada catatan penting: karena compose ini tidak memakai volume permanen, metadata itu hanya bertahan selama container hidup. Begitu <code>down</code> dijalankan dan container dihapus, cluster harus diinisialisasi lagi dari awal.
 </p>
+
+---
 
 #### Eksekusi Perintah SQL
 
@@ -764,6 +828,8 @@ sql --file=/opt/ignite/sql/schema.sql
 <p align="justify">
 Perintah ini mengeksekusi berkas skema langsung dari dalam CLI tanpa harus masuk ke mode SQL interaktif. Output-nya sederhana, hanya <code>Updated 0 rows.</code> yang berulang, dan itu wajar karena isi <code>schema.sql</code> mayoritas perintah DDL seperti <code>CREATE TABLE</code> yang tidak mengubah baris data. Angka nol di sini jangan dibaca sebagai kegagalan; yang perlu dipastikan justru tidak ada pesan error di antara baris-baris itu. Cara ini lebih praktis daripada menyalin isi berkas ke prompt, terutama karena skemanya cukup panjang dan rawan salah ketik.
 </p>
+
+---
 
 Masuk ke mode SQL dengan perintah:
 
@@ -791,6 +857,8 @@ SELECT * FROM system.tables WHERE schema = 'PUBLIC';
 Hasilnya sebelas tabel: ALBUM, PLAYLISTTRACK, TRACK, CUSTOMER, MEDIATYPE, PLAYLIST, ARTIST, INVOICELINE, EMPLOYEE, GENRE, dan INVOICE. Yang menarik justru kolom <code>ZONE_NAME</code>: sebagian besar tabel berada di zone <code>CHINOOK</code>, tetapi MEDIATYPE dan GENRE berada di <code>CHINOOKREPLICATED</code>. Di Ignite, zone menentukan bagaimana data disebar dan digandakan; zone <code>CHINOOK</code> memakai distribusi berdasarkan primary key sehingga tiap partisi dimiliki node tertentu, sedangkan <code>CHINOOKREPLICATED</code> menggandakan seluruh isi tabel ke semua node. Pemisahan ini masuk akal karena MEDIATYPE dan GENRE adalah data referensi yang kecil dan sering dibaca bersama tabel lain, sehingga menyalinnya ke semua node lebih menguntungkan daripada mendistribusikannya. Berkas SQL pengisi data lainnya kemudian dieksekusi dengan pola yang sama, dan jumlah baris yang dilaporkan pada gambar berikut menjadi penanda bahwa datanya benar-benar masuk: <code>current_catalog.sql</code> mengubah 275 dan 347 baris, <code>media_and_genre.sql</code> 25 dan 5 baris, <code>tracks.sql</code> 1000, 1000, 1000, dan 503 baris, <code>ee_and_cust.sql</code> 8 dan 59 baris, sedangkan <code>invoices.sql</code> berisi beberapa perintah yang masing-masing mengubah 412, 240, 18, 715, dan beberapa blok 1000 baris.
 </p>
 
+---
+
 #### Verifikasi Propagasi Data
 
 Untuk memeriksa apakah perubahan pada <http://localhost:10300> tersebut telah dipropagasi ke node-node lainnya, kita bisa memeriksa dengan melakukan koneksi ke node lainnya. Berikut adalah node di <http://localhost:10301>:
@@ -809,6 +877,8 @@ connect http://localhost:10301
 CLI memberi peringatan bahwa saat ini masih terhubung ke 10300 dan menanyakan apakah ingin pindah; jawaban <code>Y</code> membuat prompt berubah menjadi <code>[node2]</code>. Perpindahan ini hanya mengganti node tujuan koneksi, bukan membuat cluster baru, sehingga yang akan terlihat di node2 adalah cluster yang sama dari sudut pandang berbeda. Langkah ini penting karena membaca data dari node yang sama tempat data ditulis tidak membuktikan apa pun tentang replikasi.
 </p>
 
+---
+
 Kemudian cek propagasi tabel:
 
 ```sql
@@ -824,6 +894,8 @@ SELECT * FROM system.tables WHERE schema = 'PUBLIC';
 <p align="justify">
 Query yang sama di node2 mengembalikan daftar yang sama persis, lengkap dengan <code>ZONE_NAME</code> dan <code>TABLE_ID</code> yang identik. Kesamaan metadata ini menunjukkan bahwa definisi tabel tidak disimpan terpisah di tiap node, melainkan dikelola sebagai bagian dari cluster dan disebarkan lewat mekanisme consensus. Jadi sebelum sampai ke data, lapisan skema sudah lebih dulu konsisten di ketiga node. Kalau daftar tabelnya berbeda, bisa dipastikan ada node yang tidak benar-benar bergabung ke cluster, dan itu biasanya terlihat lebih awal pada <code>cluster status</code>.
 </p>
+
+---
 
 Contoh query untuk analytics:
 
@@ -861,6 +933,8 @@ ORDER BY
 Query itu membentuk <code>YearMonth</code> dari <code>EXTRACT</code> tahun dan bulan yang disambung dengan tanda hubung, memberi nol di depan untuk bulan satu digit, lalu menghitung <code>COUNT(DISTINCT InvoiceId)</code>, <code>COUNT(DISTINCT CustomerId)</code>, <code>SUM(Total)</code>, dan <code>AVG(Total)</code> sebelum dikelompokkan per tahun dan bulan serta diurutkan menurun. Hasilnya mencakup rentang 2020-01 sampai 2024-12 dengan 6–7 invoice per bulan. Angka <code>MonthlyRevenue</code> yang sebagian besar 37,62 dan <code>AverageOrderValue</code> sekitar 5,37 terlihat mencurigakan kalau dibaca sekilas, tetapi itu memang karakter data contoh yang nilainya kecil dan berulang; beberapa bulan seperti 2023-05 dan 2022-06 punya nilai berbeda karena jumlah dan komposisi invoice-nya berbeda. Yang penting bukan besar angkanya, melainkan bahwa query yang sama bisa dijalankan di node mana pun.
 </p>
 
+---
+
 Mari memeriksa <http://localhost:10302>:
 
 <p align="center"><img src="images/42_Memeriksa_analitik.png" alt="Hasil query analitik di node3 bagian pertama" width="700"></p>
@@ -876,6 +950,8 @@ Mari memeriksa <http://localhost:10302>:
 <p align="justify">
 Hasil query di node3 sama dengan node2 hingga digit desimal. Dengan tiga node yang memberi jawaban identik, klaim master-master menjadi masuk akal: tidak ada satu node pun yang diperlakukan sebagai cadangan pasif, karena semuanya melayani pembacaan dan semuanya bisa menerima penulisan. Perlu dicatat bahwa kesamaan ini bukan karena ada satu primary yang menyalin ke dua node lain, melainkan karena data memang didistribusikan dan direplikasi di tingkat partisi oleh Ignite sendiri. Itu sebabnya hasilnya konsisten meskipun koneksi datang dari node yang berbeda.
 </p>
+
+---
 
 #### Menghentikan Cluster
 
