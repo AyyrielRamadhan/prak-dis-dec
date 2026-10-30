@@ -222,46 +222,24 @@ _File blacksheep_lb/Dockerfile_
 # Build the Server
 FROM python:3.14.4-slim AS server_builder
 WORKDIR /home
-RUN echo "APT::Get::Assume-Yes \"true\";" > /etc/apt/apt.conf.d/90assumeyes
-RUN apt-get update && apt-get install make \
-    apt-utils \
-    lsb-release \
-    software-properties-common \
-    apt-transport-https \
-    ca-certificates \
-    gnupg \
-    sqlite3 \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
-    libssl-dev \
-    zlib1g-dev \
-    libbz2-dev \
-    libsqlite3-dev \
-    unixodbc-dev \
-    libncurses5-dev \
-    libgdbm-dev \
-    libnss3-dev \
-    libreadline-dev \
-    libffi-dev \
-    libjpeg-dev \
-    zlib1g-dev \
-    wget
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY . /home
-RUN python -m venv venv && . venv/bin/activate && pip install --upgrade pip && pip install -r requirements.txt
+RUN python -m venv venv && \
+    . venv/bin/activate && \
+    pip install --upgrade pip && \
+    pip install -r requirements.txt
 
 EXPOSE 80
 
 FROM python:3.14.4-slim
 WORKDIR /home
-COPY --from=server_builder /home/ /home/
+COPY --from=server_builder /home /home
 
 ENV APP_ENV=prod BG_COLOR="#1abc9c" APP_ROUTE_PREFIX=""
-RUN echo "APT::Get::Assume-Yes \"true\";" > /etc/apt/apt.conf.d/90assumeyes
-RUN apt-get update && apt-get install \
-    ca-certificates \
-    sqlite3 \
-    libsqlite3-dev \
-    libjpeg-dev \
-    zlib1g-dev
 CMD ["sh", "-c", ". venv/bin/activate && uvicorn \"app.main:app\" --host 0.0.0.0 --port 80 --log-level info"]
 ```
 
@@ -424,6 +402,91 @@ alias dcln="docker logs nginx"
 ```
 
 <img src="images/25_Isi_File_env_sh.png" width="700">
+
+#### Pembahasan
+
+---
+
+Sebelum menjalankan Docker, Muat Alias terlebih dahulu dengan perintah:
+
+```bash
+source env.sh
+```
+
+<img src="images/26_Muat_Alias.png" width="700">
+
+#### Pembahasan
+
+---
+
+#### 4.1.4 Jalankan Docker Compose
+
+**_Jalankan Docker Compose_**
+
+Gunakan perintah:
+
+```bash
+dcu
+```
+
+<img src="images/27_Alias_dcu.png" width="700">
+<img src="images/28_Alias_dcu.png" width="700">
+
+#### Pembahasan
+
+---
+
+Untuk memeriksa, bisa melihat pada browser
+
+<img src="images/29_Uji_Jalankan_Blacksheep_Localhost.png" width="700">
+
+#### Pembahasan
+
+---
+
+**_Cek status Container_**
+
+Gunakan perintah
+
+```bash
+dps
+```
+
+<img src="images/30_Cek_Status_Container.png" width="700">
+
+#### Pembahasan
+
+---
+
+**_Periksa Log Distribusi Request_**
+
+Gunakan perintah
+
+```bash
+docker logs workspace-05-bs_app-2
+```
+
+dan
+
+```bash
+docker logs workspace-05-bs_app-1
+```
+
+<img src="images/31_Periksa_Log_Distribusi_Request.png" width="700">
+
+#### Pembahasan
+
+---
+
+**_Mematikan Semua Container_**
+
+Jika sudah selesai, matikan semua container dengan perintah:
+
+```bash
+dcd
+```
+
+<img src="images/32_Mematikan_Semua_Container.png" width="700">
 
 #### Pembahasan
 
