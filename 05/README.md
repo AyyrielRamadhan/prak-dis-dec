@@ -94,7 +94,7 @@ source .venv/Scripts/activate
 
 Untuk membuat aplikasi web menggunakan Blacksheep, install blacksheep dan blacksheep-cli terlebih dahulu:
 
-_Install Blacksheep_
+**_Install Blacksheep_**
 
 Untuk menginstall Blacksheep dapat menggunakan perintah:
 
@@ -108,7 +108,7 @@ uv pip install blacksheep
 
 ---
 
-_Install Blacksheep CLI_
+**_Install Blacksheep CLI_**
 
 Untuk menginstall Blacksheep CLI dapat menggunakan perintah:
 
@@ -136,7 +136,7 @@ blacksheep create
 
 ---
 
-Install paket yang diperlukan:
+**_Install paket yang diperlukan_**
 
 Masuk terlebih dahulu ke folder direktori blacksheep_lb dengan perintah:
 
@@ -164,13 +164,25 @@ python dev.py
 
 <img src="images/12_Uji_Jalan_Aplikasi.png" width="700">
 
+#### Pembahasan
+
+---
+
 kemudian akses ke http://localhost:44777/ menggunakan browser
 
 <img src="images/13_Open_Browser.png" width="700">
 
+#### Pembahasan
+
+---
+
 Lalu pada shell tempat mengaktifkan server, muncul:
 
 <img src="images/14_Shell_After_Menjalankan_Di_Browser.png" width="700">
+
+#### Pembahasan
+
+---
 
 Pada titik ini, sudah berhasil membuat aplikasi menggunakan Blacksheep. Perhatikan, dalam direktori blacksheep_lb sudah ada Dockerfile yang bisa digunakan:
 
@@ -208,7 +220,7 @@ _File blacksheep_lb/Dockerfile_
 
 ```
 # Build the Server
-FROM python:3.13.1-slim AS server_builder
+FROM python:3.14.4-slim AS server_builder
 WORKDIR /home
 RUN echo "APT::Get::Assume-Yes \"true\";" > /etc/apt/apt.conf.d/90assumeyes
 RUN apt-get update && apt-get install make \
@@ -238,7 +250,7 @@ RUN python -m venv venv && . venv/bin/activate && pip install --upgrade pip && p
 
 EXPOSE 80
 
-FROM python:3.13.1-slim
+FROM python:3.14.4-slim
 WORKDIR /home
 COPY --from=server_builder /home/ /home/
 
@@ -253,9 +265,167 @@ RUN apt-get update && apt-get install \
 CMD ["sh", "-c", ". venv/bin/activate && uvicorn \"app.main:app\" --host 0.0.0.0 --port 80 --log-level info"]
 ```
 
+<img src="images/16_Isi_Dockerfile_Pada_blacksheep_lb.png" width="700">
+
 #### Pembahasan
 
 ---
+
+Kemudian membuat direktori baru bernama _nginx_ pada workspace-05 dengan perintah:
+
+```bash
+mkdir nginx
+```
+
+Lalu masuk ke folder tersebut dengan perintah:
+
+```bash
+cd nginx
+```
+
+<img src="images/17_Buat_Folder_nginx.png" width="700">
+
+#### Pembahasan
+
+---
+
+Selanjutnya membuat file Dockerfile dan nginx.conf pada direktori nginx
+
+**_Dockerfile_**
+
+Gunakan perintah:
+
+```bash
+touch Dockerfile
+```
+
+<img src="images/18_Buat_File_Dockerfile_Pada_Folder_nginx.png" width="700">
+
+#### Pembahasan
+
+---
+
+Kemudian **_Dockerfile_** di isi dengan kode:
+
+```
+FROM nginx
+
+# Override the default nginx configuration file
+RUN rm /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/nginx.conf
+```
+
+<img src="images/19_Isi_File_Dockerfile.png" width="700">
+
+#### Pembahasan
+
+---
+
+**_nginx.conf_**
+
+Gunakan perintah:
+
+```bash
+touch nginx.conf
+```
+
+<img src="images/20_Buat_File_nginx_conf_Pada_Folder_nginx.png" width="700">
+
+#### Pembahasan
+
+---
+
+Kemudian **_nginx.conf_** di isi dengan kode:
+
+```
+events {
+    worker_connections 4096;
+}
+
+http {
+    # Definisi grup, lihat di docker-compose.yml
+    upstream backend {
+        server bs_app:80;
+        }
+        server {
+            listen 80;
+            location / {
+                # sesuaikan dengan nama upstream di atas
+                proxy_pass http://backend;
+                }
+            }
+}
+```
+
+<img src="images/21_Isi_File_nginx_conf.png" width="700">
+
+#### Pembahasan
+
+---
+
+**_docker-compose.yml_**
+
+Selanjutnya membuat file bernama **_docker-compose.yml_** pada workspace-05 dengan perintah:
+
+```bash
+touch docker-compose.yml
+```
+
+<img src="images/22_Buat_File_docker_compose_yml.png" width="700">
+
+#### Pembahasan
+
+---
+
+Kemudian **_docker-compose.yml_** di isi dengan kode:
+
+```
+services:
+  # aplikasi yang akan di-scale
+  # ada pada direktori blacksheep_lb
+  bs_app:
+    build: ./blacksheep_lb
+  # aktifkan nginx dengan menggunakan nginx/Dockerfile
+  # lihat pada build
+  nginx:
+    container_name: nginx
+    build: ./nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - bs_app
+```
+
+<img src="images/23_Isi_File_docker_compose_yml.png" width="700">
+
+#### Pembahasan
+
+**_env.sh_**
+
+Selanjutnya membuat file bernama **_env.sh_** pada workspace-05 dengan perintah:
+
+```bash
+touch env.sh
+```
+
+<img src="images/24_Membuat_File_env_sh.png" width="700">
+
+#### Pembahasan
+
+---
+
+Kemudian **_env.sh_** di isi dengan kode:
+
+```
+alias dcu="docker-compose up --build -d --scale bs_app=2"
+alias dcd="docker compose down"
+alias dps="docker ps --format '{{.Image}} {{.Names}}'"
+alias dcln="docker logs nginx"
+```
+
+<img src="images/25_Isi_File_env_sh.png" width="700">
+
+#### Pembahasan
 
 ---
 
