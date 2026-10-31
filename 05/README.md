@@ -446,7 +446,7 @@ Untuk memeriksa, bisa melihat pada browser
 
 **_Cek status Container_**
 
-Gunakan perintah
+Gunakan perintah:
 
 ```bash
 dps
@@ -460,7 +460,7 @@ dps
 
 **_Periksa Log Distribusi Request_**
 
-Gunakan perintah
+Gunakan perintah:
 
 ```bash
 docker logs workspace-05-bs_app-2
@@ -487,6 +487,189 @@ dcd
 ```
 
 <img src="images/32_Mematikan_Semua_Container.png" width="700">
+
+#### Pembahasan
+
+---
+
+### 4.2 Failure Detection
+
+**_Heartbeat_**
+
+Buat file **_check-server.py_** dengan isi kode:
+
+```
+# taken from:
+# https://stackoverflow.com/questions/20867184/how-to-check-whether-my-server-is-up-and-running-using-python
+
+import sys
+import socket
+
+def servertest(argv):
+    host = argv[1]
+    port = int(argv[2])
+
+    args = socket.getaddrinfo(host, port, socket.AF_INET, socket.SOCK_STREAM)
+    for family, socktype, proto, canonname, sockaddr in args:
+        s = socket.socket(family, socktype, proto)
+        try:
+            s.connect(sockaddr)
+        except socket.error:
+            return False
+        else:
+            s.close()
+            return True
+
+
+if __name__ == "__main__":
+    if servertest(sys.argv):
+        print("Server up")
+    else:
+        print("Server down")
+```
+
+<img src="images/34_Check-Server_py.png" width="700">
+
+#### Pembahasan
+
+---
+
+Untuk menguji Heartbeat dapat menggunakan perintah:
+
+Untuk blacksheep pada **_port 44777_** gunakan perintah:
+
+```bash
+python check-server.py localhost 44777
+```
+
+dan
+
+Untuk blacksheep pada **_port localhost_** gunakan perintah:
+
+```bash
+python check-server.py localhost 80
+```
+
+#### Pembahasan
+
+---
+
+Kemudian menguji ketika aplikasi blacksheep di port 44777 atau di localhost tidak aktif hasilnya seperti berikut:
+
+<img src="images/35_Hasil_Before_On_Blacksheep.png" width="700">
+
+Selanjutnya menguji aplikasi blacksheep di port 44777 atau di localhost yang aktif hasilnya seperti berikut:
+
+<img src="images/36_Hasil_After_On_Blacksheep.png" width="700">
+
+#### Pembahasan
+
+---
+
+**_failure-detection_**
+
+Library tenacity (https://github.com/jd/tenacity) bisa digunakan untuk mengelola proses yang memerlukan keterkaitan dengan komponen di luar aplikasi. Hal ini diperlukan. karena selalu ada kemungkinan kegagalan untuk koneksi dengan komponen di luar aplikasi.
+
+_Install Package tenacity dan request_
+
+<img src="images/37_Menginstall_Package_Tenacity.png" width="700">
+
+#### Pembahasan
+
+---
+
+Kemudian buat file bernama **_check-retry.py_** dengan isi kode:
+
+```
+from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
+import requests
+
+@retry(
+    stop=stop_after_attempt(5),  # Stop after 5 attempts
+    wait=wait_exponential(multiplier=1, min=4, max=10), # Exponential backoff with min 4s, max 10s
+    retry=retry_if_exception_type(requests.exceptions.ConnectionError) # Retry only on connection errors
+)
+
+def make_http_request(url):
+    print(f"Attempting to access {url}...")
+    response = requests.get(url)
+    response.raise_for_status()  # Raise an exception for bad status codes (4xx or 5xx)
+    print(f"Successfully accessed {url}")
+    return response.text
+
+try:
+    content = make_http_request("http://localhost:44777")
+    # Process the content
+except Exception as e:
+    print(f"Failed to access URL after multiple retries: {e}")
+```
+
+<img src="images/38_Isi_File_check-retry_py.png" width="700">
+
+#### Pembahaasan
+
+---
+
+Lalu membuat file bernama **_check-circuit-breaker.py_** dengan isi:
+
+```
+import pybreaker
+import requests
+
+breaker = pybreaker.CircuitBreaker(fail_max=4, reset_timeout=20)
+
+@breaker
+def make_http_request(url):
+    print(f"Attempting to access {url}...")
+    response = requests.get(url)
+    response.raise_for_status()  # Raise an exception for bad status codes (4xx or 5xx)
+    print(f"Successfully accessed {url}")
+    return response.text
+
+try:
+    content = make_http_request("http://localhost:44777")
+    # Process the content
+except Exception as e:
+    print(e)
+```
+
+<img src="images/39_Isi_File_check-circuit-breaker_py.png" width="700">
+
+#### Pembahasan
+
+---
+
+Kemudian lakukan pengujian menggunakan perintah:
+
+```bash
+python check-retry.py
+```
+
+dan
+
+```bash
+python check-circuit-breaker.py
+```
+
+#### Pembahasan
+
+---
+
+menguji ketika aplikasi blacksheep di port 44777 atau di localhost tidak aktif hasilnya seperti berikut:
+
+<img src="images/40_check_retry_Before_on_blacksheep.png" width="700">
+
+<img src="images/41_check_retry_Before_on_blacksheep.png" width="700">
+
+#### Pembahasan
+
+---
+
+menguji ketika aplikasi blacksheep di port 44777 atau di localhost aktif hasilnya seperti berikut:
+
+<img src="images/42_check_retry_After_on_blacksheep.png" width="700">
+
+<img src="images/43_check_retry_After_on_blacksheep.png" width="700">
 
 #### Pembahasan
 
