@@ -503,6 +503,8 @@ services:
 
 <p align="justify">Service <code>bs_app</code> dibangun dari folder aplikasi dan tidak memetakan port ke host. Service <code>nginx</code> memetakan port 80 dan menunggu <code>bs_app</code> siap. Karena hanya nginx yang terbuka ke luar, semua akses pasti melewati load balancer.</p>
 
+---
+
 **_env.sh_**
 
 Selanjutnya membuat file bernama **_env.sh_** pada workspace-05 dengan perintah:
@@ -707,7 +709,7 @@ if __name__ == "__main__":
 
 ---
 
-Untuk menguji Heartbeat dapat menggunakan perintah:
+Menguji Heartbeat dapat menggunakan perintah:
 
 Untuk blacksheep pada **_port 44777_** gunakan perintah:
 
@@ -855,7 +857,7 @@ python check-circuit-breaker.py
 
 ---
 
-menguji ketika aplikasi blacksheep di port 44777 atau di localhost tidak aktif hasilnya seperti berikut:
+Menguji ketika aplikasi blacksheep di port 44777 atau di localhost tidak aktif hasilnya seperti berikut:
 
 <p align="center">
   <img src="images/40_check_retry_Before_on_blacksheep.png" alt="Keluaran check-retry.py saat server tidak aktif" width="700">
