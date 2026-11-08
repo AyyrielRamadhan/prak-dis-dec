@@ -167,6 +167,8 @@ Tambahkan config pada file $HADOOP_HOME/etc/hadoop/hdfs-site.xml dengan kode:
 </configuration>
 ```
 
+Sehingga menjadi:
+
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
@@ -216,6 +218,8 @@ Tambahkan config pada file $HADOOP_HOME/etc/hadoop/core-site.xml dengan kode:
   </property>
 </configuration>
 ```
+
+Sehingga menjadi:
 
 ```
 <?xml version="1.0" encoding="UTF-8"?>
@@ -270,6 +274,8 @@ Tambahkan Config pada file $HADOOP_HOME/etc/hadoop/mapred-site.xml dengan kode:
   </property>
 </configuration>
 ```
+
+Sehingga menjadi:
 
 ```
 <?xml version="1.0"?>
@@ -335,6 +341,8 @@ Tambahkan Config pada file $HADOOP_HOME/etc/hadoop/yarn-site.xml dengan kode:
   </property>
 </configuration>
 ```
+
+Sehingga menjadi:
 
 ```
 <?xml version="1.0"?>
