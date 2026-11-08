@@ -114,7 +114,7 @@ Selanjutnya, untuk memeriksa apakah telah terinstall dengan baik, jalankan perin
 hadoop
 ```
 
-<img src="images/04_Cek_Version_Hadoop.png" width="700">
+<img src="images/06_Menjalankan_Hadoop.png" width="700">
 
 #### Pembahasan
 
