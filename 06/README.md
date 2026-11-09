@@ -31,7 +31,7 @@ Untuk berinteraksi dengan HDFS, tersedia _FileSystem Shell_ (`hdfs dfs`) yang me
 
 ---
 
-# ⏩ PEMBAHASAN PRAKTIKUM
+## ⏩ PEMBAHASAN PRAKTIKUM
 
 ### 1. Persyaratan Software
 
@@ -61,6 +61,8 @@ Ambil distribusi Apache Hadoop di https://hadoop.apache.org/releases.html, dan i
 
 ### 3. Instalasi Apache Hadoop
 
+Praktikum ini memakai dua instalasi Hadoop yang terpisah. Instalasi pertama berada di MSYS2 UCRT64 pada Windows dan dipakai untuk mengenal perintah dasar Hadoop pada Gambar 2–6. Instalasi kedua berada di Ubuntu WSL dan dipakai untuk konfigurasi serta menjalankan HDFS. Keduanya memiliki direktori instalasi sendiri di `~/software/storage/hadoop`, sehingga perubahan konfigurasi pada satu instalasi tidak otomatis berlaku pada instalasi lainnya.
+
 Buat folder atau direktori terlebih dahulu dengan nama misal **_software_**, dengan perintah:
 
 ```bash
@@ -74,7 +76,7 @@ cd software/storage
 
 ---
 
-Kemudian ekstrak berkas Hadoop yang sudah di unduh dengan perintah:
+Kemudian ekstrak berkas Hadoop yang sudah diunduh dengan perintah:
 
 ```bash
 tar -xvf ~/Downloads/hadoop-3.5.0.tar.gz
@@ -88,7 +90,7 @@ catatan: untuk **_/Downloads_** sesuaikan dengan tempat berkas Hadoop disimpan.
 
 ---
 
-Lalu membuat **_Symlink_** dan **_Verikasi_** dengan perintah
+Lalu membuat **_Symlink_** dan **_Verifikasi_** dengan perintah
 
 ```bash
 ln -s hadoop-3.5.0 hadoop
@@ -202,7 +204,7 @@ echo $PDSH_RCMD_TYPE
 Kemudian, mengatur env variabel dengan perintah:
 
 ```bash
- export PDSH_RCMD_TYPE=ssh
+export PDSH_RCMD_TYPE=ssh
 ```
 
 Atur supaya ssh ke localhost tidak perlu login dengan perintah:
@@ -226,6 +228,8 @@ chmod 0600 ~/.ssh/authorized_keys
 ---
 
 ### 5. Konfigurasi Apache Hadoop
+
+Konfigurasi pada bagian ini ditampilkan sebagai contoh konfigurasi instalasi MSYS2. Pada instalasi Ubuntu WSL yang dipakai menjalankan HDFS, konfigurasi yang benar-benar digunakan lebih ringkas: `fs.defaultFS` dan `dfs.replication = 1`, ditambah lokasi penyimpanan NameNode dan DataNode. File `mapred-site.xml` dan `yarn-site.xml` pada WSL masih menggunakan konfigurasi bawaan karena fokus praktikum ini adalah HDFS, bukan menjalankan pekerjaan MapReduce.
 
 Tambahkan config pada file $HADOOP_HOME/etc/hadoop/hdfs-site.xml dengan kode:
 
@@ -282,11 +286,11 @@ Tambahkan config pada file $HADOOP_HOME/etc/hadoop/core-site.xml dengan kode:
       <value>hdfs://localhost:9000</value>
   </property>
   <property>
-      <name>hadoop.proxyuser.yourusername.groups</name>
+      <name>hadoop.proxyuser.Ayyrieldev.groups</name>
       <value>*</value>
   </property>
   <property>
-      <name>hadoop.proxyuser.yourusername.hosts</name>
+      <name>hadoop.proxyuser.Ayyrieldev.hosts</name>
       <value>*</value>
   </property>
 </configuration>
@@ -319,11 +323,11 @@ Sehingga menjadi:
       <value>hdfs://localhost:9000</value>
   </property>
   <property>
-      <name>hadoop.proxyuser.yourusername.groups</name>
+      <name>hadoop.proxyuser.Ayyrieldev.groups</name>
       <value>*</value>
   </property>
   <property>
-      <name>hadoop.proxyuser.yourusername.hosts</name>
+      <name>hadoop.proxyuser.Ayyrieldev.hosts</name>
       <value>*</value>
   </property>
 </configuration>
@@ -583,12 +587,22 @@ SHUTDOWN_MSG: Shutting down NameNode at LAPTOP-E46UBD60/127.0.1.1
 
 ### 7. Atur konfigurasi JAVA_HOME
 
-Edit file $HADOOP_HOME/etc/hadoop/hadoop-env.sh dengan mengisikan env var untuk JAVA_HOME sesuai dengan lokasi di komputer / server / node
+Edit file `$HADOOP_HOME/etc/hadoop/hadoop-env.sh` dan isi `JAVA_HOME` sesuai lokasi JDK pada lingkungan yang digunakan. Gambar 9 menunjukkan konfigurasi pada instalasi MSYS2:
 
-Sesuaikan dengan lokasi Java yang terpasang. Pada lingkungan MSYS2, lokasi JDK dapat dicek melalui C:\Program Files\Java. Karena JDK saya berada di C:\Program Files\Java\jdk-17.0.21.0.3, maka:
-
-```
+```bash
 export JAVA_HOME="/c/Program Files/Java/jdk-17.0.21.0.3"
+```
+
+HDFS pada praktikum ini dijalankan melalui instalasi Ubuntu WSL. Pada WSL, path Windows di atas tidak digunakan. Lokasi JDK WSL yang dipakai adalah:
+
+```bash
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+```
+
+Path tersebut juga dapat diisi secara otomatis dengan:
+
+```bash
+export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))
 ```
 
 <p align="center">
@@ -599,7 +613,7 @@ export JAVA_HOME="/c/Program Files/Java/jdk-17.0.21.0.3"
 
 #### Pembahasan
 
-<p align="justify">Script Hadoop membutuhkan <code>JAVA_HOME</code> untuk mengetahui di mana Java berada, dan pada lingkungan MSYS2 path Windows ditulis dalam format Unix seperti <code>/c/Program Files/Java/jdk-17.0.21.0.3</code>. Path ini harus benar-benar menunjuk ke folder JDK, bukan ke folder JRE, karena Hadoop membutuhkan alat pengembangan Java. Kalau nilainya salah, daemon biasanya langsung berhenti dengan pesan bahwa <code>JAVA_HOME</code> tidak di-set atau Java tidak ditemukan.</p>
+<p align="justify">Script Hadoop membutuhkan <code>JAVA_HOME</code> untuk mengetahui lokasi Java. Nilai pada Gambar 9 hanya berlaku untuk instalasi MSYS2, yang menulis path Windows dalam format <code>/c/...</code>. Karena HDFS dijalankan dari Ubuntu WSL, instalasi tersebut memakai path JDK Linux <code>/usr/lib/jvm/java-17-openjdk-amd64</code>, atau nilai yang dideteksi otomatis dengan <code>readlink</code>. Kedua instalasi memiliki <code>hadoop-env.sh</code> masing-masing, sehingga pengaturan pada MSYS2 tidak otomatis berlaku di WSL. Kalau path tidak menunjuk ke folder JDK yang benar, daemon biasanya berhenti dengan pesan bahwa <code>JAVA_HOME</code> tidak di-set atau Java tidak ditemukan.</p>
 
 ---
 
@@ -669,11 +683,11 @@ stop-dfs.sh
 
 ---
 
-# 📜 PEMBAHASAN TUGAS
+## 📜 PEMBAHASAN TUGAS
 
 ### 1. Buat direktori di HDFS
 
-Untuk membuat direkori gunakan perintah
+Untuk membuat direktori, gunakan perintah
 
 ```bash
 hdfs dfs -mkdir -p /user/Ayyrieldev/datasets
