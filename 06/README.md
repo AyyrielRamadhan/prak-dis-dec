@@ -654,7 +654,7 @@ Pemantauan bisa dilakukan menggunakan Web **_http://localhost:9870/dfshealth.htm
 ### 9. Selesai
 
 <p align="center">
-  <img src="images/12. Selesai.png" width="700" alt="Terminal yang menjalankan hdfs dfs -ls /, hdfs dfs -mkdir -p /user/Ayyrieldev, dan hdfs dfs -ls /user">
+  <img src="images/12_Selesai.png" width="700" alt="Terminal yang menjalankan hdfs dfs -ls /, hdfs dfs -mkdir -p /user/Ayyrieldev, dan hdfs dfs -ls /user">
   <br>
   <em>Gambar 12. Pembuatan direktori user di HDFS</em>
 </p>
