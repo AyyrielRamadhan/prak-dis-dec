@@ -8,9 +8,26 @@
 
 ## 🎯 Tujuan Praktikum
 
+- Memahami konsep dasar _distributed file system_ dan alasan HDFS digunakan untuk menyimpan data berukuran besar.
+- Menyiapkan lingkungan praktikum yang terdiri dari JDK, Apache Hadoop 3.5.0, pdsh, dan SSH pada satu node.
+- Melakukan konfigurasi Hadoop melalui `core-site.xml`, `hdfs-site.xml`, `mapred-site.xml`, dan `yarn-site.xml`.
+- Memformat NameNode serta menjalankan, memantau, dan menghentikan daemon HDFS.
+- Mengoperasikan HDFS melalui shell (`hdfs dfs`) dan Web UI, mulai dari membuat direktori hingga mengunggah dan memverifikasi file.
+- Menganalisis keterkaitan antara konfigurasi yang dipakai dengan peran NameNode, DataNode, dan replikasi blok dalam proses penyimpanan file.
+
 ---
 
 ## 📚 Dasar Teori
+
+_Distributed file system_ adalah sistem file yang menyimpan datanya di beberapa mesin, tetapi tetap diakses seolah-olah merupakan satu sistem file biasa. Ide utamanya sederhana: ketika data sudah terlalu besar atau terlalu penting untuk ditaruh di satu disk, data tersebut dipecah dan disebar ke beberapa node. Dengan cara ini kapasitas penyimpanan bisa bertambah tanpa mengganti satu komputer mahal, dan kegagalan pada satu mesin tidak otomatis membuat seluruh data hilang. HDFS (_Hadoop Distributed File System_) adalah salah satu implementasi konsep ini yang paling banyak dipakai di ekosistem _big data_.
+
+HDFS mengadopsi arsitektur _master–worker_ yang terinspirasi dari Google File System. Pihak _master_ adalah **NameNode**, yang tidak menyimpan isi file, melainkan menyimpan metadata: struktur direktori, nama file, izin akses, serta peta blok ke DataNode. Pihak _worker_ adalah **DataNode**, yang menyimpan blok data secara fisik dan melaporkan kondisinya ke NameNode. Ada juga **Secondary NameNode**, yang tugasnya membuat _checkpoint_ metadata secara berkala, bukan menjadi cadangan NameNode secara langsung.
+
+Saat sebuah file diunggah, HDFS memecahnya menjadi blok-blok dengan ukuran default 128 MB. Setiap blok disimpan di DataNode dan direplikasi, dengan nilai default tiga salinan pada klaster normal. Replikasi inilah yang membuat HDFS tahan terhadap kegagalan: jika satu DataNode mati, salinan di node lain masih bisa dipakai. NameNode memantau DataNode lewat _heartbeat_ dan _block report_; kalau ada blok yang jumlah salinannya kurang, HDFS akan berusaha membuat salinan baru selama masih ada node yang tersedia. Pada praktikum ini, karena hanya ada satu node, replikasi dikurangi menjadi satu.
+
+HDFS dirancang untuk pola akses _write once, read many_: file ditulis sekali, lalu dibaca berkali-kali. Model ini cocok untuk pemrosesan batch seperti MapReduce, tetapi kurang cocok untuk aplikasi yang membutuhkan perubahan kecil secara terus-menerus atau akses dengan latensi sangat rendah. HDFS juga kurang efisien untuk banyak file kecil, karena metadata setiap file tetap harus disimpan di NameNode. Karena itu, HDFS lebih sering dipakai untuk dataset besar yang dibaca secara berurutan.
+
+Untuk berinteraksi dengan HDFS, tersedia _FileSystem Shell_ (`hdfs dfs`) yang menyediakan perintah mirip perintah Unix seperti `ls`, `mkdir`, `put`, `get`, dan `rm`. Selain itu, NameNode menyediakan Web UI pada port 9870 untuk melihat kondisi klaster, daftar DataNode, serta isi direktori. Pada praktikum ini Hadoop dijalankan dalam mode _pseudo-distributed_: semua daemon berada di satu komputer, tetapi tetap berkomunikasi melalui jaringan lokal seolah-olah merupakan klaster kecil. Konfigurasi YARN juga disiapkan agar MapReduce dapat berjalan di atas pengelola sumber daya tersebut, meskipun fokus utama modul ini adalah HDFS.
 
 ---
 
@@ -22,15 +39,23 @@ Gunakan JDK Versi 17 atau 21. Jika akan mengkompilasi Apache Hadoop, gunakan ver
 
 #### Pembahasan
 
+<p align="justify">Hadoop berjalan di atas Java, sehingga seluruh daemon-nya membutuhkan JDK yang benar-benar tersedia, bukan hanya Java Runtime. Saya memakai JDK 17 karena versi itu yang dipakai untuk membangun dan menjalankan Hadoop 3.5.0, sedangkan untuk sisi client masih terbuka pada JDK 17 atau 21. Sebelum melanjutkan, versi Java saya cek dengan <code>java -version</code> agar tidak terjebak pada masalah klasik seperti <code>JAVA_HOME</code> tidak ditemukan atau versi kelas yang tidak cocok saat daemon dijalankan.</p>
+
 ---
 
 ### 2. Unduh Apache Hadoop
 
 Ambil distribusi Apache Hadoop di https://hadoop.apache.org/releases.html, dan install yang **_binary_** bukan yang binary-aarch64.
 
-<img src="images/01_Unduh_Apache_Hadoop.png" width="700">
+<p align="center">
+  <img src="images/01_Unduh_Apache_Hadoop.png" width="700" alt="Halaman unduhan Apache Hadoop yang menampilkan versi 3.5.0 beserta tautan source, binary, dan binary-aarch64">
+  <br>
+  <em>Gambar 1. Halaman unduhan Apache Hadoop 3.5.0</em>
+</p>
 
 #### Pembahasan
+
+<p align="justify">Saya memilih distribusi <em>binary</em> biasa, bukan <em>binary-aarch64</em>, karena laptop yang dipakai menggunakan prosesor x86_64. Kalau yang diunduh adalah versi arsitektur lain, binernya bisa ada tetapi tidak akan bisa dijalankan. Mengambil installer dari halaman resmi Apache juga penting supaya versinya jelas dan checksum-nya bisa diverifikasi, sehingga tidak ada keraguan apakah file yang dipakai benar-benar Hadoop 3.5.0.</p>
 
 ---
 
@@ -45,6 +70,8 @@ cd software/storage
 
 #### Pembahasan
 
+<p align="justify">Saya sengaja menaruh Hadoop di direktori khusus <code>software/storage</code> agar semua file pendukungnya terkumpul di satu tempat dan tidak bercampur dengan file sistem. Perintah <code>mkdir -p</code> membuat folder induk sekaligus, dan opsi <code>-p</code> membuat perintah ini tidak error kalau foldernya ternyata sudah ada. Dengan begitu, lokasi <code>$HADOOP_HOME</code> nanti menjadi konsisten dan mudah diingat.</p>
+
 ---
 
 Kemudian ekstrak berkas Hadoop yang sudah di unduh dengan perintah:
@@ -57,18 +84,26 @@ catatan: untuk **_/Downloads_** sesuaikan dengan tempat berkas Hadoop disimpan.
 
 #### Pembahasan
 
+<p align="justify">Perintah <code>tar -xvf</code> dipakai untuk membuka arsip <code>.tar.gz</code>: <code>-x</code> berarti mengekstrak, <code>-v</code> menampilkan file yang sedang diproses, dan <code>-f</code> menunjuk nama arsip yang dibaca. Lokasi <code>~/Downloads</code> hanya contoh, jadi harus disesuaikan dengan tempat file Hadoop benar-benar disimpan. Setelah proses selesai, akan muncul direktori <code>hadoop-3.5.0</code> yang berisi seluruh komponen Hadoop.</p>
+
 ---
 
 Lalu membuat **_Symlink_** dan **_Verikasi_** dengan perintah
 
 ```bash
-ln -s hadoop-3.5.0-src hadoop
+ln -s hadoop-3.5.0 hadoop
 ls -l
 ```
 
-<img src="images/02_Instalasi_Apache_Hadoop.png" width="700">
+<p align="center">
+  <img src="images/02_Instalasi_Apache_Hadoop.png" width="700" alt="Keluaran ls -l di direktori software/storage yang menunjukkan symlink hadoop mengarah ke hadoop-3.5.0">
+  <br>
+  <em>Gambar 2. Symlink direktori hadoop mengarah ke hadoop-3.5.0</em>
+</p>
 
 #### Pembahasan
+
+<p align="justify">Symlink <code>hadoop</code> dibuat agar semua konfigurasi dan variabel lingkungan cukup menunjuk ke satu nama pendek, yaitu <code>hadoop</code>, tanpa harus menyebut <code>hadoop-3.5.0</code> di mana-mana. Kalau nanti ada versi baru, cukup ubah target symlink-nya dan seluruh konfigurasi lama tetap berlaku. Perintah <code>ls -l</code> memastikan link tersebut benar-benar menunjuk ke folder <code>hadoop-3.5.0</code>, bukan ke folder lain atau ke file yang salah.</p>
 
 ---
 
@@ -78,9 +113,15 @@ Kemudian cek isi file hadoop.sh dengan perintah:
 cat ~/env/bash/storage/hadoop.sh
 ```
 
-<img src="images/03_Cek_Isi_File_Hadoop_sh.png" width="700">
+<p align="center">
+  <img src="images/03_Cek_Isi_File_Hadoop_sh.png" width="700" alt="Isi file hadoop.sh yang mengekspor HADOOP_HOME dan menambahkan folder bin serta sbin Hadoop ke PATH">
+  <br>
+  <em>Gambar 3. Isi file hadoop.sh</em>
+</p>
 
 #### Pembahasan
+
+<p align="justify">Isi file <code>hadoop.sh</code> ternyata hanya menambahkan dua direktori ke <code>PATH</code>, yaitu <code>bin</code> dan <code>sbin</code> milik Hadoop. Folder <code>bin</code> berisi perintah client seperti <code>hadoop</code> dan <code>hdfs</code>, sedangkan <code>sbin</code> berisi script untuk menjalankan atau menghentikan daemon seperti <code>start-dfs.sh</code> dan <code>stop-dfs.sh</code>. Jadi, file ini adalah penghubung antara lokasi instalasi Hadoop dan shell yang kita pakai.</p>
 
 ---
 
@@ -90,9 +131,15 @@ Cek versi hadoop dengan menggunakan perintah
 hadoop version
 ```
 
-<img src="images/04_Cek_Version_Hadoop.png" width="700">
+<p align="center">
+  <img src="images/04_Cek_Version_Hadoop.png" width="700" alt="Keluaran hadoop version yang menampilkan Hadoop 3.5.0, informasi build, dan lokasi hadoop-common-3.5.0.jar">
+  <br>
+  <em>Gambar 4. Versi Apache Hadoop yang terpasang</em>
+</p>
 
 #### Pembahasan
+
+<p align="justify">Perintah <code>hadoop version</code> menjadi uji cepat apakah binary Hadoop bisa dieksekusi dan apakah ia berhasil menemukan Java yang sesuai. Output yang muncul menunjukkan versi 3.5.0 beserta informasi build dan lokasi jar yang dipakai. Kalau perintah ini gagal, biasanya sumber masalahnya ada pada <code>PATH</code> atau <code>JAVA_HOME</code>, bukan pada instalasi Hadoop itu sendiri.</p>
 
 ---
 
@@ -102,9 +149,15 @@ Setiap akan menggunakan Apache Hadoop di suatu shell/terminal source file terseb
 source ~/env/bash/storage/hadoop.sh
 ```
 
-<img src="images/05_Cara_Menggunakan_Apache_Hadoop.png" width="700">
+<p align="center">
+  <img src="images/05_Cara_Menggunakan_Apache_Hadoop.png" width="700" alt="Terminal setelah menjalankan source ~/env/bash/storage/hadoop.sh tanpa error">
+  <br>
+  <em>Gambar 5. Memuat variabel lingkungan Hadoop</em>
+</p>
 
 #### Pembahasan
+
+<p align="justify"><code>source</code> menjalankan isi file di dalam shell yang sedang aktif, sehingga perubahan <code>PATH</code> langsung terasa di terminal itu. Ini berbeda dengan mengeksekusi file sebagai program biasa, yang perubahannya hanya berlaku di proses anak dan hilang setelah selesai. Karena itu, setiap membuka terminal baru, file yang sama perlu di-<em>source</em> lagi sebelum perintah Hadoop dipakai.</p>
 
 ---
 
@@ -114,23 +167,35 @@ Selanjutnya, untuk memeriksa apakah telah terinstall dengan baik, jalankan perin
 hadoop
 ```
 
-<img src="images/06_Menjalankan_Hadoop.png" width="700">
+<p align="center">
+  <img src="images/06_Menjalankan_Hadoop.png" width="700" alt="Keluaran perintah hadoop tanpa argumen yang menampilkan daftar opsi dan subcommand">
+  <br>
+  <em>Gambar 6. Daftar subcommand Hadoop</em>
+</p>
 
 #### Pembahasan
+
+<p align="justify">Menjalankan <code>hadoop</code> tanpa argumen adalah cara paling sederhana untuk memastikan CLI benar-benar siap dipakai. Kalau instalasi berhasil, Hadoop akan menampilkan daftar subcommand seperti <code>fs</code>, <code>jar</code>, <code>version</code>, dan lain-lain, bukan pesan <code>command not found</code>. Dari sini saya tahu bahwa masalah PATH sudah beres dan saya bisa lanjut ke tahap konfigurasi.</p>
 
 ---
 
 ### 4. Instalasi PDSH
 
-Karena praktikum ini menggunakan operasi sistem windows, dapat mengecek dengan perintah:
+Praktikum ini dijalankan pada lingkungan Windows dengan MSYS2 UCRT64 untuk eksplorasi awal dan Ubuntu WSL untuk menjalankan Hadoop. Protokol pdsh dapat dicek dengan perintah:
 
 ```bash
 echo $PDSH_RCMD_TYPE
 ```
 
-<img src="images/08_Cek_PDSH.png" width="700">
+<p align="center">
+  <img src="images/08_Cek_PDSH.png" width="700" alt="Keluaran echo $PDSH_RCMD_TYPE yang bernilai ssh">
+  <br>
+  <em>Gambar 7. Pemeriksaan PDSH_RCMD_TYPE</em>
+</p>
 
 #### Pembahasan
+
+<p align="justify">pdsh perlu tahu protokol apa yang dipakai untuk menjalankan perintah di node lain, dan secara default ia bisa memakai <code>rsh</code> yang tidak selalu tersedia di sistem modern. Karena itu saya mengecek <code>PDSH_RCMD_TYPE</code>; hasil <code>ssh</code> berarti pdsh sudah diarahkan ke SSH. Kalau nilainya kosong atau bukan <code>ssh</code>, variabel itu perlu di-<em>export</em> ulang agar Hadoop bisa memakai pdsh tanpa error.</p>
 
 ---
 
@@ -148,9 +213,15 @@ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 chmod 0600 ~/.ssh/authorized_keys
 ```
 
-<img src="images/09_Atur_Env_Variabel_PDSH.png" width="700">
+<p align="center">
+  <img src="images/09_Atur_Env_Variabel_PDSH.png" width="700" alt="Proses ssh-keygen, penyalinan public key ke authorized_keys, chmod 0600, lalu login SSH ke localhost tanpa password">
+  <br>
+  <em>Gambar 8. Konfigurasi SSH tanpa password ke localhost</em>
+</p>
 
 #### Pembahasan
+
+<p align="justify"><code>start-dfs.sh</code> menjalankan daemon melalui SSH ke <code>localhost</code>, sehingga tanpa kunci SSH prosesnya bisa berhenti menunggu password atau gagal di tengah jalan. <code>ssh-keygen</code> membuat pasangan kunci tanpa passphrase, lalu public key-nya ditempel ke <code>authorized_keys</code> supaya login ke localhost tidak lagi meminta password. <code>chmod 0600</code> pada file tersebut penting karena SSH menolak file kunci yang izinnya terlalu terbuka.</p>
 
 ---
 
@@ -197,6 +268,8 @@ Sehingga menjadi:
 ```
 
 #### Pembahasan
+
+<p align="justify">Nilai <code>dfs.replication</code> saya set menjadi <code>1</code> karena klaster ini hanya memiliki satu DataNode. Kalau dibiarkan pada nilai default tiga, HDFS akan menganggap setiap blok kekurangan salinan dan terus memunculkan peringatan <em>under-replicated</em>. Untuk kebutuhan belajar, satu replika sudah cukup untuk menunjukkan cara kerja penyimpanan blok.</p>
 
 ---
 
@@ -258,6 +331,8 @@ Sehingga menjadi:
 
 #### Pembahasan
 
+<p align="justify"><code>fs.defaultFS</code> menentukan alamat sistem file default yang dipakai Hadoop, yaitu <code>hdfs://localhost:9000</code>. Dengan pengaturan ini, perintah <code>hdfs dfs</code> otomatis mengarah ke HDFS tanpa perlu menyebut alamat secara manual. Properti <code>proxyuser</code> ditambahkan agar akses melalui Web UI dan proses HTTP bisa berjalan atas nama user yang sedang dipakai, sehingga tidak muncul error izin saat menelusuri direktori.</p>
+
 ---
 
 Tambahkan Config pada file $HADOOP_HOME/etc/hadoop/mapred-site.xml dengan kode:
@@ -270,7 +345,7 @@ Tambahkan Config pada file $HADOOP_HOME/etc/hadoop/mapred-site.xml dengan kode:
   </property>
   <property>
     <name>mapreduce.application.classpath</name>
-    <value>$HADOOP_CLASSPATH:$HADOOP_HOME/share/hadoop/mapreduce/*:$HADOOP_MAPRED_/HOME/share/hadoop/mapreduce/lib/*</value>
+    <value>$HADOOP_CLASSPATH:$HADOOP_HOME/share/hadoop/mapreduce/*:$HADOOP_MAPRED_HOME/share/hadoop/mapreduce/lib/*</value>
   </property>
 </configuration>
 ```
@@ -303,12 +378,14 @@ Sehingga menjadi:
   </property>
   <property>
     <name>mapreduce.application.classpath</name>
-    <value>$HADOOP_CLASSPATH:$HADOOP_HOME/share/hadoop/mapreduce/*:$HADOOP_MAPRED_/HOME/share/hadoop/mapreduce/lib/*</value>
+    <value>$HADOOP_CLASSPATH:$HADOOP_HOME/share/hadoop/mapreduce/*:$HADOOP_MAPRED_HOME/share/hadoop/mapreduce/lib/*</value>
   </property>
 </configuration>
 ```
 
 #### Pembahasan
+
+<p align="justify">Di <code>mapred-site.xml</code>, <code>mapreduce.framework.name</code> diarahkan ke <code>yarn</code>, artinya pekerjaan MapReduce tidak dijalankan secara lokal di mesin yang sama, tetapi diserahkan kepada YARN sebagai pengelola sumber daya. Properti <code>mapreduce.application.classpath</code> memastikan container yang dibuat YARN tetap bisa menemukan pustaka MapReduce yang dibutuhkan. Penulisan <code>$HADOOP_MAPRED_HOME</code> harus tepat, karena satu karakter garis miring yang salah saja bisa membuat classpath tidak terbaca.</p>
 
 ---
 
@@ -387,6 +464,8 @@ Sehingga menjadi:
 ```
 
 #### Pembahasan
+
+<p align="justify">Konfigurasi YARN di sini terutama menyiapkan <code>mapreduce_shuffle</code> sebagai layanan tambahan NodeManager, karena proses <em>shuffle</em> adalah bagian yang menghubungkan output Map dengan input Reduce. Nilai memori 4096 MB dan alokasi minimum 2048 MB saya sesuaikan dengan kapasitas laptop agar NodeManager punya ruang untuk menjalankan container tanpa menghabiskan RAM. Properti <code>env-whitelist</code> memastikan variabel penting seperti <code>JAVA_HOME</code> dan <code>HADOOP_HOME</code> tetap diteruskan ke proses container.</p>
 
 ---
 
@@ -498,21 +577,29 @@ SHUTDOWN_MSG: Shutting down NameNode at LAPTOP-E46UBD60/127.0.1.1
 
 #### Pembahasan
 
+<p align="justify">Format NameNode adalah langkah yang membuat struktur metadata HDFS pertama kali, yaitu <code>fsimage</code> dan edit log di direktori penyimpanan NameNode. Pada output terlihat <code>Formatting using clusterid</code> dan <code>Storage directory ... has been successfully formatted</code>, yang menandakan proses berhasil dan HDFS siap menerima blok data. Perintah ini hanya boleh dijalankan sekali; kalau diulang, metadata lama akan dihapus dan seluruh file yang pernah disimpan di HDFS ikut hilang.</p>
+
 ---
 
 ### 7. Atur konfigurasi JAVA_HOME
 
 Edit file $HADOOP_HOME/etc/hadoop/hadoop-env.sh dengan mengisikan env var untuk JAVA_HOME sesuai dengan lokasi di komputer / server / node
 
-Sesuaikan dengan lokasi java yang digunakan disimpan, cara cek nya dengan mengecek di C -> Program File -> Java. Karena lokasi file java saya simpan di C:\Program Files\Java\jdk-17.0.21.0.3, maka:
+Sesuaikan dengan lokasi Java yang terpasang. Pada lingkungan MSYS2, lokasi JDK dapat dicek melalui C:\Program Files\Java. Karena JDK saya berada di C:\Program Files\Java\jdk-17.0.21.0.3, maka:
 
 ```
 export JAVA_HOME="/c/Program Files/Java/jdk-17.0.21.0.3"
 ```
 
-<img src="images/07_Konfigurasi_JAVA_HOME.png" width="700">
+<p align="center">
+  <img src="images/07_Konfigurasi_JAVA_HOME.png" width="700" alt="Baris export JAVA_HOME pada hadoop-env.sh yang diarahkan ke folder JDK 17 di Program Files">
+  <br>
+  <em>Gambar 9. Konfigurasi JAVA_HOME pada hadoop-env.sh</em>
+</p>
 
 #### Pembahasan
+
+<p align="justify">Script Hadoop membutuhkan <code>JAVA_HOME</code> untuk mengetahui di mana Java berada, dan pada lingkungan MSYS2 path Windows ditulis dalam format Unix seperti <code>/c/Program Files/Java/jdk-17.0.21.0.3</code>. Path ini harus benar-benar menunjuk ke folder JDK, bukan ke folder JRE, karena Hadoop membutuhkan alat pengembangan Java. Kalau nilainya salah, daemon biasanya langsung berhenti dengan pesan bahwa <code>JAVA_HOME</code> tidak di-set atau Java tidak ditemukan.</p>
 
 ---
 
@@ -524,25 +611,43 @@ Untuk menjalankan daemon untuk HDFS dapat menggunakan perintah:
 start-dfs.sh
 ```
 
-<img src="images/10_Jalankan_Daemon_HDFS.png" width="700">
+<p align="center">
+  <img src="images/10_Jalankan_Daemon_HDFS.png" width="700" alt="Keluaran start-dfs.sh yang menampilkan namenode, datanode, dan secondary namenode berhasil dijalankan">
+  <br>
+  <em>Gambar 10. Menjalankan daemon HDFS</em>
+</p>
 
 #### Pembahasan
+
+<p align="justify"><code>start-dfs.sh</code> membaca konfigurasi lalu menjalankan NameNode, DataNode, dan Secondary NameNode di node yang terdaftar. Output <code>Starting namenodes on [localhost]</code> serta <code>Starting datanodes</code> menunjukkan ketiga komponen berhasil dijalankan, dan setelah beberapa saat HDFS keluar dari mode <em>safemode</em> sehingga siap dipakai. Kalau salah satu daemon gagal, biasanya penyebabnya adalah SSH lokal, <code>JAVA_HOME</code>, atau konfigurasi XML yang tidak valid.</p>
 
 ---
 
 Pemantauan bisa dilakukan menggunakan Web **_http://localhost:9870/dfshealth.html#tab-overview_**
 
-<img src="images/11_Pemantauan_Web.png" width="700">
+<p align="center">
+  <img src="images/11_Pemantauan_Web.png" width="700" alt="Halaman Overview NameNode di localhost:9870 dengan 1 live node, 0 dead node, dan safemode off">
+  <br>
+  <em>Gambar 11. Halaman pemantauan HDFS</em>
+</p>
 
 #### Pembahasan
+
+<p align="justify">Web UI di <code>http://localhost:9870/dfshealth.html#tab-overview</code> adalah cara memantau HDFS tanpa harus mengetik perintah di terminal. Halaman <em>Overview</em> menampilkan kapasitas terpakai, jumlah DataNode yang aktif, serta status <em>safemode</em>, sehingga kita bisa memastikan klaster benar-benar hidup. Dari sini juga terlihat bahwa NameNode dan DataNode sudah saling terhubung, bukan hanya proses yang berjalan tetapi tidak saling mengenali.</p>
 
 ---
 
 ### 9. Selesai
 
-<img src="images/12. Selesai.png" width="700">
+<p align="center">
+  <img src="images/12. Selesai.png" width="700" alt="Terminal yang menjalankan hdfs dfs -ls /, hdfs dfs -mkdir -p /user/Ayyrieldev, dan hdfs dfs -ls /user">
+  <br>
+  <em>Gambar 12. Pembuatan direktori user di HDFS</em>
+</p>
 
 #### Pembahasan
+
+<p align="justify">Pada tahap ini HDFS sudah bisa dipakai, dan saya mengujinya dengan <code>hdfs dfs -ls /</code> serta <code>hdfs dfs -mkdir -p /user/Ayyrieldev</code>. Perintah pertama menunjukkan bahwa root HDFS masih kosong, sedangkan perintah kedua membuat direktori user yang nantinya menjadi tempat dataset. Adanya direktori <code>/user/Ayyrieldev</code> dengan owner yang sesuai menandakan operasi tulis ke HDFS sudah berjalan normal.</p>
 
 ---
 
@@ -552,9 +657,15 @@ Untuk menghentikan HDFS gunakan perintah:
 stop-dfs.sh
 ```
 
-<img src="images/13_Selesai_Menghentikan_HDFS.png" width="700">
+<p align="center">
+  <img src="images/13_Selesai_Menghentikan_HDFS.png" width="700" alt="Keluaran stop-dfs.sh yang menghentikan namenode, datanode, dan secondary namenode">
+  <br>
+  <em>Gambar 13. Menghentikan daemon HDFS</em>
+</p>
 
 #### Pembahasan
+
+<p align="justify"><code>stop-dfs.sh</code> menghentikan NameNode, DataNode, dan Secondary NameNode secara berurutan agar tidak ada proses yang tertinggal. Menghentikan HDFS tidak menghapus data, karena blok dan metadata tetap tersimpan di direktori penyimpanan masing-masing daemon. Saat HDFS dijalankan lagi, data yang sudah ada akan dibaca kembali tanpa perlu memformat NameNode.</p>
 
 ---
 
@@ -568,9 +679,15 @@ Untuk membuat direkori gunakan perintah
 hdfs dfs -mkdir -p /user/Ayyrieldev/datasets
 ```
 
-<img src="images/14_Tugas_Membuat_direktori.png" width="700">
+<p align="center">
+  <img src="images/14_Tugas_Membuat_direktori.png" width="700" alt="Perintah hdfs dfs -mkdir -p /user/Ayyrieldev/datasets pada terminal">
+  <br>
+  <em>Gambar 14. Membuat direktori datasets</em>
+</p>
 
 #### Pembahasan
+
+<p align="justify">Perintah <code>hdfs dfs -mkdir -p /user/Ayyrieldev/datasets</code> membuat direktori beserta folder induknya sekaligus, sehingga <code>/user/Ayyrieldev</code> tidak perlu dibuat satu per satu. Opsi <code>-p</code> juga membuat perintah ini aman dijalankan ulang karena tidak akan error kalau direktorinya sudah ada. Penamaan <code>/user/nama-user</code> sengaja dipilih agar mengikuti kebiasaan HDFS, di mana setiap user punya ruang kerja sendiri.</p>
 
 ---
 
@@ -584,9 +701,15 @@ curl -o titanic.csv https://raw.githubusercontent.com/datasciencedojo/datasets/m
 curl -o housing.csv https://raw.githubusercontent.com/selva86/datasets/master/BostonHousing.csv
 ```
 
-<img src="images/15_Unduh_File_CSV.png" width="700">
+<p align="center">
+  <img src="images/15_Unduh_File_CSV.png" width="700" alt="Tiga proses curl mengunduh iris.csv, titanic.csv, dan housing.csv hingga 100%">
+  <br>
+  <em>Gambar 15. Mengunduh tiga file CSV</em>
+</p>
 
 #### Pembahasan
+
+<p align="justify">Saya memakai <code>curl</code> untuk mengunduh tiga dataset publik langsung dari GitHub, yaitu <code>iris.csv</code>, <code>titanic.csv</code>, dan <code>housing.csv</code>. Opsi <code>-o</code> menentukan nama file hasil unduhan agar lebih rapi dan mudah diingat dibandingkan nama bawaan dari server. Ketiga file ini dipilih karena ukurannya cukup kecil untuk praktikum, tetapi kolom dan jumlah barisnya berbeda sehingga bisa dipakai untuk latihan pengolahan data berikutnya.</p>
 
 ---
 
@@ -596,9 +719,15 @@ Kemudian menyalin 3 file CSV ke HDFS dengan perintah:
 hdfs dfs -put iris.csv titanic.csv housing.csv /user/Ayyrieldev/datasets/
 ```
 
-<img src="images/16_Menyalin_File_CSV.png" width="700">
+<p align="center">
+  <img src="images/16_Menyalin_File_CSV.png" width="700" alt="Perintah hdfs dfs -put iris.csv titanic.csv housing.csv /user/Ayyrieldev/datasets/">
+  <br>
+  <em>Gambar 16. Menyalin file CSV ke HDFS</em>
+</p>
 
 #### Pembahasan
+
+<p align="justify">Perintah <code>hdfs dfs -put</code> mengunggah file dari sistem file lokal ke HDFS, lalu HDFS memecahnya menjadi blok-blok dan menyimpannya di DataNode sesuai konfigurasi replikasi. Ketiga file dimasukkan dalam satu perintah karena semuanya ditujukan ke direktori yang sama, dan tanda <code>/</code> di akhir path memastikan hasilnya menjadi file di dalam direktori, bukan direktori baru. Kalau proses berhasil, tidak ada output yang ditampilkan, sehingga pengecekan perlu dilakukan lewat perintah berikutnya.</p>
 
 ---
 
@@ -608,17 +737,29 @@ Lalu memverifikasi isi folder HDFS dengan perintah:
 hdfs dfs -ls /user/Ayyrieldev/datasets
 ```
 
-<img src="images/17_Memverifikasi_Isi_Folder_CSV.png" width="700">
+<p align="center">
+  <img src="images/17_Memverifikasi_Isi_Folder_CSV.png" width="700" alt="Hasil hdfs dfs -ls /user/Ayyrieldev/datasets yang menampilkan tiga file CSV dengan replikasi 1">
+  <br>
+  <em>Gambar 17. Verifikasi file CSV di HDFS</em>
+</p>
 
 #### Pembahasan
+
+<p align="justify"><code>hdfs dfs -ls /user/Ayyrieldev/datasets</code> menampilkan daftar file beserta ukuran, owner, grup, dan waktu modifikasinya. Dari output terlihat <code>iris.csv</code>, <code>titanic.csv</code>, dan <code>housing.csv</code> sudah berada di HDFS dengan ukuran yang wajar dan replikasi <code>1</code>, sesuai konfigurasi pada <code>hdfs-site.xml</code>. Ini membuktikan bahwa file benar-benar tersimpan di HDFS, bukan hanya ada di folder lokal.</p>
 
 ---
 
 Lalu cek hasilnya di web **_http://localhost:9870_**, kemudian klik menu **_Utilities_**, lalu pilih **_Browse the file system_**
 
-<img src="images/18_Cek_Hasil_Buat_DataSet.png" width="700">
+<p align="center">
+  <img src="images/18_Cek_Hasil_Buat_DataSet.png" width="700" alt="Halaman Browse Directory dengan menu Utilities terbuka dan pilihan Browse the file system">
+  <br>
+  <em>Gambar 18. Menu Browse the file system</em>
+</p>
 
 #### Pembahasan
+
+<p align="justify">Web UI menyediakan jalur alternatif untuk memeriksa isi HDFS melalui menu <strong>Utilities → Browse the file system</strong>. Halaman <em>Browse Directory</em> menampilkan struktur direktori dan file dengan informasi yang kurang lebih sama seperti <code>hdfs dfs -ls</code>. Cara ini berguna ketika ingin memastikan hasilnya secara visual tanpa berpindah ke terminal.</p>
 
 ---
 
@@ -630,14 +771,33 @@ Pada kolom isian lokasi direktori (Path), ketik:
 
 dan klik Go
 
-<img src="images/19_Cek_Hasil_Buat_DataSet.png" width="700">
+<p align="center">
+  <img src="images/19_Cek_Hasil_Buat_DataSet.png" width="700" alt="Halaman Browse Directory pada path /user/Ayyrieldev/datasets yang menampilkan tiga file CSV">
+  <br>
+  <em>Gambar 19. Isi direktori datasets melalui Web UI</em>
+</p>
 
 #### Pembahasan
+
+<p align="justify">Setelah path <code>/user/Ayyrieldev/datasets</code> dimasukkan dan tombol <strong>Go</strong> diklik, browser menampilkan tiga file CSV yang sebelumnya diunggah. Adanya ketiga file tersebut di Web UI menegaskan bahwa NameNode sudah mengenali direktori dan blok data yang tersimpan di DataNode. Dengan begitu, rangkaian tugas mulai dari pembuatan direktori sampai verifikasi data sudah selesai.</p>
 
 ---
 
 ## 📝 Kesimpulan
 
+<p align="justify">Praktikum ini menunjukkan bahwa HDFS dapat dijalankan pada satu komputer dalam mode <em>pseudo-distributed</em>, asalkan JDK, Hadoop, pdsh, dan SSH disiapkan dengan benar. Keberhasilan instalasi tidak hanya ditentukan oleh file Hadoop yang berhasil diekstrak, tetapi juga oleh detail kecil seperti <code>JAVA_HOME</code>, hak akses <code>authorized_keys</code>, dan nilai <code>fs.defaultFS</code>, yang kalau salah akan membuat daemon gagal berjalan. Konfigurasi <code>dfs.replication = 1</code> juga memperlihatkan bahwa HDFS cukup fleksibel untuk disesuaikan dengan jumlah node yang tersedia.</p>
+
+<p align="justify">Dari sisi penggunaan, HDFS bekerja seperti sistem file biasa: direktori dibuat dengan <code>mkdir</code>, file diunggah dengan <code>put</code>, dan isinya diperiksa dengan <code>ls</code> atau Web UI. Di balik kemudahan itu, NameNode menyimpan metadata dan DataNode menyimpan blok data, sehingga file yang terlihat sebagai satu kesatuan sebenarnya tersebar dan direplikasi. Pemahaman ini menjadi dasar penting sebelum masuk ke pemrosesan data terdistribusi seperti MapReduce pada praktikum berikutnya.</p>
+
 ---
 
 ## 🗒️ Referensi
+
+1. Apache Software Foundation. _Apache Hadoop 3.5.0 Documentation_. https://hadoop.apache.org/docs/current/
+2. Apache Software Foundation. _HDFS Architecture Guide_. https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
+3. Apache Software Foundation. _FileSystem Shell_. https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/FileSystemShell.html
+4. Apache Software Foundation. _Hadoop: Setting up a Single Node Cluster_. https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html
+5. Apache Software Foundation. _Apache Hadoop Releases_. https://hadoop.apache.org/releases.html
+6. chaos. _pdsh – Parallel Distributed Shell_. https://github.com/chaos/pdsh
+7. Oracle. _Java SE 17 Documentation_. https://docs.oracle.com/en/java/javase/17/
+8. Program Studi Informatika, Universitas Teknologi Digital Indonesia. _Modul 6: Distributed File System – HDFS_. Yogyakarta: UTDI.
