@@ -1,8 +1,8 @@
 # Praktikum Minggu 06 - Distributed File System - HDFS
 
-**Mata Kuliah:** Praktikum Sistem Terdistribusi dan Terdesentralisasi
+<p align="justify"><strong>Mata Kuliah:</strong> Praktikum Sistem Terdistribusi dan Terdesentralisasi</p>
 
-**Topik:** Distributed File System - HDFS
+<p align="justify"><strong>Topik:</strong> Distributed File System - HDFS</p>
 
 ---
 
@@ -19,15 +19,15 @@
 
 ## 📚 Dasar Teori
 
-_Distributed file system_ adalah sistem file yang menyimpan datanya di beberapa mesin, tetapi tetap diakses seolah-olah merupakan satu sistem file biasa. Ide utamanya sederhana: ketika data sudah terlalu besar atau terlalu penting untuk ditaruh di satu disk, data tersebut dipecah dan disebar ke beberapa node. Dengan cara ini kapasitas penyimpanan bisa bertambah tanpa mengganti satu komputer mahal, dan kegagalan pada satu mesin tidak otomatis membuat seluruh data hilang. HDFS (_Hadoop Distributed File System_) adalah salah satu implementasi konsep ini yang paling banyak dipakai di ekosistem _big data_.
+<p align="justify">Sistem file terdistribusi (<em>distributed file system</em>) adalah sistem file yang menyimpan datanya di beberapa mesin, tetapi tetap diakses seolah-olah merupakan satu sistem file biasa. Ide utamanya sederhana: ketika data sudah terlalu besar atau terlalu penting untuk ditaruh di satu disk, data tersebut dipecah dan disebar ke beberapa node. Dengan cara ini kapasitas penyimpanan bisa bertambah tanpa mengganti satu komputer mahal, dan kegagalan pada satu mesin tidak otomatis membuat seluruh data hilang. HDFS (<em>Hadoop Distributed File System</em>) adalah salah satu implementasi konsep ini yang paling banyak dipakai di ekosistem <em>big data</em>.</p>
 
-HDFS mengadopsi arsitektur _master–worker_ yang terinspirasi dari Google File System. Pihak _master_ adalah **NameNode**, yang tidak menyimpan isi file, melainkan menyimpan metadata: struktur direktori, nama file, izin akses, serta peta blok ke DataNode. Pihak _worker_ adalah **DataNode**, yang menyimpan blok data secara fisik dan melaporkan kondisinya ke NameNode. Ada juga **Secondary NameNode**, yang tugasnya membuat _checkpoint_ metadata secara berkala, bukan menjadi cadangan NameNode secara langsung.
+<p align="justify">HDFS mengadopsi arsitektur <em>master–worker</em> yang terinspirasi dari Google File System. Pihak <em>master</em> adalah <strong>NameNode</strong>, yang tidak menyimpan isi file, melainkan menyimpan metadata: struktur direktori, nama file, izin akses, serta peta blok ke DataNode. Pihak <em>worker</em> adalah <strong>DataNode</strong>, yang menyimpan blok data secara fisik dan melaporkan kondisinya ke NameNode. Ada juga <strong>Secondary NameNode</strong>, yang tugasnya membuat <em>checkpoint</em> metadata secara berkala, bukan menjadi cadangan NameNode secara langsung.</p>
 
-Saat sebuah file diunggah, HDFS memecahnya menjadi blok-blok dengan ukuran default 128 MB. Setiap blok disimpan di DataNode dan direplikasi, dengan nilai default tiga salinan pada klaster normal. Replikasi inilah yang membuat HDFS tahan terhadap kegagalan: jika satu DataNode mati, salinan di node lain masih bisa dipakai. NameNode memantau DataNode lewat _heartbeat_ dan _block report_; kalau ada blok yang jumlah salinannya kurang, HDFS akan berusaha membuat salinan baru selama masih ada node yang tersedia. Pada praktikum ini, karena hanya ada satu node, replikasi dikurangi menjadi satu.
+<p align="justify">Saat sebuah file diunggah, HDFS memecahnya menjadi blok-blok dengan ukuran default 128 MB. Setiap blok disimpan di DataNode dan direplikasi, dengan nilai default tiga salinan pada klaster normal. Replikasi inilah yang membuat HDFS tahan terhadap kegagalan: jika satu DataNode mati, salinan di node lain masih bisa dipakai. NameNode memantau DataNode lewat <em>heartbeat</em> dan <em>block report</em>; kalau ada blok yang jumlah salinannya kurang, HDFS akan berusaha membuat salinan baru selama masih ada node yang tersedia. Pada praktikum ini, karena hanya ada satu node, replikasi dikurangi menjadi satu.</p>
 
-HDFS dirancang untuk pola akses _write once, read many_: file ditulis sekali, lalu dibaca berkali-kali. Model ini cocok untuk pemrosesan batch seperti MapReduce, tetapi kurang cocok untuk aplikasi yang membutuhkan perubahan kecil secara terus-menerus atau akses dengan latensi sangat rendah. HDFS juga kurang efisien untuk banyak file kecil, karena metadata setiap file tetap harus disimpan di NameNode. Karena itu, HDFS lebih sering dipakai untuk dataset besar yang dibaca secara berurutan.
+<p align="justify">HDFS dirancang untuk pola akses <em>write once, read many</em>: file ditulis sekali, lalu dibaca berkali-kali. Model ini cocok untuk pemrosesan batch seperti MapReduce, tetapi kurang cocok untuk aplikasi yang membutuhkan perubahan kecil secara terus-menerus atau akses dengan latensi sangat rendah. HDFS juga kurang efisien untuk banyak file kecil, karena metadata setiap file tetap harus disimpan di NameNode. Karena itu, HDFS lebih sering dipakai untuk dataset besar yang dibaca secara berurutan.</p>
 
-Untuk berinteraksi dengan HDFS, tersedia _FileSystem Shell_ (`hdfs dfs`) yang menyediakan perintah mirip perintah Unix seperti `ls`, `mkdir`, `put`, `get`, dan `rm`. Selain itu, NameNode menyediakan Web UI pada port 9870 untuk melihat kondisi klaster, daftar DataNode, serta isi direktori. Pada praktikum ini Hadoop dijalankan dalam mode _pseudo-distributed_: semua daemon berada di satu komputer, tetapi tetap berkomunikasi melalui jaringan lokal seolah-olah merupakan klaster kecil. Konfigurasi YARN juga disiapkan agar MapReduce dapat berjalan di atas pengelola sumber daya tersebut, meskipun fokus utama modul ini adalah HDFS.
+<p align="justify">Untuk berinteraksi dengan HDFS, tersedia <em>FileSystem Shell</em> (<code>hdfs dfs</code>) yang menyediakan perintah mirip perintah Unix seperti <code>ls</code>, <code>mkdir</code>, <code>put</code>, <code>get</code>, dan <code>rm</code>. Selain itu, NameNode menyediakan Web UI pada port 9870 untuk melihat kondisi klaster, daftar DataNode, serta isi direktori. Pada praktikum ini Hadoop dijalankan dalam mode <em>pseudo-distributed</em>: semua daemon berada di satu komputer, tetapi tetap berkomunikasi melalui jaringan lokal seolah-olah merupakan klaster kecil. Konfigurasi YARN juga disiapkan agar MapReduce dapat berjalan di atas pengelola sumber daya tersebut, meskipun fokus utama modul ini adalah HDFS.</p>
 
 ---
 
@@ -35,7 +35,7 @@ Untuk berinteraksi dengan HDFS, tersedia _FileSystem Shell_ (`hdfs dfs`) yang me
 
 ### 1. Persyaratan Software
 
-Gunakan JDK Versi 17 atau 21. Jika akan mengkompilasi Apache Hadoop, gunakan versi 17. JDK versi 17 digunakan untuk server sedangkan untuk client bisa menggunakan JDK 17 atau 21.
+<p align="justify">Gunakan JDK Versi 17 atau 21. Jika akan mengkompilasi Apache Hadoop, gunakan versi 17. JDK versi 17 digunakan untuk server sedangkan untuk client bisa menggunakan JDK 17 atau 21.</p>
 
 #### Pembahasan
 
@@ -45,7 +45,7 @@ Gunakan JDK Versi 17 atau 21. Jika akan mengkompilasi Apache Hadoop, gunakan ver
 
 ### 2. Unduh Apache Hadoop
 
-Ambil distribusi Apache Hadoop di https://hadoop.apache.org/releases.html, dan install yang **_binary_** bukan yang binary-aarch64.
+<p align="justify">Ambil distribusi Apache Hadoop di https://hadoop.apache.org/releases.html, dan pasang distribusi <strong>binary</strong>, bukan <strong>binary-aarch64</strong>.</p>
 
 <p align="center">
   <img src="images/01_Unduh_Apache_Hadoop.png" width="700" alt="Halaman unduhan Apache Hadoop yang menampilkan versi 3.5.0 beserta tautan source, binary, dan binary-aarch64">
@@ -61,9 +61,9 @@ Ambil distribusi Apache Hadoop di https://hadoop.apache.org/releases.html, dan i
 
 ### 3. Instalasi Apache Hadoop
 
-Praktikum ini memakai dua instalasi Hadoop yang terpisah. Instalasi pertama berada di MSYS2 UCRT64 pada Windows dan dipakai untuk mengenal perintah dasar Hadoop pada Gambar 2–6. Instalasi kedua berada di Ubuntu WSL dan dipakai untuk konfigurasi serta menjalankan HDFS. Keduanya memiliki direktori instalasi sendiri di `~/software/storage/hadoop`, sehingga perubahan konfigurasi pada satu instalasi tidak otomatis berlaku pada instalasi lainnya.
+<p align="justify">Praktikum ini memakai dua instalasi Hadoop yang terpisah. Instalasi pertama berada di MSYS2 UCRT64 pada Windows dan dipakai untuk mengenal perintah dasar Hadoop pada Gambar 2–6. Instalasi kedua berada di Ubuntu WSL dan dipakai untuk konfigurasi serta menjalankan HDFS. Keduanya memiliki direktori instalasi sendiri di <code>~/software/storage/hadoop</code>, sehingga perubahan konfigurasi pada satu instalasi tidak otomatis berlaku pada instalasi lainnya.</p>
 
-Buat folder atau direktori terlebih dahulu dengan nama misal **_software_**, dengan perintah:
+<p align="justify">Buat folder atau direktori terlebih dahulu dengan nama misal <strong>software</strong>, dengan perintah:</p>
 
 ```bash
 mkdir -p software/storage
@@ -76,13 +76,13 @@ cd software/storage
 
 ---
 
-Kemudian ekstrak berkas Hadoop yang sudah diunduh dengan perintah:
+<p align="justify">Kemudian ekstrak berkas Hadoop yang sudah diunduh dengan perintah:</p>
 
 ```bash
 tar -xvf ~/Downloads/hadoop-3.5.0.tar.gz
 ```
 
-catatan: untuk **_/Downloads_** sesuaikan dengan tempat berkas Hadoop disimpan.
+<p align="justify">Catatan: sesuaikan <code>~/Downloads</code> dengan tempat berkas Hadoop disimpan.</p>
 
 #### Pembahasan
 
@@ -90,7 +90,7 @@ catatan: untuk **_/Downloads_** sesuaikan dengan tempat berkas Hadoop disimpan.
 
 ---
 
-Lalu membuat **_Symlink_** dan **_Verifikasi_** dengan perintah
+<p align="justify">Lalu membuat <strong>Symlink</strong> dan <strong>Verifikasi</strong> dengan perintah</p>
 
 ```bash
 ln -s hadoop-3.5.0 hadoop
@@ -109,7 +109,7 @@ ls -l
 
 ---
 
-Kemudian cek isi file hadoop.sh dengan perintah:
+<p align="justify">Kemudian periksa isi file <code>hadoop.sh</code> dengan perintah:</p>
 
 ```bash
 cat ~/env/bash/storage/hadoop.sh
@@ -127,7 +127,7 @@ cat ~/env/bash/storage/hadoop.sh
 
 ---
 
-Cek versi hadoop dengan menggunakan perintah
+<p align="justify">Periksa versi Hadoop dengan menggunakan perintah</p>
 
 ```bash
 hadoop version
@@ -145,7 +145,7 @@ hadoop version
 
 ---
 
-Setiap akan menggunakan Apache Hadoop di suatu shell/terminal source file tersebut (cukup sekali saja):
+<p align="justify">Setiap akan menggunakan Apache Hadoop di suatu shell/terminal source file tersebut (cukup sekali saja):</p>
 
 ```bash
 source ~/env/bash/storage/hadoop.sh
@@ -163,7 +163,7 @@ source ~/env/bash/storage/hadoop.sh
 
 ---
 
-Selanjutnya, untuk memeriksa apakah telah terinstall dengan baik, jalankan perintah
+<p align="justify">Selanjutnya, untuk memeriksa apakah Hadoop telah terpasang dengan baik, jalankan perintah</p>
 
 ```bash
 hadoop
@@ -181,9 +181,16 @@ hadoop
 
 ---
 
-### 4. Instalasi PDSH
+### 4. Konfigurasi PDSH dan SSH Tanpa Password
 
-Praktikum ini dijalankan pada lingkungan Windows dengan MSYS2 UCRT64 untuk eksplorasi awal dan Ubuntu WSL untuk menjalankan Hadoop. Protokol pdsh dapat dicek dengan perintah:
+<p align="justify">Praktikum ini dijalankan pada lingkungan Windows dengan MSYS2 UCRT64 untuk eksplorasi awal dan Ubuntu WSL untuk menjalankan Hadoop. Paket <code>pdsh</code> dipasang terlebih dahulu; pada WSL digunakan <code>apt</code>, sedangkan pada MSYS2 digunakan <code>pacman</code>:</p>
+
+```bash
+sudo apt install pdsh        # Ubuntu WSL
+pacman -S pdsh               # MSYS2 UCRT64
+```
+
+<p align="justify">Setelah paket tersedia, protokol yang dipakai pdsh dapat diperiksa dengan perintah:</p>
 
 ```bash
 echo $PDSH_RCMD_TYPE
@@ -201,13 +208,19 @@ echo $PDSH_RCMD_TYPE
 
 ---
 
-Kemudian, mengatur env variabel dengan perintah:
+<p align="justify">Kemudian, atur variabel lingkungan dengan perintah:</p>
 
 ```bash
 export PDSH_RCMD_TYPE=ssh
 ```
 
-Atur supaya ssh ke localhost tidak perlu login dengan perintah:
+<p align="justify">Agar nilai tersebut tidak hilang setiap kali terminal baru dibuka, baris yang sama ditambahkan ke file lingkungan Hadoop:</p>
+
+```bash
+echo 'export PDSH_RCMD_TYPE=ssh' >> ~/env/bash/storage/hadoop.sh
+```
+
+<p align="justify">Supaya SSH ke localhost tidak meminta login, buat kunci SSH lalu daftarkan public key-nya:</p>
 
 ```bash
 ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
@@ -229,9 +242,9 @@ chmod 0600 ~/.ssh/authorized_keys
 
 ### 5. Konfigurasi Apache Hadoop
 
-Konfigurasi pada bagian ini ditampilkan sebagai contoh konfigurasi instalasi MSYS2. Pada instalasi Ubuntu WSL yang dipakai menjalankan HDFS, konfigurasi yang benar-benar digunakan lebih ringkas: `fs.defaultFS` dan `dfs.replication = 1`, ditambah lokasi penyimpanan NameNode dan DataNode. File `mapred-site.xml` dan `yarn-site.xml` pada WSL masih menggunakan konfigurasi bawaan karena fokus praktikum ini adalah HDFS, bukan menjalankan pekerjaan MapReduce.
+<p align="justify">Konfigurasi pada bagian ini ditampilkan sebagai contoh konfigurasi instalasi MSYS2. Pada instalasi Ubuntu WSL yang dipakai menjalankan HDFS, konfigurasi yang benar-benar digunakan lebih ringkas: <code>fs.defaultFS</code> dan <code>dfs.replication = 1</code>, ditambah lokasi penyimpanan NameNode dan DataNode. File <code>mapred-site.xml</code> dan <code>yarn-site.xml</code> pada WSL masih menggunakan konfigurasi bawaan karena fokus praktikum ini adalah HDFS, bukan menjalankan pekerjaan MapReduce.</p>
 
-Tambahkan config pada file $HADOOP_HOME/etc/hadoop/hdfs-site.xml dengan kode:
+<p align="justify">Tambahkan konfigurasi pada file <code>$HADOOP_HOME/etc/hadoop/hdfs-site.xml</code> dengan kode:</p>
 
 ```
 <configuration>
@@ -242,7 +255,7 @@ Tambahkan config pada file $HADOOP_HOME/etc/hadoop/hdfs-site.xml dengan kode:
 </configuration>
 ```
 
-Sehingga menjadi:
+<p align="justify">Sehingga menjadi:</p>
 
 ```
 <?xml version="1.0" encoding="UTF-8"?>
@@ -277,7 +290,7 @@ Sehingga menjadi:
 
 ---
 
-Tambahkan config pada file $HADOOP_HOME/etc/hadoop/core-site.xml dengan kode:
+<p align="justify">Tambahkan konfigurasi pada file <code>$HADOOP_HOME/etc/hadoop/core-site.xml</code> dengan kode:</p>
 
 ```
 <configuration>
@@ -296,7 +309,7 @@ Tambahkan config pada file $HADOOP_HOME/etc/hadoop/core-site.xml dengan kode:
 </configuration>
 ```
 
-Sehingga menjadi:
+<p align="justify">Sehingga menjadi:</p>
 
 ```
 <?xml version="1.0" encoding="UTF-8"?>
@@ -339,7 +352,7 @@ Sehingga menjadi:
 
 ---
 
-Tambahkan Config pada file $HADOOP_HOME/etc/hadoop/mapred-site.xml dengan kode:
+<p align="justify">Tambahkan konfigurasi pada file <code>$HADOOP_HOME/etc/hadoop/mapred-site.xml</code> dengan kode:</p>
 
 ```
 <configuration>
@@ -354,7 +367,7 @@ Tambahkan Config pada file $HADOOP_HOME/etc/hadoop/mapred-site.xml dengan kode:
 </configuration>
 ```
 
-Sehingga menjadi:
+<p align="justify">Sehingga menjadi:</p>
 
 ```
 <?xml version="1.0"?>
@@ -393,7 +406,7 @@ Sehingga menjadi:
 
 ---
 
-Tambahkan Config pada file $HADOOP_HOME/etc/hadoop/yarn-site.xml dengan kode:
+<p align="justify">Tambahkan konfigurasi pada file <code>$HADOOP_HOME/etc/hadoop/yarn-site.xml</code> dengan kode:</p>
 
 ```
 <configuration>
@@ -423,7 +436,7 @@ Tambahkan Config pada file $HADOOP_HOME/etc/hadoop/yarn-site.xml dengan kode:
 </configuration>
 ```
 
-Sehingga menjadi:
+<p align="justify">Sehingga menjadi:</p>
 
 ```
 <?xml version="1.0"?>
@@ -473,11 +486,43 @@ Sehingga menjadi:
 
 ---
 
-### 6. Format NameNode
+### 6. Atur konfigurasi JAVA_HOME
 
-Proses ini dilakukan sekali saja. Jika dilakukan lagi, akan menghapus berbagai file yang telah diproses di HDFS.
+<p align="justify">Edit file <code>$HADOOP_HOME/etc/hadoop/hadoop-env.sh</code> dan isi <code>JAVA_HOME</code> sesuai lokasi JDK pada lingkungan yang digunakan. Gambar 9 menunjukkan konfigurasi pada instalasi MSYS2:</p>
 
-Untuk menjalankan pemformatan NameNode dapat menggunakan perintah:
+```bash
+export JAVA_HOME="/c/Program Files/Java/jdk-17.0.21.0.3"
+```
+
+<p align="justify">HDFS pada praktikum ini dijalankan melalui instalasi Ubuntu WSL. Pada WSL, path Windows di atas tidak digunakan. Lokasi JDK WSL yang dipakai adalah:</p>
+
+```bash
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+```
+
+<p align="justify">Path tersebut juga dapat diisi secara otomatis dengan:</p>
+
+```bash
+export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))
+```
+
+<p align="center">
+  <img src="images/07_Konfigurasi_JAVA_HOME.png" width="700" alt="Baris export JAVA_HOME pada hadoop-env.sh yang diarahkan ke folder JDK 17 di Program Files">
+  <br>
+  <em>Gambar 9. Konfigurasi JAVA_HOME pada hadoop-env.sh</em>
+</p>
+
+#### Pembahasan
+
+<p align="justify">Script Hadoop membutuhkan <code>JAVA_HOME</code> untuk mengetahui lokasi Java. Nilai pada Gambar 9 hanya berlaku untuk instalasi MSYS2, yang menulis path Windows dalam format <code>/c/...</code>. Karena HDFS dijalankan dari Ubuntu WSL, instalasi tersebut memakai path JDK Linux <code>/usr/lib/jvm/java-17-openjdk-amd64</code>, atau nilai yang dideteksi otomatis dengan <code>readlink</code>. Kedua instalasi memiliki <code>hadoop-env.sh</code> masing-masing, sehingga pengaturan pada MSYS2 tidak otomatis berlaku di WSL. Kalau path tidak menunjuk ke folder JDK yang benar, daemon biasanya berhenti dengan pesan bahwa <code>JAVA_HOME</code> tidak di-set atau Java tidak ditemukan.</p>
+
+---
+
+### 7. Format NameNode
+
+<p align="justify">Proses ini dilakukan sekali saja. Jika dilakukan lagi, akan menghapus berbagai file yang telah diproses di HDFS.</p>
+
+<p align="justify">Untuk menjalankan pemformatan NameNode dapat menggunakan perintah:</p>
 
 ```bash
 hdfs namenode -format
@@ -583,43 +628,15 @@ SHUTDOWN_MSG: Shutting down NameNode at LAPTOP-E46UBD60/127.0.1.1
 
 <p align="justify">Format NameNode adalah langkah yang membuat struktur metadata HDFS pertama kali, yaitu <code>fsimage</code> dan edit log di direktori penyimpanan NameNode. Pada output terlihat <code>Formatting using clusterid</code> dan <code>Storage directory ... has been successfully formatted</code>, yang menandakan proses berhasil dan HDFS siap menerima blok data. Perintah ini hanya boleh dijalankan sekali; kalau diulang, metadata lama akan dihapus dan seluruh file yang pernah disimpan di HDFS ikut hilang.</p>
 
----
+<p align="justify">Perlu dicatat bahwa log di atas masih menampilkan sebagian nilai bawaan, yaitu <code>defaultReplication = 3</code> dan direktori penyimpanan <code>/tmp/hadoop-Ayyrieldev/dfs/name</code>. Hal ini menunjukkan bahwa saat perintah dijalankan, <code>hdfs-site.xml</code> dan <code>core-site.xml</code> belum sepenuhnya diterapkan. Nilai replikasi yang benar-benar dipakai pada akhir praktikum terlihat dari keluaran <code>hdfs dfs -ls</code> pada Gambar 17, yang menampilkan replikasi 1 sesuai konfigurasi.</p>
 
-### 7. Atur konfigurasi JAVA_HOME
-
-Edit file `$HADOOP_HOME/etc/hadoop/hadoop-env.sh` dan isi `JAVA_HOME` sesuai lokasi JDK pada lingkungan yang digunakan. Gambar 9 menunjukkan konfigurasi pada instalasi MSYS2:
-
-```bash
-export JAVA_HOME="/c/Program Files/Java/jdk-17.0.21.0.3"
-```
-
-HDFS pada praktikum ini dijalankan melalui instalasi Ubuntu WSL. Pada WSL, path Windows di atas tidak digunakan. Lokasi JDK WSL yang dipakai adalah:
-
-```bash
-export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-```
-
-Path tersebut juga dapat diisi secara otomatis dengan:
-
-```bash
-export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))
-```
-
-<p align="center">
-  <img src="images/07_Konfigurasi_JAVA_HOME.png" width="700" alt="Baris export JAVA_HOME pada hadoop-env.sh yang diarahkan ke folder JDK 17 di Program Files">
-  <br>
-  <em>Gambar 9. Konfigurasi JAVA_HOME pada hadoop-env.sh</em>
-</p>
-
-#### Pembahasan
-
-<p align="justify">Script Hadoop membutuhkan <code>JAVA_HOME</code> untuk mengetahui lokasi Java. Nilai pada Gambar 9 hanya berlaku untuk instalasi MSYS2, yang menulis path Windows dalam format <code>/c/...</code>. Karena HDFS dijalankan dari Ubuntu WSL, instalasi tersebut memakai path JDK Linux <code>/usr/lib/jvm/java-17-openjdk-amd64</code>, atau nilai yang dideteksi otomatis dengan <code>readlink</code>. Kedua instalasi memiliki <code>hadoop-env.sh</code> masing-masing, sehingga pengaturan pada MSYS2 tidak otomatis berlaku di WSL. Kalau path tidak menunjuk ke folder JDK yang benar, daemon biasanya berhenti dengan pesan bahwa <code>JAVA_HOME</code> tidak di-set atau Java tidak ditemukan.</p>
+<p align="justify">Karena direktori penyimpanan masih berada di <code>/tmp</code>, data HDFS berpotensi hilang ketika WSL dimulai ulang atau <code>/tmp</code> dibersihkan. Untuk pemakaian yang lebih permanen, sebaiknya <code>dfs.namenode.name.dir</code> dan <code>dfs.datanode.data.dir</code> pada <code>hdfs-site.xml</code> diarahkan ke direktori tetap, misalnya <code>~/software/storage/data/dfs/name</code> dan <code>~/software/storage/data/dfs/data</code>, lalu NameNode diformat ulang.</p>
 
 ---
 
 ### 8. Jalankan daemon untuk HDFS
 
-Untuk menjalankan daemon untuk HDFS dapat menggunakan perintah:
+<p align="justify">Untuk menjalankan daemon untuk HDFS dapat menggunakan perintah:</p>
 
 ```bash
 start-dfs.sh
@@ -637,7 +654,7 @@ start-dfs.sh
 
 ---
 
-Pemantauan bisa dilakukan menggunakan Web **_http://localhost:9870/dfshealth.html#tab-overview_**
+<p align="justify">Pemantauan dapat dilakukan melalui Web UI pada <code>http://localhost:9870/dfshealth.html#tab-overview</code></p>
 
 <p align="center">
   <img src="images/11_Pemantauan_Web.png" width="700" alt="Halaman Overview NameNode di localhost:9870 dengan 1 live node, 0 dead node, dan safemode off">
@@ -665,7 +682,7 @@ Pemantauan bisa dilakukan menggunakan Web **_http://localhost:9870/dfshealth.htm
 
 ---
 
-Untuk menghentikan HDFS gunakan perintah:
+<p align="justify">Untuk menghentikan HDFS gunakan perintah:</p>
 
 ```bash
 stop-dfs.sh
@@ -679,7 +696,7 @@ stop-dfs.sh
 
 #### Pembahasan
 
-<p align="justify"><code>stop-dfs.sh</code> menghentikan NameNode, DataNode, dan Secondary NameNode secara berurutan agar tidak ada proses yang tertinggal. Menghentikan HDFS tidak menghapus data, karena blok dan metadata tetap tersimpan di direktori penyimpanan masing-masing daemon. Saat HDFS dijalankan lagi, data yang sudah ada akan dibaca kembali tanpa perlu memformat NameNode.</p>
+<p align="justify"><code>stop-dfs.sh</code> menghentikan NameNode, DataNode, dan Secondary NameNode secara berurutan agar tidak ada proses yang tertinggal. Menghentikan HDFS tidak menghapus data, karena blok dan metadata tetap tersimpan di direktori penyimpanan masing-masing daemon. Saat HDFS dijalankan lagi, data yang sudah ada akan dibaca kembali tanpa perlu memformat NameNode. Syaratnya, direktori penyimpanan tersebut tidak berada di <code>/tmp</code> yang bisa dibersihkan saat WSL dimulai ulang (lihat §7).</p>
 
 ---
 
@@ -687,7 +704,7 @@ stop-dfs.sh
 
 ### 1. Buat direktori di HDFS
 
-Untuk membuat direktori, gunakan perintah
+<p align="justify">Untuk membuat direktori, gunakan perintah</p>
 
 ```bash
 hdfs dfs -mkdir -p /user/Ayyrieldev/datasets
@@ -707,7 +724,7 @@ hdfs dfs -mkdir -p /user/Ayyrieldev/datasets
 
 ### 2. Cari 3 file .csv di Internet dan kemudian copykan 3 file tersebut ke direktori yang baru saja dibuat pada tugas 1.
 
-Unduh 3 file CSV menggunakan perintah:
+<p align="justify">Unduh 3 file CSV menggunakan perintah:</p>
 
 ```bash
 curl -o iris.csv https://raw.githubusercontent.com/mwaskom/seaborn-data/master/iris.csv
@@ -727,7 +744,7 @@ curl -o housing.csv https://raw.githubusercontent.com/selva86/datasets/master/Bo
 
 ---
 
-Kemudian menyalin 3 file CSV ke HDFS dengan perintah:
+<p align="justify">Kemudian menyalin 3 file CSV ke HDFS dengan perintah:</p>
 
 ```bash
 hdfs dfs -put iris.csv titanic.csv housing.csv /user/Ayyrieldev/datasets/
@@ -745,7 +762,7 @@ hdfs dfs -put iris.csv titanic.csv housing.csv /user/Ayyrieldev/datasets/
 
 ---
 
-Lalu memverifikasi isi folder HDFS dengan perintah:
+<p align="justify">Lalu memverifikasi isi folder HDFS dengan perintah:</p>
 
 ```bash
 hdfs dfs -ls /user/Ayyrieldev/datasets
@@ -763,7 +780,7 @@ hdfs dfs -ls /user/Ayyrieldev/datasets
 
 ---
 
-Lalu cek hasilnya di web **_http://localhost:9870_**, kemudian klik menu **_Utilities_**, lalu pilih **_Browse the file system_**
+<p align="justify">Lalu periksa hasilnya melalui Web UI <code>http://localhost:9870</code>, kemudian klik menu <strong>Utilities</strong>, lalu pilih <strong>Browse the file system</strong>.</p>
 
 <p align="center">
   <img src="images/18_Cek_Hasil_Buat_DataSet.png" width="700" alt="Halaman Browse Directory dengan menu Utilities terbuka dan pilihan Browse the file system">
@@ -777,13 +794,13 @@ Lalu cek hasilnya di web **_http://localhost:9870_**, kemudian klik menu **_Util
 
 ---
 
-Pada kolom isian lokasi direktori (Path), ketik:
+<p align="justify">Pada kolom isian lokasi direktori (Path), ketik:</p>
 
 ```
 /user/Ayyrieldev/datasets
 ```
 
-dan klik Go
+<p align="justify">dan klik Go</p>
 
 <p align="center">
   <img src="images/19_Cek_Hasil_Buat_DataSet.png" width="700" alt="Halaman Browse Directory pada path /user/Ayyrieldev/datasets yang menampilkan tiga file CSV">
