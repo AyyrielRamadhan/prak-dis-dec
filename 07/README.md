@@ -37,7 +37,7 @@ Contoh vendor atau komunitas SaaS, PaaS, dan laaS:
 #### Pembahasan
 
 - SaaS - Google Workspace
-- - Layanan Utama:
+  - Layanan Utama:
 
 ---
 
