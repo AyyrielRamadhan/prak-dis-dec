@@ -20,7 +20,7 @@
 
 **1. Carilah berbagai contoh vendor/komunitas SaaS, PaaS, dan laaS masing-masing 1 saja**
 
-#### Pembahasan:
+#### Pembahasan
 
 Contoh vendor atau komunitas SaaS, PaaS, dan laaS:
 
@@ -33,6 +33,11 @@ Contoh vendor atau komunitas SaaS, PaaS, dan laaS:
 ---
 
 **2. Uraikan apa yang menjadi service dari berbagai vendor untuk berbagai kategori XaaS tersebut**
+
+#### Pembahasan
+
+- SaaS - Google Workspace
+- - Layanan Utama:
 
 ---
 
