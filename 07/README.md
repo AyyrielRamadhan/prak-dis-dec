@@ -87,7 +87,7 @@
 
 #### Pembahasan
 
-<p align="justify">Gambar tersebut memvisualisasikan tiga lapisan XaaS sebagai tingkatan tanggung jawab. Di lapisan bawah ada IaaS yang menyediakan infrastruktur dasar seperti server dan jaringan, lalu di tengah PaaS yang menambahkan runtime dan alat pengembangan, dan di lapisan atas SaaS yang langsung berupa aplikasi jadi. Inti gambar ini sebenarnya sederhana: semakin tinggi lapisan yang dipakai, semakin sedikit bagian yang harus kita urus sendiri, karena pengelolaan sistem operasi, middleware, sampai pemeliharaan aplikasi berpindah ke pihak provider.</p>
+<p align="justify">Gambar tersebut memvisualisasikan tiga lapisan XaaS sebagai tingkatan tanggung jawab. Di lapisan bawah ada IaaS yang menyediakan infrastruktur dasar seperti server dan jaringan, lalu di tengah PaaS yang menambahkan runtime dan alat pengembangan, dan di lapisan atas SaaS yang langsung berupa aplikasi jadi. Inti gambar ini sebenarnya semakin tinggi lapisan yang dipakai, semakin sedikit bagian yang harus kita urus sendiri, karena pengelolaan sistem operasi, middleware, sampai pemeliharaan aplikasi berpindah ke pihak provider.</p>
 
 ---
 
@@ -297,7 +297,7 @@ flask --app flaskr run
 
 #### Pembahasan
 
-<p align="justify">Halaman utama aplikasi menampilkan daftar post kosong dengan tautan Register dan Log In, tanda bahwa aplikasi benar-benar berjalan. Setelah mendaftar lalu masuk, tampilan berubah: muncul menu untuk menambah post dan tombol Log Out. Perubahan ini menunjukkan bahwa sesi login tersimpan dan aplikasi sudah bisa membedakan pengguna yang belum dan sudah terautentikasi.</p>
+<p align="justify">Halaman utama aplikasi menampilkan daftar post kosong dengan tautan Register dan Log In, tanda bahwa aplikasi benar-benar berjalan. Setelah mendaftar lalu masuk, tampilan berubah dan muncul menu untuk menambah post dan tombol Log Out. Perubahan ini menunjukkan bahwa sesi login tersimpan dan aplikasi sudah bisa membedakan pengguna yang belum dan sudah terautentikasi.</p>
 
 ---
 
@@ -342,7 +342,7 @@ CMD ["flask", "--app", "flaskr", "run", "--host=0.0.0.0", "--port=5000"]
 
 #### Pembahasan
 
-<p align="justify">Isi Dockerfile-nya cukup singkat: memakai image dasar <code>python:3.14</code>, membuat direktori kerja <code>/app</code>, menyalin seluruh kode ke sana, lalu memasang paket dengan <code>pip install -e .</code>. Ada dua detail yang menentukan. Pertama, <code>flask --app flaskr init-db</code> dijalankan saat build, artinya file basis data ikut tertanam di dalam image sehingga container langsung siap pakai. Kedua, opsi <code>--host=0.0.0.0</code> wajib ada, karena tanpa itu server hanya mendengarkan di dalam container dan tidak bisa diakses dari luar. Untuk kebutuhan produksi, init-db sebaiknya dipindah ke saat runtime dan datanya ditaruh di volume, supaya data tidak hilang saat container dibuat ulang.</p>
+<p align="justify">Isi Dockerfile-nya cukup singkat, memakai image dasar <code>python:3.14</code>, membuat direktori kerja <code>/app</code>, menyalin seluruh kode ke sana, lalu memasang paket dengan <code>pip install -e .</code>. Ada dua detail yang menentukan. Pertama, <code>flask --app flaskr init-db</code> dijalankan saat build, artinya file basis data ikut tertanam di dalam image sehingga container langsung siap pakai. Kedua, opsi <code>--host=0.0.0.0</code> wajib ada, karena tanpa itu server hanya mendengarkan di dalam container dan tidak bisa diakses dari luar. Untuk kebutuhan produksi, init-db sebaiknya dipindah ke saat runtime dan datanya ditaruh di volume, supaya data tidak hilang saat container dibuat ulang.</p>
 
 ---
 
@@ -398,7 +398,7 @@ docker rmi <ID_IMAGE>
 
 #### Pembahasan
 
-<p align="justify">Image yang sudah tidak dipakai dibersihkan dengan <code>docker rmi &lt;ID_IMAGE&gt;</code>. Langkah ini berguna karena setiap proses build meninggalkan layer dan image lama yang lama-lama memakan ruang disk. Satu catatan penting: image yang masih dipakai container tidak bisa dihapus begitu saja, container-nya harus dihentikan dan dihapus lebih dulu.</p>
+<p align="justify">Image yang sudah tidak dipakai dibersihkan dengan <code>docker rmi &lt;ID_IMAGE&gt;</code>. Langkah ini berguna karena setiap proses build meninggalkan layer dan image lama yang lama-lama memakan ruang disk. Satu catatan penting yaitu image yang masih dipakai container tidak bisa dihapus begitu saja, container-nya harus dihentikan dan dihapus lebih dulu.</p>
 
 ---
 
@@ -448,7 +448,7 @@ docker run -p 5001:5000 flaskr:1.0.0
 
 #### Pembahasan
 
-<p align="justify">Halaman yang tampil di <code>http://localhost:5001</code> sama persis dengan versi yang dijalankan langsung tanpa container. Ini bukti bahwa pemetaan port bekerja: permintaan dari browser masuk ke host, diteruskan ke dalam container, lalu dijawab oleh aplikasi Flask di sana. Dari sisi pengguna tidak ada bedanya sama sekali, dan justru itulah tujuan containerisasi.</p>
+<p align="justify">Halaman yang tampil di <code>http://localhost:5001</code> sama persis dengan versi yang dijalankan langsung tanpa container. Ini bukti bahwa pemetaan port bekerja melalui permintaan dari browser masuk ke host, diteruskan ke dalam container, lalu dijawab oleh aplikasi Flask di sana. Dari sisi pengguna tidak ada bedanya sama sekali, dan justru itulah tujuan containerisasi.</p>
 
 ---
 
@@ -484,7 +484,7 @@ winget install RedHat.Podman
 
 #### Pembahasan
 
-<p align="justify">Bagian berikutnya mengulang hal yang sama dengan Podman, yang dipasang di Windows memakai <code>winget install RedHat.Podman</code>. Podman dipilih sebagai pembanding karena cara kerjanya berbeda: tanpa daemon dan bisa berjalan tanpa hak root. Karena Windows tidak punya kernel Linux, Podman di sini tetap membutuhkan mesin virtual sebagai tempat menjalankan container.</p>
+<p align="justify">Bagian berikutnya mengulang hal yang sama dengan Podman, yang dipasang di Windows memakai <code>winget install RedHat.Podman</code>. Podman dipilih sebagai pembanding karena cara kerjanya berbeda yaitu tanpa daemon dan bisa berjalan tanpa hak root. Karena Windows tidak punya kernel Linux, Podman di sini tetap membutuhkan mesin virtual sebagai tempat menjalankan container.</p>
 
 ---
 
@@ -570,7 +570,7 @@ podman run -p 5001:5000 flaskr:1.0.0
 
 #### Pembahasan
 
-<p align="justify">Container dijalankan dengan <code>podman run -p 5001:5000 flaskr:1.0.0</code>, sama seperti sebelumnya. Karena Podman di Windows berjalan di dalam VM, pemetaan port sebenarnya diteruskan dua kali: dari host ke VM, lalu dari VM ke container. Meskipun jalurnya lebih panjang, hasilnya tetap sama dan pengguna tidak merasakan perbedaan apa pun.</p>
+<p align="justify">Container dijalankan dengan <code>podman run -p 5001:5000 flaskr:1.0.0</code>, sama seperti sebelumnya. Karena Podman di Windows berjalan di dalam VM, pemetaan port sebenarnya diteruskan dua kali yaitu dari host ke VM, lalu dari VM ke container. Meskipun jalurnya lebih panjang, hasilnya tetap sama dan pengguna tidak merasakan perbedaan apa pun.</p>
 
 ---
 
@@ -584,17 +584,17 @@ podman run -p 5001:5000 flaskr:1.0.0
 
 #### Pembahasan
 
-<p align="justify">Halaman di <code>http://127.0.0.1:5001</code> tampil sama seperti saat dijalankan dengan Docker. Hasil yang identik ini menegaskan bahwa image container bersifat portabel: aplikasi yang sama dapat dijalankan di engine yang berbeda tanpa mengubah kode maupun Dockerfile. Dari sini terlihat jelas bahwa yang membuat aplikasi “cloud ready” bukanlah Docker atau Podman secara khusus, melainkan cara kita mengemasnya.</p>
+<p align="justify">Halaman di <code>http://127.0.0.1:5001</code> tampil sama seperti saat dijalankan dengan Docker. Hasil ini menegaskan bahwa image container bersifat portabel aplikasi yang sama dapat dijalankan di engine yang berbeda tanpa mengubah kode maupun Dockerfile. Dari sini terlihat jelas bahwa yang membuat aplikasi “cloud ready” bukanlah Docker atau Podman secara khusus, melainkan cara kita mengemasnya.</p>
 
 ---
 
 ## 📝 Kesimpulan
 
-<p align="justify">Dari praktikum ini terlihat bahwa Cloud Computing pada dasarnya adalah soal pembagian tanggung jawab. Model XaaS membuat garis itu makin jelas: IaaS menyisakan hampir semua pekerjaan teknis di tangan pengguna, PaaS memangkasnya sampai tinggal kode aplikasi, dan SaaS menghilangkannya sama sekali karena yang dipakai hanyalah aplikasinya. Di lapisan mana kita berada menentukan seberapa besar kendali yang kita miliki sekaligus seberapa besar pekerjaan yang harus ditanggung sendiri.</p>
+<p align="justify">Dari praktikum ini terlihat bahwa Cloud Computing pada dasarnya adalah soal pembagian tanggung jawab. Model XaaS membuat garis itu makin jelas, IaaS menyisakan hampir semua pekerjaan teknis di tangan pengguna, PaaS memangkasnya sampai tinggal kode aplikasi, dan SaaS menghilangkannya sama sekali karena yang dipakai hanyalah aplikasinya. Di lapisan mana kita berada menentukan seberapa besar kendali yang kita miliki sekaligus seberapa besar pekerjaan yang harus ditanggung sendiri.</p>
 
 <p align="justify">Proses mengubah aplikasi Flask menjadi containerized app menunjukkan bagaimana sebuah aplikasi disiapkan agar bisa dijalankan di mana saja. Kuncinya ada pada Dockerfile yang mendokumentasikan seluruh kebutuhan aplikasi, mulai dari image dasar, dependensi, inisialisasi basis data, sampai perintah menjalankannya. Setelah menjadi image, aplikasi tidak lagi bergantung pada kondisi komputer tempat ia dikembangkan.</p>
 
-<p align="justify">Perbandingan Docker dan Podman memperlihatkan bahwa keduanya bisa menyelesaikan pekerjaan yang sama dengan cara yang berbeda. Docker bergantung pada daemon yang berjalan di latar belakang, sedangkan Podman berjalan tanpa daemon dan bisa dipakai tanpa hak root. Karena sama-sama memakai standar image OCI, Dockerfile yang sama bisa dipakai di keduanya, dan hasil akhirnya identik di browser. Satu hal yang perlu diingat untuk penggunaan nyata: basis data sebaiknya tidak ikut ditanam di dalam image, melainkan disimpan di volume terpisah agar datanya tidak hilang ketika container dibuat ulang.</p>
+<p align="justify">Perbandingan Docker dan Podman memperlihatkan bahwa keduanya bisa menyelesaikan pekerjaan yang sama dengan cara yang berbeda. Docker bergantung pada daemon yang berjalan di latar belakang, sedangkan Podman berjalan tanpa daemon dan bisa dipakai tanpa hak root. Karena sama-sama memakai standar image OCI, Dockerfile yang sama bisa dipakai di keduanya, dan hasil akhirnya identik di browser. Satu hal yang perlu diingat untuk penggunaan nyata yaitu basis data sebaiknya tidak ikut ditanam di dalam image, melainkan disimpan di volume terpisah agar datanya tidak hilang ketika container dibuat ulang.</p>
 
 ---
 

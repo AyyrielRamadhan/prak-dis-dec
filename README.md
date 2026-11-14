@@ -36,7 +36,7 @@ Selamat datang di repository praktikum mata kuliah Sistem Terdistribusi dan Terd
 |   04   | Konsistensi dan Replikasi pada Sistem Terdistribusi | ✅ Selesai | [Link Repository](https://github.com/AyyrielRamadhan/prak-dis-dec/tree/main/04) |
 |   05   | Fault Tolerance                                     | ✅ Selesai | [Link Repository](https://github.com/AyyrielRamadhan/prak-dis-dec/tree/main/05) |
 |   06   | Distributed File System - HDFS                      | ✅ Selesai | [Link Repository](https://github.com/AyyrielRamadhan/prak-dis-dec/tree/main/06) |
-|   07   | -                                                   |  ⬜ Belum  | -                                                                               |
+|   07   | Cloud Computing                                     | ✅ Selesai | [Link Repository](https://github.com/AyyrielRamadhan/prak-dis-dec/tree/main/07) |
 |   08   | -                                                   |  ⬜ Belum  | -                                                                               |
 |   09   | -                                                   |  ⬜ Belum  | -                                                                               |
 |   10   | -                                                   |  ⬜ Belum  | -                                                                               |
@@ -57,7 +57,7 @@ prak-dis-dec/
 ├── 04/                  # ✅ Laporan & Kode Praktikum Minggu ke-4 (Konsistensi dan Replikasi)
 ├── 05/                  # ✅ Laporan & Kode Praktikum Minggu ke-5 (Fault Tolerance)
 ├── 06/                  # ✅ Laporan & Kode Praktikum Minggu ke-6 (Distributed File System - HDFS)
-├── 07/                  # ⬜ Laporan & Kode Praktikum Minggu ke-7
+├── 07/                  # ✅ Laporan & Kode Praktikum Minggu ke-7 (Cloud Computing)
 ├── 08/                  # ⬜ Laporan & Kode Praktikum Minggu ke-8
 ├── 09/                  # ⬜ Laporan & Kode Praktikum Minggu ke-9
 ├── 10/                  # ⬜ Laporan & Kode Praktikum Minggu ke-10
