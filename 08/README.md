@@ -440,6 +440,8 @@ sqlite3 inventaris.db
 
 <p align="justify">Memisahkan file database membuat pemeriksaan lebih mudah: isi <code>departemen-sdm.db</code> tetap seperti semula, sedangkan <code>inventaris.db</code> khusus menampung tabel tugas. File <code>.db</code> terbentuk begitu perintah pertama dijalankan, dan sejak itu semua perintah SQL diarahkan ke file tersebut. Pemisahan ini juga meniru kebiasaan nyata, di mana satu layanan biasanya punya datanya sendiri.</p>
 
+---
+
 <p align="justify">Di dalam database tersebut dibuat tabel <code>produk</code> dengan perintah berikut.</p>
 
 ```sql
@@ -463,6 +465,8 @@ CREATE TABLE produk (
 
 <p align="justify">Keenam kolom dipilih agar semua tipe yang diminta modul terwakili: <code>id</code> sebagai <strong>primary key</strong> bertipe <code>INTEGER</code>, <code>kode</code> bertipe <code>CHAR(5)</code>, <code>nama</code> bertipe <code>VARCHAR(100)</code>, <code>stok</code> bertipe <code>INT</code>, <code>harga</code> bertipe <code>FLOAT</code>, dan <code>tersedia</code> bertipe <code>BOOLEAN</code>. Susunan ini sengaja dibuat menyerupai data inventaris sungguhan supaya tiap tipe punya alasan keberadaannya, bukan sekadar memenuhi syarat. <strong>Primary key</strong> tunggal di <code>id</code> juga cukup karena satu produk diwakili satu baris.</p>
 
+---
+
 <p align="justify">Struktur tabel kemudian dipastikan dengan perintah berikut.</p>
 
 ```bash
@@ -479,6 +483,8 @@ CREATE TABLE produk (
 
 <p align="justify"><code>.schema produk</code> menampilkan kembali DDL yang tersimpan, sehingga bisa dibandingkan langsung dengan perintah <code>CREATE</code> yang tadi diketik. Kalau ada kolom yang salah nama atau salah tipe, kesalahannya terlihat di sini. Pemeriksaan seperti ini murah dilakukan dan menghindarkan <em>debugging</em> yang lebih rumit saat data sudah masuk. Karena itu langkah ini dikerjakan sebelum pengisian data.</p>
 
+---
+
 <p align="justify">Pemeriksaan dilanjutkan dengan perintah berikut untuk melihat detail tiap kolom.</p>
 
 ```sql
@@ -494,6 +500,8 @@ PRAGMA table_info(produk);
 #### Pembahasan
 
 <p align="justify"><code>PRAGMA table_info</code> menampilkan struktur tabel dalam bentuk tabel: nama kolom, tipe, status <code>notnull</code>, nilai <em>default</em>, dan penanda <strong>primary key</strong>. Dari keluaran itu terlihat kolom <code>id</code> memiliki <code>pk = 1</code>, sedangkan kolom lain bernilai 0. Perlu dicatat, SQLite menyimpan <code>CHAR</code> dan <code>VARCHAR</code> sebagai <code>TEXT</code>, jadi tipe aslinya hanya terjaga di definisi. Karena itu dua cara pemeriksaan ini saling melengkapi.</p>
+
+---
 
 ### 2. Isikan 5 data menggunakan script Python
 
@@ -553,6 +561,8 @@ EOF
 
 <p align="justify">Script ini mendefinisikan model <code>Produk</code> dengan field yang sama seperti tabel, lalu menyiapkan lima objek dalam sebuah <em>list</em>. Semua objek dimasukkan dengan <code>session.add</code> di dalam satu <code>Session</code>, kemudian <code>session.commit</code> menyimpannya sekaligus. Model dan <code>engine</code> diarahkan ke <code>inventaris.db</code> supaya penulisan masuk ke database yang benar. Dengan begitu, penambahan data cukup mengubah isi <em>list</em> tanpa menyentuh SQL.</p>
 
+---
+
 <p align="justify">Script dijalankan di dalam environment yang sama dengan perintah berikut.</p>
 
 ```bash
@@ -569,6 +579,8 @@ python isi_data.py
 
 <p align="justify">Pesan <em>Berhasil memasukkan 5 data produk ke database!</em> menjadi tanda bahwa <code>commit</code> selesai tanpa error. Karena kelima data dikirim dalam satu transaksi, kegagalan di tengah proses akan membatalkan semuanya, bukan menyisakan data setengah jadi. Sifat ini penting saat mengisi data dalam jumlah banyak. Setelah ini, isi database perlu dipastikan lagi dari sisi SQLite.</p>
 
+---
+
 <p align="justify">Verifikasi dilakukan langsung pada database dengan perintah berikut.</p>
 
 ```bash
@@ -584,6 +596,8 @@ sqlite3 inventaris.db "SELECT * FROM produk;"
 #### Pembahasan
 
 <p align="justify">Kelima baris muncul lengkap dengan <code>id</code> 1 sampai 5. Kolom <code>tersedia</code> tampil sebagai 1 dan 0 karena SQLite tidak punya tipe <em>boolean</em> khusus, sedangkan nilai <code>harga</code> tersimpan sebagai bilangan pecahan, termasuk 1850000.75 yang tidak dibulatkan. Kalau ada baris yang hilang atau nilai yang aneh, kesalahannya bisa dilacak sebelum API dibuat. Pemeriksaan dari sisi database ini jadi pembanding bagi hasil <em>endpoint</em> nanti.</p>
+
+---
 
 ### 3. Buat RESTful API endpoint untuk menampilkan semua data yang telah diisikan
 
@@ -640,6 +654,8 @@ EOF
 
 <p align="justify">Bedanya dengan contoh hanya pada model dan database yang dipakai: <code>Produk</code> dan <code>inventaris.db</code>, dengan rute <code>GET /produk/</code>. Pemisahan file menjaga contoh praktikum tetap utuh sekaligus memperlihatkan bahwa satu service idealnya menangani satu urusan. Isinya pun cukup satu <em>endpoint</em> baca karena tugas hanya meminta data ditampilkan. Struktur yang hampir identik ini juga menegaskan bahwa pola FastAPI dan SQLModel bisa dipakai berulang untuk data apa pun.</p>
 
+---
+
 <p align="justify">Server dijalankan dari folder <code>src</code> dengan perintah berikut.</p>
 
 ```bash
@@ -656,6 +672,8 @@ uvicorn tugas_service:app --reload
 
 <p align="justify">Nama modulnya berubah menjadi <code>tugas_service</code>, tetapi mekanismenya sama: Uvicorn mencari objek <code>app</code> di file tersebut. Karena port 8000 hanya bisa dipakai satu service pada satu waktu, service sebelumnya harus dihentikan lebih dulu. Setelah server hidup, <em>endpoint</em> <code>/produk/</code> siap diakses. Kesalahan seperti salah nama modul akan langsung terlihat di terminal pada tahap ini.</p>
 
+---
+
 <p align="justify">Hasilnya dicek lewat peramban pada alamat <code>http://127.0.0.1:8000/produk/</code>.</p>
 
 <p align="center">
@@ -667,6 +685,8 @@ uvicorn tugas_service:app --reload
 #### Pembahasan
 
 <p align="justify">Halaman tersebut menampilkan lima produk dalam format JSON, masing-masing memuat <code>kode</code>, <code>nama</code>, <code>stok</code>, <code>harga</code>, dan <code>tersedia</code>. Nilai <em>boolean</em> tampil sebagai <code>true</code> dan <code>false</code>, berbeda dari 1 dan 0 yang terlihat di SQLite, karena FastAPI mengonversinya sesuai tipe Python. Perbedaan ini justru menunjukkan bahwa model berhasil membaca data dengan tipe yang benar. Isinya pun cocok dengan hasil <code>SELECT</code> sebelumnya, hanya formatnya lebih rapi.</p>
+
+---
 
 ### 4. Tampilkan hasil RESTful API endpoint tersebut menggunakan curl
 
