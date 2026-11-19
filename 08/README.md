@@ -61,6 +61,8 @@
 
 <p align="justify">Pembaruan <code>uv</code> dipakai sebagai titik awal karena seluruh perkakas praktikum ini bergantung padanya, mulai dari pemasangan Python sampai pembuatan <em>virtual environment</em>. Perintah <code>uv self update</code> memeriksa rilis terbaru lalu memasangnya bila perlu, dan di sini hasilnya menunjukkan versi 0.13.9 sudah yang terbaru. Dengan begitu tidak ada perbedaan perilaku perintah antara contoh modul dan yang dijalankan di mesin ini.</p>
 
+---
+
 <p align="justify">Instalasi Python menggunakan <code>uv</code> dengan versi 3.14.4. Sebelum itu, daftar versi Python yang sudah dikenal <code>uv</code> dicek lebih dulu memakai perintah berikut.</p>
 
 ```bash
@@ -107,6 +109,8 @@ graalpy-3.10.0-windows-x86_64-none                   <download available>
 
 <p align="justify">Perintah <code>uv python list</code> dipakai untuk melihat versi Python apa saja yang sudah dikenali <code>uv</code>. Dari daftar itu terlihat Python 3.14.4 sudah terpasang di mesin ini, sehingga tidak perlu mengunduh ulang. Kalau belum ada, <code>uv python install 3.14.4</code> akan mengunduhnya. Informasi ini penting karena modul mematok versi tersebut agar perilaku kode sama dengan contoh.</p>
 
+---
+
 <p align="justify">Selanjutnya Python 3.14.4 dipin dengan perintah berikut.</p>
 
 ```bash
@@ -122,6 +126,8 @@ uv python pin 3.14.4
 #### Pembahasan
 
 <p align="justify">Pin ini menuliskan versi ke file <code>.python-version</code>, sehingga <code>uv</code> selalu memakai versi yang sama setiap kali perintah dijalankan di folder proyek. Tanpa pin, <code>uv</code> bisa memilih versi lain yang kebetulan tersedia di mesin. Isi file itu sederhana, hanya <code>3.14.4</code>, tetapi cukup untuk mengunci lingkungan kerja. Dari sini proyek punya patokan versi yang bisa diulang di komputer lain.</p>
+
+---
 
 <p align="justify">Virtual <em>environment</em> kemudian dibuat dengan perintah berikut.</p>
 
@@ -139,6 +145,8 @@ uv venv
 
 <p align="justify">Tujuan <code>uv venv</code> adalah memisahkan pustaka proyek dari Python sistem. Dengan cara ini, paket FastAPI dan SQLModel yang dipasang nanti tidak mengganggu proyek lain di komputer yang sama. <code>uv</code> membuat folder <code>.venv</code> beserta salinan <em>interpreter</em> sesuai pin sebelumnya. Sejak titik ini, semua instalasi diarahkan ke folder tersebut.</p>
 
+---
+
 <p align="justify">Environment baru bisa dipakai setelah diaktifkan dengan perintah berikut.</p>
 
 ```bash
@@ -154,6 +162,8 @@ source .venv/Scripts/activate
 #### Pembahasan
 
 <p align="justify">Aktivasi mengubah <code>PATH</code> shell sehingga perintah <code>python</code> dan <code>pip</code> menunjuk ke dalam <code>.venv</code>, bukan ke Python global. Tanda <code>(src)</code> di depan prompt menjadi penanda bahwa environment sudah aktif. Kalau tanda itu belum muncul, instalasi berikutnya berisiko masuk ke Python sistem dan tidak terbaca saat service dijalankan. Karena itu urutan aktivasi tidak boleh dilewati.</p>
+
+---
 
 <p align="justify">Paket FastAPI dan SQLModel dipasang dengan perintah berikut.</p>
 
@@ -235,6 +245,8 @@ Installed 61 packages in 570ms
 
 <p align="justify">Pemasangan dilakukan di dalam <code>.venv</code> supaya versi pustaka praktikum ini tidak bercampur dengan proyek lain. Prosesnya menarik 61 paket, dan jumlah itu wajar karena FastAPI membawa <em>server</em> ASGI, validasi Pydantic, serta SQLAlchemy yang jadi lapisan dasar SQLModel. Pilihan <code>"fastapi[standard]"</code> menambahkan Uvicorn dan <em>command line</em> FastAPI sekaligus, jadi tidak perlu memasang server secara terpisah. Setelah tahap ini selesai, folder <code>.venv</code> sudah cukup untuk menjalankan service.</p>
 
+---
+
 <p align="justify">SQLite dicek keberadaannya dengan perintah berikut.</p>
 
 ```bash
@@ -251,6 +263,8 @@ sqlite3 --version
 
 <p align="justify">Pengecekan versi terdengar sepele, tetapi menentukan: kalau perintah <code>sqlite3</code> tidak dikenali, langkah membuat database akan gagal dengan pesan yang membingungkan. Di mesin ini keluar versi 3.54.1, jadi tidak ada instalasi tambahan yang diperlukan. Versi tersebut juga mendukung semua tipe kolom yang akan dipakai pada tugas. Karena alatnya sudah siap, praktikum bisa langsung masuk ke pembuatan database.</p>
 
+---
+
 <p align="justify">Jika SQLite belum terpasang, berkas unduhannya tersedia di situs resmi berikut.</p>
 
 <p align="center">
@@ -262,6 +276,8 @@ sqlite3 --version
 #### Pembahasan
 
 <p align="justify">Halaman <code>sqlite.org/download.html</code> menyediakan <em>binary</em> untuk berbagai sistem operasi. Di Windows, paket yang relevan adalah <code>sqlite-dll-win-x64</code> yang di dalamnya ada <code>sqlite3.exe</code>. Halaman itu berguna kalau suatu saat praktikum dikerjakan di komputer tanpa SQLite. Untuk sesi ini langkah tersebut tidak dijalankan karena versi yang terpasang sudah memadai.</p>
+
+---
 
 <p align="justify">Database <code>departemen-sdm.db</code> dibuat dengan membuka <code>sqlite3</code> lalu menjalankan perintah SQL secara langsung.</p>
 
@@ -294,6 +310,8 @@ SELECT * FROM sdm;
 #### Pembahasan
 
 <p align="justify">Tabel <code>sdm</code> diberi tiga kolom: <code>id</code> sebagai <strong>primary key</strong>, <code>npp</code> bertipe <code>CHAR(6)</code>, dan <code>nama</code> bertipe <code>VARCHAR(50)</code>. Tiga baris data dimasukkan agar <em>endpoint</em> nanti punya sesuatu untuk ditampilkan, sehingga hasilnya bisa langsung dinilai benar atau salah. <code>SELECT * FROM sdm</code> kemudian memastikan data benar-benar tersimpan, bukan hanya diterima tanpa error. Database yang sudah berisi inilah yang akan dibaca oleh service pada langkah berikutnya.</p>
+
+---
 
 ### 2. Source Code
 
@@ -348,6 +366,8 @@ EOF
 
 <p align="justify">File ini berisi tiga bagian yang saling terkait: model <code>Sdm</code>, <code>engine</code> yang menunjuk ke <code>departemen-sdm.db</code>, dan <em>endpoint</em> <code>GET /sdm/</code>. Model mendefinisikan bentuk data, <code>engine</code> membuka koneksi, sedangkan <code>get_session</code> memastikan koneksi ditutup setelah dipakai. <em>Endpoint</em>-nya hanya menjalankan <code>select(Sdm)</code> lalu mengembalikan seluruh hasil. Tambahan <code>response_model=List[Sdm]</code> membuat FastAPI merapikan keluaran sesuai bentuk model, sehingga nama field konsisten dengan yang didefinisikan.</p>
 
+---
+
 ### 3. Menjalankan Source Code
 
 <p align="justify">Service dijalankan dari folder <code>src</code> dengan perintah berikut.</p>
@@ -366,6 +386,8 @@ uvicorn service:app --reload
 
 <p align="justify">Bagian <code>service:app</code> berarti Uvicorn mengimpor file <code>service.py</code> lalu mengambil objek <code>app</code> di dalamnya. Opsi <code>--reload</code> memantau perubahan file dan menyalakan ulang server otomatis, jadi kode bisa diperbaiki tanpa menghentikan proses. Server mendengarkan di <code>127.0.0.1:8000</code>, alamat yang sama dengan contoh modul. Selama proses ini berjalan, terminal tidak boleh ditutup karena server hidup di dalamnya.</p>
 
+---
+
 <p align="justify">Untuk memeriksa hasilnya, <em>endpoint</em> diakses dari peramban pada alamat <code>http://localhost:8000/sdm/</code>.</p>
 
 <p align="center">
@@ -377,6 +399,8 @@ uvicorn service:app --reload
 #### Pembahasan
 
 <p align="justify">Halaman tersebut menampilkan tiga data <code>sdm</code> dalam bentuk JSON. Tampilan ini membuktikan seluruh rantai bekerja: FastAPI menerima permintaan, <em>session</em> membuka database, <em>query</em> dijalankan, dan hasilnya dikembalikan. Karena <em>endpoint</em> hanya membaca, tidak ada perubahan data yang terjadi. Bentuk JSON-nya juga mengikuti field pada model, yaitu <code>id</code>, <code>npp</code>, dan <code>nama</code>.</p>
+
+---
 
 <p align="justify">Pemeriksaan yang sama diulang lewat <em>headless tool</em> dengan perintah berikut, tanpa mematikan server.</p>
 
