@@ -37,7 +37,7 @@ Selamat datang di repository praktikum mata kuliah Sistem Terdistribusi dan Terd
 |   05   | Fault Tolerance                                     | ✅ Selesai | [Link Repository](https://github.com/AyyrielRamadhan/prak-dis-dec/tree/main/05) |
 |   06   | Distributed File System - HDFS                      | ✅ Selesai | [Link Repository](https://github.com/AyyrielRamadhan/prak-dis-dec/tree/main/06) |
 |   07   | Cloud Computing                                     | ✅ Selesai | [Link Repository](https://github.com/AyyrielRamadhan/prak-dis-dec/tree/main/07) |
-|   08   | -                                                   |  ⬜ Belum  | -                                                                               |
+|   08   | Arsitektur Microservices untuk Sistem Terdistribusi | ✅ Selesai | [Link Repository](https://github.com/AyyrielRamadhan/prak-dis-dec/tree/main/08) |
 |   09   | -                                                   |  ⬜ Belum  | -                                                                               |
 |   10   | -                                                   |  ⬜ Belum  | -                                                                               |
 |   11   | -                                                   |  ⬜ Belum  | -                                                                               |
@@ -58,7 +58,7 @@ prak-dis-dec/
 ├── 05/                  # ✅ Laporan & Kode Praktikum Minggu ke-5 (Fault Tolerance)
 ├── 06/                  # ✅ Laporan & Kode Praktikum Minggu ke-6 (Distributed File System - HDFS)
 ├── 07/                  # ✅ Laporan & Kode Praktikum Minggu ke-7 (Cloud Computing)
-├── 08/                  # ⬜ Laporan & Kode Praktikum Minggu ke-8
+├── 08/                  # ✅ Laporan & Kode Praktikum Minggu ke-8 (Arsitektur Microservices)
 ├── 09/                  # ⬜ Laporan & Kode Praktikum Minggu ke-9
 ├── 10/                  # ⬜ Laporan & Kode Praktikum Minggu ke-10
 ├── 11/                  # ⬜ Laporan & Kode Praktikum Minggu ke-11
