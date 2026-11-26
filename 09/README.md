@@ -644,6 +644,14 @@ deactivate
 
 ---
 
+Kemudian struktur direktori akhir menjadi:
+
+<img src="images/29_Struktur direktori akhir.png" width="700">
+
+#### Pembahasan:
+
+---
+
 ## 📜 Tugas
 
 ### 1.

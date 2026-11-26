@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package mydb;
+
+message SdmRequest {
+  int32 id = 1;
+}
+
+message SdmResponse {
+  int32 id = 1;
+  string npp = 2;
+  string nama = 3;
+}
+
+service SdmService {
+  rpc GetSdm (SdmRequest) returns (SdmResponse);
+}
