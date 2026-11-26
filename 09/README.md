@@ -654,7 +654,202 @@ Kemudian struktur direktori akhir menjadi:
 
 ## 📜 Tugas
 
-### 1.
+### 1. Dengan menggunakan file SQLite pada tugas kemarin (tabel yang mempunyai 1 primary key dan setidaknya berisi data dengan tipe INT, CHAR, VARCHAR BOOLEAN, dan FLOAT), buat GraphQL endpoint untuk tabel tersebut dan berikan contoh akses client untuk mengambil semua data.
+
+#### Persiapan Struktur Folder & Salin Database
+
+Masuk ke folder terlebih dahulu:
+
+```bash
+cd ~/Desktop/prak-dis-dec/09/Tugas09
+```
+
+<img src="images/30_Masuk ke folder terlebih dahulu.png" width="700">
+
+#### Pembahasan
+
+---
+
+Buat struktur direktori GraphQL
+
+```bash
+mkdir -p src/graphql/server src/graphql/client src/grpc/server src/grpc/client
+```
+
+<img src="images/31_Buat struktur direktori GraphQL.png" width="700">
+
+#### Pembahasan
+
+---
+
+Buat file kosong yang dibutuhkan
+
+```bash
+touch src/graphql/server/{graphql-server.py,requirements.txt}
+touch src/graphql/client/{graphql-client.py,requirements.txt}
+```
+
+<img src="images/32_Buat file kosong yang dibutuhkan.png" width="700">
+
+#### Pembahasan
+
+---
+
+Salin inventaris.db dari pertemuan 08 ke folder server GraphQL (dan gRPC)
+
+```bash
+cp ~/Desktop/prak-dis-dec/08/src/inventaris.db src/graphql/server/
+cp ~/Desktop/prak-dis-dec/08/src/inventaris.db src/grpc/server/
+```
+
+<img src="images/33_Salin inventaris.db dari pertemuan 08 ke folder server GraphQL (dan gRPC).png" width="700">
+
+#### Pembahasan
+
+---
+
+#### Setup & Jalankan GraphQL Server
+
+Masuk ke folder graphql server terlebih dahulu dengan perintah:
+
+```bash
+cd ~/Desktop/prak-dis-dec/09/Tugas09/src/graphql/server
+```
+
+<img src="images/34_Masuk ke folder graphql server terlebih dahulu dengan perintah.png" width="700">
+
+#### Pembahasan
+
+---
+
+Buat file requirements.txt untuk mendaftarkan library yang dibutuhkan (strawberry-graphql[cli] dan sqlmodel) dengan perintah:
+
+```bash
+printf "strawberry-graphql[cli]\nsqlmodel\n" > requirements.txt
+```
+
+<img src="images/35_Buat file requirements.txt untuk mendaftarkan library (strawberry-graphql[cli] dan sqlmodel).png" width="700">
+
+#### Pembahasan
+
+---
+
+Atur versi Python menggunakan uv ke versi 3.14.5:
+
+```bash
+uv python pin 3.14.5 --managed-python
+```
+
+<img src="images/36_Atur versi Python.png" width="700">
+
+#### Pembahasan
+
+---
+
+Buat virtual environment baru di dalam direktori tersebut:
+
+```bash
+uv venv
+```
+
+<img src="images/37_Buat virtual environment.png" width="700">
+
+#### Pembahasan
+
+---
+
+Aktifkan virtual environment yang sudah dibuat dan menginstall seluruh dependensi yang terdaftar pada file requirements.txt::
+
+```bash
+source .venv/Scripts/activate
+```
+
+dan
+
+```bash
+uv pip install -r requirements.txt
+```
+
+<img src="images/38_Mengaktifkan virtual environment dan install seluruh dependensi.png" width="700">
+
+#### Pembahasan
+
+---
+
+Buat file graphql-server.py untuk mendefinisikan model tabel Produk, koneksi database SQLite inventaris.db, serta resolver dan skema query GraphQL:
+
+```bash
+cat << 'EOF' > graphql-server.py
+import typing
+import strawberry
+from sqlmodel import Field, Session, SQLModel, create_engine, select
+
+@strawberry.type
+class Produk(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    kode: str
+    nama: str
+    stok: int
+    harga: float
+    tersedia: bool
+
+engine = create_engine("sqlite:///inventaris.db")
+
+def get_produks():
+    with Session(engine) as session:
+        statement = select(Produk)
+        results = session.exec(statement).all()
+        return results
+
+@strawberry.type
+class Query:
+    produks: typing.List[Produk] = strawberry.field(resolver=get_produks)
+
+schema = strawberry.Schema(query=Query)
+EOF
+```
+
+<img src="images/39_Buat file graphql server.png" width="700">
+
+#### Pembahasan
+
+---
+
+Menjalankan server GraphQL dengan perintah:
+
+```bash
+strawberry dev graphql-server
+```
+
+<img src="images/40_Menjalankan server graphql.png" width="700">
+
+kemudian buka http://localhost:8000/graphql di browser dan ketikkan query:
+
+```GraphQL
+{
+  produks
+  {
+    id
+    kode
+    nama
+    stok
+    harga
+    tersedia
+  }
+}
+```
+
+<img src="images/41_Menjalankan server graphql di browser.png" width="700">
+
+#### Pembahasan
+
+---
+
+#### Setup & Jalankan GraphQL Client
+
+---
+
+### 2. Dengan menggunakan file SQLite pada tugas kemarin (tabel yang mempunyai 1 primary key dan setidaknya berisi data dengan tipe INT, CHAR, VARCHAR, BOOLEAN, dan FLOAT), buat service.proto untuk semua data tersebut, kompilasi, buat gRPC servernya dan kemudian berikan contoh gRPC client untuk mengambil salah satu data.
 
 ---
 
