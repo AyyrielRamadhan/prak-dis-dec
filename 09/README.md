@@ -871,6 +871,18 @@ echo "gql[aiohttp]" > requirements.txt
 
 ---
 
+Atur versi Python proyek menggunakan uv ke versi 3.14.5:
+
+```bash
+uv python pin 3.14.5 --managed-python
+```
+
+<img src="images/44_Atur versi Python.png" width="700">
+
+#### Pembahasan
+
+---
+
 ### 2. Dengan menggunakan file SQLite pada tugas kemarin (tabel yang mempunyai 1 primary key dan setidaknya berisi data dengan tipe INT, CHAR, VARCHAR, BOOLEAN, dan FLOAT), buat service.proto untuk semua data tersebut, kompilasi, buat gRPC servernya dan kemudian berikan contoh gRPC client untuk mengambil salah satu data.
 
 ---
