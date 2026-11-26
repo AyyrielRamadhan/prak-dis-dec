@@ -847,6 +847,28 @@ kemudian buka http://localhost:8000/graphql di browser dan ketikkan query:
 
 #### Setup & Jalankan GraphQL Client
 
+Masuk ke folder client terlebih dahulu menggunakan perintah:
+
+```bash
+cd ~/Desktop/prak-dis-dec/09/Tugas09/src/graphql/client
+```
+
+<img src="images/42_Masuk ke folder client .png" width="700">
+
+#### Pembahasan
+
+---
+
+Buat file requirements.txt untuk mendaftarkan library yang dibutuhkan (gql[aiohttp]) dengan perintah:
+
+```bash
+echo "gql[aiohttp]" > requirements.txt
+```
+
+<img src="images/43_Buat file requirements.txt.png" width="700">
+
+#### Pembahasan
+
 ---
 
 ### 2. Dengan menggunakan file SQLite pada tugas kemarin (tabel yang mempunyai 1 primary key dan setidaknya berisi data dengan tipe INT, CHAR, VARCHAR, BOOLEAN, dan FLOAT), buat service.proto untuk semua data tersebut, kompilasi, buat gRPC servernya dan kemudian berikan contoh gRPC client untuk mengambil salah satu data.
