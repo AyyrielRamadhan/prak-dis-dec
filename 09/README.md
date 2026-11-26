@@ -883,6 +883,18 @@ uv python pin 3.14.5 --managed-python
 
 ---
 
+Buat virtual environment baru di dalam direktori client:
+
+```bash
+uv venv
+```
+
+<img src="images/45_Buat virtual environment.png" width="700">
+
+#### Pembahasan
+
+---
+
 ### 2. Dengan menggunakan file SQLite pada tugas kemarin (tabel yang mempunyai 1 primary key dan setidaknya berisi data dengan tipe INT, CHAR, VARCHAR, BOOLEAN, dan FLOAT), buat service.proto untuk semua data tersebut, kompilasi, buat gRPC servernya dan kemudian berikan contoh gRPC client untuk mengambil salah satu data.
 
 ---
