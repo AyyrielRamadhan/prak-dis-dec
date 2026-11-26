@@ -116,7 +116,7 @@ uv pip install -r requirements.txt
 
 ---
 
-Kemudian isi file graphql-server.py dengan source code:
+Kemudian buat dan isi file graphql-server.py dengan source code:
 
 ```python
 import typing
@@ -258,7 +258,7 @@ uv pip install -r requirements.txt
 
 ---
 
-Kemudian isi file graphql-client.py dengan source code:
+Kemudian buat dan isi file graphql-client.py dengan source code:
 
 ```python
 import asyncio
@@ -316,7 +316,337 @@ Setelah output data karyawan muncul, hentikan server dan client dengan menekan C
 
 ---
 
+### 2. gRPC
+
+Selanjutnya, setup gRPC server dengan masuk ke folder gRPC server terlebih dahulu menggunakan perintah:
+
+```bash
+cd ~/Desktop/Praktik09/src/grpc/server
+```
+
+#### Pembahasan
+
+---
+
+Buat file requirements.txt untuk mendaftarkan library yang dibutuhkan (grpcio, grpcio-tools, dan sqlmodel) dengan perintah:
+
+```bash
+printf "grpcio\ngrpcio-tools\nsqlmodel\n" > requirements.txt
+```
+
+#### Pembahasan
+
+---
+
+Atur versi Python proyek menggunakan uv ke versi 3.14.5 dengan perintah:
+
+```bash
+uv python pin 3.14.5 --managed-python
+```
+
+<img src="images/16_Atur versi Python.png" width="700">
+
+#### Pembahasan
+
+---
+
+Buat virtual environment baru di dalam direktori tersebut:
+
+```bash
+uv venv
+```
+
+<img src="images/17_Buat virtual environment.png" width="700">
+
+#### Pembahasan
+
+---
+
+Aktifkan virtual environment yang sudah dibuat:
+
+```bash
+source .venv/Scripts/activate
+```
+
+Kemudian menginstall depensi yang terdaftar pada file requirements.txt:
+
+```bash
+uv pip install -r requirements.txt
+```
+
+<img src="images/18_Aktifkan virtual environment dan Install depensi.png" width="700">
+
+#### Pembahasan
+
+---
+
+Buat file service.proto untuk mendefinisikan struktur pesan (SdmRequest dan SdmResponse) serta layanan RPC (SdmService) dengan perintah:
+
+```bash
+cat << 'EOF' > service.proto
+syntax = "proto3";
+
+package mydb;
+
+message SdmRequest {
+  int32 id = 1;
+}
+
+message SdmResponse {
+  int32 id = 1;
+  string npp = 2;
+  string nama = 3;
+}
+
+service SdmService {
+  rpc GetSdm (SdmRequest) returns (SdmResponse);
+}
+EOF
+```
+
+<img src="images/19_file service proto.png" width="700">
+
+#### Pembahasan
+
+---
+
+Kompilasi file service.proto menggunakan grpc_tools.protoc untuk menghasilkan kode Python (stub dan message) dengan perintah:
+
+```bash
+python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. service.proto
+```
+
+<img src="images/20_Kompilasi file service proto.png" width="700">
+
+#### Pembahasan
+
+---
+
+Hasilnya adalah 2 file yang dapat ditampilkan dengan perintah:
+
+```bash
+ls -la service_pb2*
+```
+
+<img src="images/21_Hasil Kompilasi.png" width="700">
+
+#### Pembahasan
+
+---
+
+#### 2.1. gRPC Server
+
+Untuk gRPC server ini, request akan dilakukan untuk meminta satu data berdasarkan id tertentu. Jika akan membuat response yang memungkinkan memberikan seluruh data, maka service proto harus menggunakan … repeated … sebagai berikut:
+
+```
+syntax = "proto3";
+package mydb;
+
+message EmptyRequest {}
+
+message SdmMessage {
+  int32 id = 1;
+  string npp = 2;
+  string nama = 3;
+}
+
+message SdmResponse {
+  repeated SdmMessage records = 1;
+}
+
+service SdmService {
+  rpc GetAllSdm (EmptyRequest) returns (SdmResponse);
+}
+```
+
+<img src="images/22_service proto menggunakan repeated.png" width="700">
+
+#### Pembahasan
+
+---
+
+Source code untuk mengakses data di SQLite dan kemudian menserialisasikan hasilnya ke dalam protocol buffers untuk diakses oleh gRPC client adalah sebagai berikut:
+
+```python
+import grpc
+from concurrent import futures
+from sqlmodel import Field, Session, SQLModel, create_engine, select
+
+import service_pb2
+import service_pb2_grpc
+
+class Sdm(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    npp: str
+    nama: str
+
+engine = create_engine("sqlite:///departemen-sdm.db")
+
+class SdmServiceServicer(service_pb2_grpc.SdmServiceServicer):
+    def GetSdm(self, request, context):
+        with Session(engine) as session:
+            statement = select(Sdm).where(Sdm.id == request.id)
+            results = session.exec(statement)
+            sdm_result = results.first()
+
+            if sdm_result is None:
+                context.set_code(grpc.StatusCode.NOT_FOUND)
+                context.set_details("User not found")
+                return service_pb2.SdmResponse()
+
+            return service_pb2.SdmResponse(
+                id=sdm_result.id,
+                npp=sdm_result.npp,
+                nama=sdm_result.nama,
+            )
+
+def serve():
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    service_pb2_grpc.add_SdmServiceServicer_to_server(SdmServiceServicer(), server)
+    server.add_insecure_port('[::]:50051')
+    print("Server started. Listening on port 50051...")
+    server.start()
+    server.wait_for_termination()
+
+if __name__ == '__main__':
+    serve()
+
+```
+
+atau bisa juga menggunakan perintah:
+
+```bash
+cat << 'EOF' > server.py
+import grpc
+from concurrent import futures
+from sqlmodel import Field, Session, SQLModel, create_engine, select
+
+import service_pb2
+import service_pb2_grpc
+
+class Sdm(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    npp: str
+    nama: str
+
+engine = create_engine("sqlite:///departemen-sdm.db")
+
+class SdmServiceServicer(service_pb2_grpc.SdmServiceServicer):
+    def GetSdm(self, request, context):
+        with Session(engine) as session:
+            statement = select(Sdm).where(Sdm.id == request.id)
+            results = session.exec(statement)
+            sdm_result = results.first()
+
+            if sdm_result is None:
+                context.set_code(grpc.StatusCode.NOT_FOUND)
+                context.set_details("User not found")
+                return service_pb2.SdmResponse()
+
+            return service_pb2.SdmResponse(
+                id=sdm_result.id,
+                npp=sdm_result.npp,
+                nama=sdm_result.nama,
+            )
+
+def serve():
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    service_pb2_grpc.add_SdmServiceServicer_to_server(SdmServiceServicer(), server)
+    server.add_insecure_port('[::]:50051')
+    print("Server started. Listening on port 50051...")
+    server.start()
+    server.wait_for_termination()
+
+if __name__ == '__main__':
+    serve()
+EOF
+```
+
+<img src="images/23_Source Code server gRPC.png" width="700">
+
+#### Pembahasan
+
+---
+
+Jalankan dengan perintah:
+
+```bash
+python server.py
+```
+
+<img src="images/24_Menjalankan server gRCP.png" width="700">
+
+#### Pembahasan
+
+---
+
+#### 2.2. gRCP Client
+
+Source code untuk mengirimkan request untuk mengambil data SDM dengan id
+tertentu adalah sebagai berikut:
+
+```python
+import grpc
+import service_pb2
+import service_pb2_grpc
+
+def run_client():
+    with grpc.insecure_channel('localhost:50051') as channel:
+        stub = service_pb2_grpc.SdmServiceStub(channel)
+
+        request = service_pb2.SdmRequest(id=1)
+        try:
+            response = stub.GetSdm(request)
+            print(f"Sdm Name: {response.nama}")
+        except grpc.RpcError as e:
+            print(f"Error: {e.code()} {e.details()}")
+
+        try:
+            request_not_found = service_pb2.SdmRequest(id=10000)
+            response = stub.GetSdm(request_not_found)
+            print(f"Sdm Name: {response.nama}")
+        except grpc.RpcError as e:
+            print(f"Error: {e.code()} {e.details()}")
+
+if __name__ == '__main__':
+    run_client()
+```
+
+<img src="images/25_Source Code Client gRPC.png" width="700">
+
+#### Pembahasan
+
+---
+
+Pada source code tersebut, dilakukan pengiriman 2 requests: 1 untuk request dengan id yang benar-benar ada (1) dan 1 untuk request dengan id yang benar-benar tidak ada (10000). dapat dijalankan dengan perintah berikut:
+
+```bash
+python client.py
+```
+
+<img src="images/26_Menjalankan Client gRCP.png" width="700">
+
+#### Pembahasan
+
+---
+
+Kemudian setelah output sudah sesuai matikan server dan client dengan perintah:
+
+```bash
+deactivate
+```
+
+<img src="images/27_Mematikan server gRCP.png" width="700">
+
+<img src="images/28_Mematikan client gRCP.png" width="700">
+
+#### Pembahasan
+
+---
+
 ## 📜 Tugas
+
+### 1.
 
 ---
 
