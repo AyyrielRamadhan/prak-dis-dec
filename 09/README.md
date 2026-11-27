@@ -895,7 +895,334 @@ uv venv
 
 ---
 
+Aktifkan virtual environment yang sudah dibuat dan menginstall seluruh dependensi yang terdaftar pada file requirements.txt:
+
+```bash
+source .venv/Scripts/activate
+```
+
+dan
+
+```bash
+uv pip install -r requirements.txt
+```
+
+<img src="images/46_Mengaktifkan Environment dan Intall Depensi.png" width="700">
+
+#### Pembahasan
+
+---
+
+Buat file graphql-client.py untuk mengatur koneksi ke endpoint GraphQL (http://localhost:8000/graphql) dan mengeksekusi query getProduks secara asynchronous:
+
+```bash
+cat << 'EOF' > graphql-client.py
+import asyncio
+from gql import Client, gql
+from gql.transport.aiohttp import AIOHTTPTransport
+
+async def main():
+    transport = AIOHTTPTransport(url="http://localhost:8000/graphql")
+    client = Client(transport=transport)
+
+    query = gql(
+        """
+        query getProduks {
+            produks {
+                id
+                kode
+                nama
+                stok
+                harga
+                tersedia
+            }
+        }
+        """
+    )
+
+    async with client as session:
+        result = await session.execute(query)
+        print(result)
+
+asyncio.run(main())
+EOF
+```
+
+<img src="images/47_file graphql-client.png" width="700">
+
+#### Pembahasan
+
+---
+
+Menjalankan Client untuk menampilkan data produk dari server:
+
+```bash
+python graphql-client.py
+```
+
+<img src="images/48_Menjalankan Client GraphQL.png" width="700">
+
+#### Pembahasan
+
+---
+
 ### 2. Dengan menggunakan file SQLite pada tugas kemarin (tabel yang mempunyai 1 primary key dan setidaknya berisi data dengan tipe INT, CHAR, VARCHAR, BOOLEAN, dan FLOAT), buat service.proto untuk semua data tersebut, kompilasi, buat gRPC servernya dan kemudian berikan contoh gRPC client untuk mengambil salah satu data.
+
+#### Prasyarat Setup, Kompilasi service.proto & Jalankan gRPC Server
+
+Masuk ke folder gRPC server di Tugas09
+
+```bash
+cd ~/Desktop/prak-dis-dec/09/Tugas09/src/grpc/server
+```
+
+<img src="images/49_Masuk ke folder gRPC server di Tugas09.png" width="700">
+
+#### Pembahasan
+
+---
+
+Memastikan database inventaris.db tersedia di folder server:
+
+```bash
+cp ~/Desktop/prak-dis-dec/08/src/inventaris.db .
+```
+
+<img src="images/50_Memastikan database inventaris.db.png" width="700">
+
+#### Pembahasan
+
+---
+
+Menyiapkan environment Python 3.14.5
+
+```bash
+printf "grpcio\ngrpcio-tools\nsqlmodel\n" > requirements.txt
+uv python pin 3.14.5 --managed-python
+uv venv
+source .venv/Scripts/activate
+uv pip install -r requirements.txt
+```
+
+<img src="images/51_Menyiapkan environment Python 3.14.5.png" width="700">
+
+#### Pembahasan
+
+---
+
+Buat service.proto untuk seluruh kolom tabel produk
+
+```bash
+cat << 'EOF' > service.proto
+syntax = "proto3";
+
+package inventaris;
+
+message ProdukRequest {
+  int32 id = 1;
+}
+
+message ProdukResponse {
+  int32 id = 1;
+  string kode = 2;
+  string nama = 3;
+  int32 stok = 4;
+  double harga = 5;
+  bool tersedia = 6;
+}
+
+service ProdukService {
+  rpc GetProduk (ProdukRequest) returns (ProdukResponse);
+}
+EOF
+```
+
+<img src="images/53_File service proto.png" width="700">
+
+#### Pembahasan
+
+---
+
+Kompilasi service.proto menjadi stub Python
+
+```bash
+python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. service.proto
+```
+
+<img src="images/54_Kompilasi service proto.png" width="700">
+
+#### Pembahasan
+
+---
+
+Buat kode server.py untuk melayani query ke inventaris.db
+
+```bash
+cat << 'EOF' > server.py
+import grpc
+from concurrent import futures
+from sqlmodel import Field, Session, SQLModel, create_engine, select
+
+import service_pb2
+import service_pb2_grpc
+
+class Produk(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    kode: str
+    nama: str
+    stok: int
+    harga: float
+    tersedia: bool
+
+engine = create_engine("sqlite:///inventaris.db")
+
+class ProdukServiceServicer(service_pb2_grpc.ProdukServiceServicer):
+    def GetProduk(self, request, context):
+        with Session(engine) as session:
+            statement = select(Produk).where(Produk.id == request.id)
+            produk_result = session.exec(statement).first()
+
+            if produk_result is None:
+                context.set_code(grpc.StatusCode.NOT_FOUND)
+                context.set_details("Produk tidak ditemukan")
+                return service_pb2.ProdukResponse()
+
+            return service_pb2.ProdukResponse(
+                id=produk_result.id,
+                kode=produk_result.kode,
+                nama=produk_result.nama,
+                stok=produk_result.stok,
+                harga=produk_result.harga,
+                tersedia=produk_result.tersedia,
+            )
+
+def serve():
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    service_pb2_grpc.add_ProdukServiceServicer_to_server(ProdukServiceServicer(), server)
+    server.add_insecure_port('[::]:50051')
+    print("Server Produk gRPC started. Listening on port 50051...")
+    server.start()
+    server.wait_for_termination()
+
+if __name__ == '__main__':
+    serve()
+EOF
+```
+
+<img src="images/55_Kode server.png" width="700">
+
+#### Pembahasan
+
+---
+
+Jalankan gRPC server
+
+```bash
+python server.py
+```
+
+<img src="images/56_Jalankan gRPC server.png" width="700">
+
+#### Pembahasan
+
+---
+
+#### Prasyarat Setup, Kompilasi & Jalankan gRPC Client
+
+Masuk ke folder gRPC client
+
+```bash
+cd ~/Desktop/prak-dis-dec/09/Tugas09/src/grpc/client
+```
+
+<img src="images/57_Masuk ke folder gRPC client.png" width="700">
+
+#### Pembahasan
+
+---
+
+Siapkan environment Python 3.14.5
+
+```bash
+printf "grpcio\ngrpcio-tools\n" > requirements.txt
+uv python pin 3.14.5 --managed-python
+uv venv
+source .venv/Scripts/activate
+uv pip install -r requirements.txt
+```
+
+<img src="images/58_Siapkan environment Python 3.14.5.png" width="700">
+
+#### Pembahasan
+
+---
+
+Salin service.proto dari server dan kompilasi
+
+```bash
+cp ../server/service.proto .
+python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. service.proto
+```
+
+<img src="images/59_Salin service.proto dari server dan kompilasi.png" width="700">
+
+#### Pembahasan
+
+---
+
+Buat client.py untuk mengambil salah satu data produk berdasarkan id
+
+```bash
+cat << 'EOF' > client.py
+import grpc
+import service_pb2
+import service_pb2_grpc
+
+def run_client():
+    with grpc.insecure_channel('localhost:50051') as channel:
+        stub = service_pb2_grpc.ProdukServiceStub(channel)
+
+        # Mengambil salah satu data produk (id = 1)
+        request = service_pb2.ProdukRequest(id=1)
+        try:
+            response = stub.GetProduk(request)
+            print("Data Produk Ditemukan:")
+            print(f"  ID       : {response.id}")
+            print(f"  Kode     : {response.kode}")
+            print(f"  Nama     : {response.nama}")
+            print(f"  Stok     : {response.stok}")
+            print(f"  Harga    : {response.harga}")
+            print(f"  Tersedia : {response.tersedia}")
+        except grpc.RpcError as e:
+            print(f"Error: {e.code()} - {e.details()}")
+
+        # Uji kasus jika id tidak ditemukan (id = 9999)
+        try:
+            request_not_found = service_pb2.ProdukRequest(id=9999)
+            stub.GetProduk(request_not_found)
+        except grpc.RpcError as e:
+            print(f"\nUji Data Kosong -> Error: {e.code()} - {e.details()}")
+
+if __name__ == '__main__':
+    run_client()
+EOF
+```
+
+<img src="images/60_File client.py.png" width="700">
+
+#### Pembahasan
+
+---
+
+Jalankan client
+
+```bash
+python client.py
+```
+
+<img src="images/61_Menjalankan Client gRPC.png" width="700">
+
+#### Pembahasan
 
 ---
 
