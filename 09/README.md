@@ -8,12 +8,14 @@
 
 ## 🎯 Tujuan Praktikum
 
-1. Memahami posisi GraphQL dan gRPC sebagai alternatif REST ketika aplikasi dipecah menjadi layanan-layanan kecil.
-2. Memahami cara kerja GraphQL, mulai dari <em>schema</em>, <em>query</em>, hingga <em>resolver</em> yang mengambil data.
-3. Mampu membangun GraphQL server dengan Strawberry dan SQLModel, lalu mengujinya lewat GraphQL Explorer maupun client <code>gql</code>.
-4. Memahami peran Protocol Buffers dan proses kompilasi <code>.proto</code> menjadi <em>stub</em> yang dipakai server dan client.
-5. Mampu membangun gRPC server dan client untuk mengambil data berdasarkan id, termasuk menangani kasus data tidak ditemukan.
-6. Mampu menerapkan kedua pendekatan pada tabel SQLite buatan sendiri dan menilai kapan masing-masing lebih tepat dipakai.
+<ol>
+  <li><p align="justify">Memahami posisi GraphQL dan gRPC sebagai alternatif REST ketika aplikasi dipecah menjadi layanan-layanan kecil.</p></li>
+  <li><p align="justify">Memahami cara kerja GraphQL, mulai dari <em>schema</em>, <em>query</em>, hingga <em>resolver</em> yang mengambil data.</p></li>
+  <li><p align="justify">Mampu membangun GraphQL server dengan Strawberry dan SQLModel, lalu mengujinya lewat GraphQL Explorer maupun client <code>gql</code>.</p></li>
+  <li><p align="justify">Memahami peran Protocol Buffers dan proses kompilasi <code>.proto</code> menjadi <em>stub</em> yang dipakai server dan client.</p></li>
+  <li><p align="justify">Mampu membangun gRPC server dan client untuk mengambil data berdasarkan id, termasuk menangani kasus data tidak ditemukan.</p></li>
+  <li><p align="justify">Mampu menerapkan kedua pendekatan pada tabel SQLite buatan sendiri dan menilai kapan masing-masing lebih tepat dipakai.</p></li>
+</ol>
 
 ---
 
@@ -45,7 +47,7 @@
 
 ### 0. Persyaratan
 
-Buat struktur direktori dengan perintah:
+<p align="justify">Buat struktur direktori dengan perintah:</p>
 
 ```bash
 mkdir -p src/graphql/server src/graphql/client src/grpc/server src/grpc/client
@@ -67,7 +69,7 @@ mkdir -p src/graphql/server src/graphql/client src/grpc/server src/grpc/client
 
 #### 1.1. GraphQL Server
 
-Buat file kosong yang dibutuhkan dengan perintah:
+<p align="justify">Buat file kosong yang dibutuhkan dengan perintah:</p>
 
 ```bash
 touch src/graphql/server/{graphql-server.py,requirements.txt}
@@ -79,7 +81,7 @@ touch src/graphql/server/{graphql-server.py,requirements.txt}
 
 ---
 
-Kemudian salin database dari pertemuan 8 ke folder GraphQL server dengan perintah:
+<p align="justify">Kemudian salin database dari pertemuan 8 ke folder GraphQL server dengan perintah:</p>
 
 ```bash
 cp ../prak-dis-dec/08/src/departemen-sdm.db src/graphql/server/
@@ -91,7 +93,7 @@ cp ../prak-dis-dec/08/src/departemen-sdm.db src/graphql/server/
 
 ---
 
-Lalu setup GraphQL server, dengan masuk ke folder graphql server terlebih dahulu dengan perintah:
+<p align="justify">Lalu setup GraphQL server, dengan masuk ke folder graphql server terlebih dahulu dengan perintah:</p>
 
 ```bash
 cd ~/Desktop/Praktik09/src/graphql/server
@@ -103,7 +105,7 @@ cd ~/Desktop/Praktik09/src/graphql/server
 
 ---
 
-Buat file requirements.txt untuk mendaftarkan library yang dibutuhkan (strawberry-graphql[cli] dan sqlmodel) dengan perintah:
+<p align="justify">Buat file requirements.txt untuk mendaftarkan library yang dibutuhkan (strawberry-graphql[cli] dan sqlmodel) dengan perintah:</p>
 
 ```bash
 printf "strawberry-graphql[cli]\nsqlmodel\n" > requirements.txt
@@ -115,7 +117,7 @@ printf "strawberry-graphql[cli]\nsqlmodel\n" > requirements.txt
 
 ---
 
-Atur versi Python proyek menggunakan uv ke versi 3.14.5:
+<p align="justify">Atur versi Python proyek menggunakan uv ke versi 3.14.5:</p>
 
 ```bash
 uv python pin 3.14.5 --managed-python
@@ -133,7 +135,7 @@ uv python pin 3.14.5 --managed-python
 
 ---
 
-Buat virtual environment baru di dalam direktori tersebut:
+<p align="justify">Buat virtual environment baru di dalam direktori tersebut:</p>
 
 ```bash
 uv venv
@@ -151,13 +153,13 @@ uv venv
 
 ---
 
-Aktifkan virtual environment yang sudah dibuat dengan perintah:
+<p align="justify">Aktifkan virtual environment yang sudah dibuat dengan perintah:</p>
 
 ```bash
 source .venv/Scripts/activate
 ```
 
-Lalu install seluruh dependensi yang terdaftar pada file requirements.txt:
+<p align="justify">Lalu install seluruh dependensi yang terdaftar pada file requirements.txt:</p>
 
 ```bash
 uv pip install -r requirements.txt
@@ -175,7 +177,7 @@ uv pip install -r requirements.txt
 
 ---
 
-Kemudian buat dan isi file graphql-server.py dengan source code:
+<p align="justify">Kemudian buat dan isi file graphql-server.py dengan source code:</p>
 
 ```python
 import typing
@@ -215,7 +217,7 @@ schema = strawberry.Schema(query=Query)
 
 ---
 
-Menjalankan server Strawberry GraphQL untuk menguji skema yang telah dibuat dengan perintah:
+<p align="justify">Menjalankan server Strawberry GraphQL untuk menguji skema yang telah dibuat dengan perintah:</p>
 
 ```bash
 strawberry dev graphql-server
@@ -233,7 +235,7 @@ strawberry dev graphql-server
 
 ---
 
-Selanjutnya buka http://localhost:8000/graphql pada browser
+<p align="justify">Selanjutnya buka http://localhost:8000/graphql pada browser</p>
 
 <p align="center">
   <img src="images/07_Open GraphQL pada Browser.png" width="700" alt="GraphQL Explorer dibuka melalui peramban.">
@@ -241,7 +243,7 @@ Selanjutnya buka http://localhost:8000/graphql pada browser
   <em>Gambar 7. GraphQL Explorer dibuka melalui peramban.</em>
 </p>
 
-Lalu ketikan query berikut pada kotak kiri:
+<p align="justify">Lalu ketikan query berikut pada kotak kiri:</p>
 
 ```GraphQL
 {
@@ -267,7 +269,7 @@ Lalu ketikan query berikut pada kotak kiri:
 
 #### 1.2. GraphQL Client
 
-Buat file kosong yang dibutuhkan dengan perintah:
+<p align="justify">Buat file kosong yang dibutuhkan dengan perintah:</p>
 
 ```bash
 touch src/graphql/client/{graphql-client.py,requirements.txt}
@@ -279,7 +281,7 @@ touch src/graphql/client/{graphql-client.py,requirements.txt}
 
 ---
 
-Selanjutnya, setup GraphQL client dengan masuk ke folder client terlebih dahulu menggunakan perintah:
+<p align="justify">Selanjutnya, setup GraphQL client dengan masuk ke folder client terlebih dahulu menggunakan perintah:</p>
 
 ```bash
 cd ~/Desktop/Praktik09/src/graphql/client
@@ -291,7 +293,7 @@ cd ~/Desktop/Praktik09/src/graphql/client
 
 ---
 
-Buat file requirements.txt untuk mendaftarkan library yang dibutuhkan (gql[aiohttp]) dengan perintah:
+<p align="justify">Buat file requirements.txt untuk mendaftarkan library yang dibutuhkan (gql[aiohttp]) dengan perintah:</p>
 
 ```bash
 echo "gql[aiohttp]" > requirements.txt
@@ -303,7 +305,7 @@ echo "gql[aiohttp]" > requirements.txt
 
 ---
 
-Atur versi Python proyek menggunakan uv ke versi 3.14.5 dengan perintah:
+<p align="justify">Atur versi Python proyek menggunakan uv ke versi 3.14.5 dengan perintah:</p>
 
 ```bash
 uv python pin 3.14.5 --managed-python
@@ -321,7 +323,7 @@ uv python pin 3.14.5 --managed-python
 
 ---
 
-Buat virtual environment baru di dalam direktori client dengan perintah:
+<p align="justify">Buat virtual environment baru di dalam direktori client dengan perintah:</p>
 
 ```bash
 uv venv
@@ -339,13 +341,13 @@ uv venv
 
 ---
 
-Aktifkan virtual environment yang sudah dibuat:
+<p align="justify">Aktifkan virtual environment yang sudah dibuat:</p>
 
 ```bash
 source .venv/Scripts/activate
 ```
 
-Lalu install seluruh dependensi yang terdaftar pada file requirements.txt dengan perintah:
+<p align="justify">Lalu install seluruh dependensi yang terdaftar pada file requirements.txt dengan perintah:</p>
 
 ```bash
 uv pip install -r requirements.txt
@@ -363,7 +365,7 @@ uv pip install -r requirements.txt
 
 ---
 
-Kemudian buat dan isi file graphql-client.py dengan source code:
+<p align="justify">Kemudian buat dan isi file graphql-client.py dengan source code:</p>
 
 ```python
 import asyncio
@@ -405,7 +407,7 @@ asyncio.run(main())
 
 ---
 
-Terakhir, pastikan server GraphQL (graphql-server) sudah berjalan, lalu jalankan skrip client untuk mengambil dan menampilkan data dari server dengan perintah:
+<p align="justify">Terakhir, pastikan server GraphQL (graphql-server) sudah berjalan, lalu jalankan skrip client untuk mengambil dan menampilkan data dari server dengan perintah:</p>
 
 ```bash
 python graphql-client.py
@@ -423,7 +425,7 @@ python graphql-client.py
 
 ---
 
-Setelah output data karyawan muncul, hentikan server dan client dengan menekan Ctrl + C untuk server, lalu ketik deactivate di server dan client.
+<p align="justify">Setelah output data karyawan muncul, hentikan server dan client dengan menekan Ctrl + C untuk server, lalu ketik deactivate di server dan client.</p>
 
 <p align="center">
   <img src="images/14_Menghentikan GraphQL Server.png" width="700" alt="Server GraphQL dihentikan dengan Ctrl+C.">
@@ -445,7 +447,7 @@ Setelah output data karyawan muncul, hentikan server dan client dengan menekan C
 
 ### 2. gRPC
 
-Selanjutnya, setup gRPC server dengan masuk ke folder gRPC server terlebih dahulu menggunakan perintah:
+<p align="justify">Selanjutnya, setup gRPC server dengan masuk ke folder gRPC server terlebih dahulu menggunakan perintah:</p>
 
 ```bash
 cd ~/Desktop/Praktik09/src/grpc/server
@@ -457,7 +459,7 @@ cd ~/Desktop/Praktik09/src/grpc/server
 
 ---
 
-Buat file requirements.txt untuk mendaftarkan library yang dibutuhkan (grpcio, grpcio-tools, dan sqlmodel) dengan perintah:
+<p align="justify">Buat file requirements.txt untuk mendaftarkan library yang dibutuhkan (grpcio, grpcio-tools, dan sqlmodel) dengan perintah:</p>
 
 ```bash
 printf "grpcio\ngrpcio-tools\nsqlmodel\n" > requirements.txt
@@ -469,7 +471,7 @@ printf "grpcio\ngrpcio-tools\nsqlmodel\n" > requirements.txt
 
 ---
 
-Atur versi Python proyek menggunakan uv ke versi 3.14.5 dengan perintah:
+<p align="justify">Atur versi Python proyek menggunakan uv ke versi 3.14.5 dengan perintah:</p>
 
 ```bash
 uv python pin 3.14.5 --managed-python
@@ -487,7 +489,7 @@ uv python pin 3.14.5 --managed-python
 
 ---
 
-Buat virtual environment baru di dalam direktori tersebut:
+<p align="justify">Buat virtual environment baru di dalam direktori tersebut:</p>
 
 ```bash
 uv venv
@@ -505,13 +507,13 @@ uv venv
 
 ---
 
-Aktifkan virtual environment yang sudah dibuat:
+<p align="justify">Aktifkan virtual environment yang sudah dibuat:</p>
 
 ```bash
 source .venv/Scripts/activate
 ```
 
-Kemudian menginstall depensi yang terdaftar pada file requirements.txt:
+<p align="justify">Kemudian menginstall depensi yang terdaftar pada file requirements.txt:</p>
 
 ```bash
 uv pip install -r requirements.txt
@@ -529,7 +531,7 @@ uv pip install -r requirements.txt
 
 ---
 
-Buat file service.proto untuk mendefinisikan struktur pesan (SdmRequest dan SdmResponse) serta layanan RPC (SdmService) dengan perintah:
+<p align="justify">Buat file service.proto untuk mendefinisikan struktur pesan (SdmRequest dan SdmResponse) serta layanan RPC (SdmService) dengan perintah:</p>
 
 ```bash
 cat << 'EOF' > service.proto
@@ -565,7 +567,7 @@ EOF
 
 ---
 
-Kompilasi file service.proto menggunakan grpc_tools.protoc untuk menghasilkan kode Python (stub dan message) dengan perintah:
+<p align="justify">Kompilasi file service.proto menggunakan grpc_tools.protoc untuk menghasilkan kode Python (stub dan message) dengan perintah:</p>
 
 ```bash
 python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. service.proto
@@ -583,7 +585,7 @@ python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. service.proto
 
 ---
 
-Hasilnya adalah 2 file yang dapat ditampilkan dengan perintah:
+<p align="justify">Hasilnya adalah 2 file yang dapat ditampilkan dengan perintah:</p>
 
 ```bash
 ls -la service_pb2*
@@ -603,7 +605,7 @@ ls -la service_pb2*
 
 #### 2.1. gRPC Server
 
-Untuk gRPC server ini, request akan dilakukan untuk meminta satu data berdasarkan id tertentu. Jika akan membuat response yang memungkinkan memberikan seluruh data, maka service proto harus menggunakan … repeated … sebagai berikut:
+<p align="justify">Untuk gRPC server ini, request akan dilakukan untuk meminta satu data berdasarkan id tertentu. Jika akan membuat response yang memungkinkan memberikan seluruh data, maka service proto harus menggunakan … repeated … sebagai berikut:</p>
 
 ```
 syntax = "proto3";
@@ -638,7 +640,7 @@ service SdmService {
 
 ---
 
-Source code untuk mengakses data di SQLite dan kemudian menserialisasikan hasilnya ke dalam protocol buffers untuk diakses oleh gRPC client adalah sebagai berikut:
+<p align="justify">Source code untuk mengakses data di SQLite dan kemudian menserialisasikan hasilnya ke dalam protocol buffers untuk diakses oleh gRPC client adalah sebagai berikut:</p>
 
 ```python
 import grpc
@@ -686,7 +688,7 @@ if __name__ == '__main__':
 
 ```
 
-atau bisa juga menggunakan perintah:
+<p align="justify">atau bisa juga menggunakan perintah:</p>
 
 ```bash
 cat << 'EOF' > server.py
@@ -747,7 +749,7 @@ EOF
 
 ---
 
-Jalankan dengan perintah:
+<p align="justify">Jalankan dengan perintah:</p>
 
 ```bash
 python server.py
@@ -767,8 +769,7 @@ python server.py
 
 #### 2.2. gRCP Client
 
-Source code untuk mengirimkan request untuk mengambil data SDM dengan id
-tertentu adalah sebagai berikut:
+<p align="justify">Source code untuk mengirimkan request untuk mengambil data SDM dengan id tertentu adalah sebagai berikut:</p>
 
 ```python
 import grpc
@@ -809,7 +810,7 @@ if __name__ == '__main__':
 
 ---
 
-Pada source code tersebut, dilakukan pengiriman 2 requests: 1 untuk request dengan id yang benar-benar ada (1) dan 1 untuk request dengan id yang benar-benar tidak ada (10000). dapat dijalankan dengan perintah berikut:
+<p align="justify">Pada source code tersebut, dilakukan pengiriman 2 requests: 1 untuk request dengan id yang benar-benar ada (1) dan 1 untuk request dengan id yang benar-benar tidak ada (10000). dapat dijalankan dengan perintah berikut:</p>
 
 ```bash
 python client.py
@@ -827,7 +828,7 @@ python client.py
 
 ---
 
-Kemudian setelah output sudah sesuai matikan server dan client dengan perintah:
+<p align="justify">Kemudian setelah output sudah sesuai matikan server dan client dengan perintah:</p>
 
 ```bash
 deactivate
@@ -851,7 +852,7 @@ deactivate
 
 ---
 
-Kemudian struktur direktori akhir menjadi:
+<p align="justify">Kemudian struktur direktori akhir menjadi:</p>
 
 <p align="center">
   <img src="images/29_Struktur direktori akhir.png" width="700" alt="Struktur direktori Praktik09 setelah seluruh praktikum selesai.">
@@ -871,7 +872,7 @@ Kemudian struktur direktori akhir menjadi:
 
 #### Persiapan Struktur Folder & Salin Database
 
-Masuk ke folder terlebih dahulu:
+<p align="justify">Masuk ke folder terlebih dahulu:</p>
 
 ```bash
 cd ~/Desktop/prak-dis-dec/09/Tugas09
@@ -889,7 +890,7 @@ cd ~/Desktop/prak-dis-dec/09/Tugas09
 
 ---
 
-Buat struktur direktori GraphQL
+<p align="justify">Buat struktur direktori GraphQL</p>
 
 ```bash
 mkdir -p src/graphql/server src/graphql/client src/grpc/server src/grpc/client
@@ -907,7 +908,7 @@ mkdir -p src/graphql/server src/graphql/client src/grpc/server src/grpc/client
 
 ---
 
-Buat file kosong yang dibutuhkan
+<p align="justify">Buat file kosong yang dibutuhkan</p>
 
 ```bash
 touch src/graphql/server/{graphql-server.py,requirements.txt}
@@ -926,7 +927,7 @@ touch src/graphql/client/{graphql-client.py,requirements.txt}
 
 ---
 
-Salin inventaris.db dari pertemuan 08 ke folder server GraphQL (dan gRPC)
+<p align="justify">Salin inventaris.db dari pertemuan 08 ke folder server GraphQL (dan gRPC)</p>
 
 ```bash
 cp ~/Desktop/prak-dis-dec/08/src/inventaris.db src/graphql/server/
@@ -947,7 +948,7 @@ cp ~/Desktop/prak-dis-dec/08/src/inventaris.db src/grpc/server/
 
 #### Setup & Jalankan GraphQL Server
 
-Masuk ke folder graphql server terlebih dahulu dengan perintah:
+<p align="justify">Masuk ke folder graphql server terlebih dahulu dengan perintah:</p>
 
 ```bash
 cd ~/Desktop/prak-dis-dec/09/Tugas09/src/graphql/server
@@ -965,7 +966,7 @@ cd ~/Desktop/prak-dis-dec/09/Tugas09/src/graphql/server
 
 ---
 
-Buat file requirements.txt untuk mendaftarkan library yang dibutuhkan (strawberry-graphql[cli] dan sqlmodel) dengan perintah:
+<p align="justify">Buat file requirements.txt untuk mendaftarkan library yang dibutuhkan (strawberry-graphql[cli] dan sqlmodel) dengan perintah:</p>
 
 ```bash
 printf "strawberry-graphql[cli]\nsqlmodel\n" > requirements.txt
@@ -983,7 +984,7 @@ printf "strawberry-graphql[cli]\nsqlmodel\n" > requirements.txt
 
 ---
 
-Atur versi Python menggunakan uv ke versi 3.14.5:
+<p align="justify">Atur versi Python menggunakan uv ke versi 3.14.5:</p>
 
 ```bash
 uv python pin 3.14.5 --managed-python
@@ -1001,7 +1002,7 @@ uv python pin 3.14.5 --managed-python
 
 ---
 
-Buat virtual environment baru di dalam direktori tersebut:
+<p align="justify">Buat virtual environment baru di dalam direktori tersebut:</p>
 
 ```bash
 uv venv
@@ -1019,13 +1020,13 @@ uv venv
 
 ---
 
-Aktifkan virtual environment yang sudah dibuat dan menginstall seluruh dependensi yang terdaftar pada file requirements.txt::
+<p align="justify">Aktifkan virtual environment yang sudah dibuat dan menginstall seluruh dependensi yang terdaftar pada file requirements.txt::</p>
 
 ```bash
 source .venv/Scripts/activate
 ```
 
-dan
+<p align="justify">dan</p>
 
 ```bash
 uv pip install -r requirements.txt
@@ -1043,7 +1044,7 @@ uv pip install -r requirements.txt
 
 ---
 
-Buat file graphql-server.py untuk mendefinisikan model tabel Produk, koneksi database SQLite inventaris.db, serta resolver dan skema query GraphQL:
+<p align="justify">Buat file graphql-server.py untuk mendefinisikan model tabel Produk, koneksi database SQLite inventaris.db, serta resolver dan skema query GraphQL:</p>
 
 ```bash
 cat << 'EOF' > graphql-server.py
@@ -1088,7 +1089,7 @@ EOF
 
 ---
 
-Menjalankan server GraphQL dengan perintah:
+<p align="justify">Menjalankan server GraphQL dengan perintah:</p>
 
 ```bash
 strawberry dev graphql-server
@@ -1100,7 +1101,7 @@ strawberry dev graphql-server
   <em>Gambar 40. Server GraphQL tugas berjalan di port 8000.</em>
 </p>
 
-kemudian buka http://localhost:8000/graphql di browser dan ketikkan query:
+<p align="justify">kemudian buka http://localhost:8000/graphql di browser dan ketikkan query:</p>
 
 ```GraphQL
 {
@@ -1130,7 +1131,7 @@ kemudian buka http://localhost:8000/graphql di browser dan ketikkan query:
 
 #### Setup & Jalankan GraphQL Client
 
-Masuk ke folder client terlebih dahulu menggunakan perintah:
+<p align="justify">Masuk ke folder client terlebih dahulu menggunakan perintah:</p>
 
 ```bash
 cd ~/Desktop/prak-dis-dec/09/Tugas09/src/graphql/client
@@ -1148,7 +1149,7 @@ cd ~/Desktop/prak-dis-dec/09/Tugas09/src/graphql/client
 
 ---
 
-Buat file requirements.txt untuk mendaftarkan library yang dibutuhkan (gql[aiohttp]) dengan perintah:
+<p align="justify">Buat file requirements.txt untuk mendaftarkan library yang dibutuhkan (gql[aiohttp]) dengan perintah:</p>
 
 ```bash
 echo "gql[aiohttp]" > requirements.txt
@@ -1166,7 +1167,7 @@ echo "gql[aiohttp]" > requirements.txt
 
 ---
 
-Atur versi Python proyek menggunakan uv ke versi 3.14.5:
+<p align="justify">Atur versi Python proyek menggunakan uv ke versi 3.14.5:</p>
 
 ```bash
 uv python pin 3.14.5 --managed-python
@@ -1184,7 +1185,7 @@ uv python pin 3.14.5 --managed-python
 
 ---
 
-Buat virtual environment baru di dalam direktori client:
+<p align="justify">Buat virtual environment baru di dalam direktori client:</p>
 
 ```bash
 uv venv
@@ -1202,13 +1203,13 @@ uv venv
 
 ---
 
-Aktifkan virtual environment yang sudah dibuat dan menginstall seluruh dependensi yang terdaftar pada file requirements.txt:
+<p align="justify">Aktifkan virtual environment yang sudah dibuat dan menginstall seluruh dependensi yang terdaftar pada file requirements.txt:</p>
 
 ```bash
 source .venv/Scripts/activate
 ```
 
-dan
+<p align="justify">dan</p>
 
 ```bash
 uv pip install -r requirements.txt
@@ -1226,7 +1227,7 @@ uv pip install -r requirements.txt
 
 ---
 
-Buat file graphql-client.py untuk mengatur koneksi ke endpoint GraphQL (http://localhost:8000/graphql) dan mengeksekusi query getProduks secara asynchronous:
+<p align="justify">Buat file graphql-client.py untuk mengatur koneksi ke endpoint GraphQL (http://localhost:8000/graphql) dan mengeksekusi query getProduks secara asynchronous:</p>
 
 ```bash
 cat << 'EOF' > graphql-client.py
@@ -1273,7 +1274,7 @@ EOF
 
 ---
 
-Menjalankan Client untuk menampilkan data produk dari server:
+<p align="justify">Menjalankan Client untuk menampilkan data produk dari server:</p>
 
 ```bash
 python graphql-client.py
@@ -1295,7 +1296,7 @@ python graphql-client.py
 
 #### Prasyarat Setup, Kompilasi service.proto & Jalankan gRPC Server
 
-Masuk ke folder gRPC server di Tugas09
+<p align="justify">Masuk ke folder gRPC server di Tugas09</p>
 
 ```bash
 cd ~/Desktop/prak-dis-dec/09/Tugas09/src/grpc/server
@@ -1313,7 +1314,7 @@ cd ~/Desktop/prak-dis-dec/09/Tugas09/src/grpc/server
 
 ---
 
-Memastikan database inventaris.db tersedia di folder server:
+<p align="justify">Memastikan database inventaris.db tersedia di folder server:</p>
 
 ```bash
 cp ~/Desktop/prak-dis-dec/08/src/inventaris.db .
@@ -1331,7 +1332,7 @@ cp ~/Desktop/prak-dis-dec/08/src/inventaris.db .
 
 ---
 
-Menyiapkan environment Python 3.14.5
+<p align="justify">Menyiapkan environment Python 3.14.5</p>
 
 ```bash
 printf "grpcio\ngrpcio-tools\nsqlmodel\n" > requirements.txt
@@ -1353,7 +1354,7 @@ uv pip install -r requirements.txt
 
 ---
 
-Buat service.proto untuk seluruh kolom tabel produk
+<p align="justify">Buat service.proto untuk seluruh kolom tabel produk</p>
 
 ```bash
 cat << 'EOF' > service.proto
@@ -1392,7 +1393,7 @@ EOF
 
 ---
 
-Kompilasi service.proto menjadi stub Python
+<p align="justify">Kompilasi service.proto menjadi stub Python</p>
 
 ```bash
 python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. service.proto
@@ -1410,7 +1411,7 @@ python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. service.proto
 
 ---
 
-Buat kode server.py untuk melayani query ke inventaris.db
+<p align="justify">Buat kode server.py untuk melayani query ke inventaris.db</p>
 
 ```bash
 cat << 'EOF' > server.py
@@ -1476,7 +1477,7 @@ EOF
 
 ---
 
-Jalankan gRPC server
+<p align="justify">Jalankan gRPC server</p>
 
 ```bash
 python server.py
@@ -1496,7 +1497,7 @@ python server.py
 
 #### Prasyarat Setup, Kompilasi & Jalankan gRPC Client
 
-Masuk ke folder gRPC client
+<p align="justify">Masuk ke folder gRPC client</p>
 
 ```bash
 cd ~/Desktop/prak-dis-dec/09/Tugas09/src/grpc/client
@@ -1514,7 +1515,7 @@ cd ~/Desktop/prak-dis-dec/09/Tugas09/src/grpc/client
 
 ---
 
-Siapkan environment Python 3.14.5
+<p align="justify">Siapkan environment Python 3.14.5</p>
 
 ```bash
 printf "grpcio\ngrpcio-tools\n" > requirements.txt
@@ -1536,7 +1537,7 @@ uv pip install -r requirements.txt
 
 ---
 
-Salin service.proto dari server dan kompilasi
+<p align="justify">Salin service.proto dari server dan kompilasi</p>
 
 ```bash
 cp ../server/service.proto .
@@ -1555,7 +1556,7 @@ python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. service.proto
 
 ---
 
-Buat client.py untuk mengambil salah satu data produk berdasarkan id
+<p align="justify">Buat client.py untuk mengambil salah satu data produk berdasarkan id</p>
 
 ```bash
 cat << 'EOF' > client.py
@@ -1605,7 +1606,7 @@ EOF
 
 ---
 
-Jalankan client
+<p align="justify">Jalankan client</p>
 
 ```bash
 python client.py
@@ -1625,22 +1626,26 @@ python client.py
 
 ## 📝 Kesimpulan
 
-1. GraphQL dan gRPC sama-sama memindahkan kesepakatan ke depan: GraphQL lewat <em>schema</em>, gRPC lewat berkas <code>.proto</code>.
-2. GraphQL lebih luwes bagi client yang ingin memilih <em>field</em>, sedangkan gRPC lebih tegas karena tipe dan bentuk pesan dikunci sejak kompilasi.
-3. Strawberry dan SQLModel memungkinkan satu <em>class</em> Python berperan sebagai model tabel sekaligus tipe GraphQL, sehingga kode tetap ringkas.
-4. Protocol Buffers menuntut pemetaan tipe yang eksplisit; kesalahan tipe baru terasa saat kompilasi atau ketika data dikirim.
-5. Pemisahan <em>virtual environment</em> per folder mencegah konflik dependensi dan membuat sumber masalah lebih mudah dilacak.
-6. Penanganan <code>NOT_FOUND</code> pada kedua pendekatan menunjukkan bahwa jalur gagal sama pentingnya dengan jalur sukses dalam layanan <em>microservices</em>.
+<ol>
+  <li><p align="justify">GraphQL dan gRPC sama-sama memindahkan kesepakatan ke depan: GraphQL lewat <em>schema</em>, gRPC lewat berkas <code>.proto</code>.</p></li>
+  <li><p align="justify">GraphQL lebih luwes bagi client yang ingin memilih <em>field</em>, sedangkan gRPC lebih tegas karena tipe dan bentuk pesan dikunci sejak kompilasi.</p></li>
+  <li><p align="justify">Strawberry dan SQLModel memungkinkan satu <em>class</em> Python berperan sebagai model tabel sekaligus tipe GraphQL, sehingga kode tetap ringkas.</p></li>
+  <li><p align="justify">Protocol Buffers menuntut pemetaan tipe yang eksplisit; kesalahan tipe baru terasa saat kompilasi atau ketika data dikirim.</p></li>
+  <li><p align="justify">Pemisahan <em>virtual environment</em> per folder mencegah konflik dependensi dan membuat sumber masalah lebih mudah dilacak.</p></li>
+  <li><p align="justify">Penanganan <code>NOT_FOUND</code> pada kedua pendekatan menunjukkan bahwa jalur gagal sama pentingnya dengan jalur sukses dalam layanan <em>microservices</em>.</p></li>
+</ol>
 
 ---
 
 ## 🗒️ Referensi
 
-1. Modul 9 - Arsitektur Microservices untuk Sistem Terdistribusi: GraphQL dan gRPC, Praktikum Sistem Terdistribusi dan Terdesentralisasi, Universitas Teknologi Digital Indonesia.
-2. Dokumentasi GraphQL. <https://graphql.org/learn/>
-3. Dokumentasi Strawberry. <https://strawberry.rocks/docs>
-4. Dokumentasi gql. <https://github.com/graphql-python/gql>
-5. Dokumentasi gRPC. <https://grpc.io/docs/>
-6. Dokumentasi Protocol Buffers. <https://protobuf.dev/>
-7. Dokumentasi SQLModel. <https://sqlmodel.tiangolo.com/>
-8. Dokumentasi uv. <https://docs.astral.sh/uv/>
+<ol>
+  <li><p align="justify">Modul 9 - Arsitektur Microservices untuk Sistem Terdistribusi: GraphQL dan gRPC, Praktikum Sistem Terdistribusi dan Terdesentralisasi, Universitas Teknologi Digital Indonesia.</p></li>
+  <li><p align="justify">Dokumentasi GraphQL. <a href="https://graphql.org/learn/">https://graphql.org/learn/</a></p></li>
+  <li><p align="justify">Dokumentasi Strawberry. <a href="https://strawberry.rocks/docs">https://strawberry.rocks/docs</a></p></li>
+  <li><p align="justify">Dokumentasi gql. <a href="https://github.com/graphql-python/gql">https://github.com/graphql-python/gql</a></p></li>
+  <li><p align="justify">Dokumentasi gRPC. <a href="https://grpc.io/docs/">https://grpc.io/docs/</a></p></li>
+  <li><p align="justify">Dokumentasi Protocol Buffers. <a href="https://protobuf.dev/">https://protobuf.dev/</a></p></li>
+  <li><p align="justify">Dokumentasi SQLModel. <a href="https://sqlmodel.tiangolo.com/">https://sqlmodel.tiangolo.com/</a></p></li>
+  <li><p align="justify">Dokumentasi uv. <a href="https://docs.astral.sh/uv/">https://docs.astral.sh/uv/</a></p></li>
+</ol>
