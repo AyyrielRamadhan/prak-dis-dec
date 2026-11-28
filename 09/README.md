@@ -972,7 +972,7 @@ printf "strawberry-graphql[cli]\nsqlmodel\n" > requirements.txt
 ```
 
 <p align="center">
-  <img src="images/35_Buat file requirements.txt untuk mendaftarkan library (strawberry-graphql[cli] dan sqlmodel).png" width="700" alt="requirements.txt untuk server GraphQL tugas.">
+  <img src="images/35_Buat file requirements.png" width="700" alt="requirements.txt untuk server GraphQL tugas.">
   <br>
   <em>Gambar 35. requirements.txt untuk server GraphQL tugas.</em>
 </p>
